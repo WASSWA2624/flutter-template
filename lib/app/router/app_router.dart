@@ -7,6 +7,7 @@ import 'package:flutter_template/app/router/route_status_pages.dart';
 import 'package:flutter_template/core/permissions/permission_providers.dart';
 import 'package:flutter_template/core/security/session_controller.dart';
 import 'package:flutter_template/features/home/presentation/pages/home_page.dart';
+import 'package:flutter_template/features/settings/presentation/pages/settings_page.dart';
 import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:flutter_template/shared/layout/responsive_shell_scaffold.dart';
@@ -48,6 +49,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: AppRoutes.home.path,
             name: AppRoutes.home.name,
             builder: (_, _) => const HomePage(),
+          ),
+          GoRoute(
+            path: AppRoutes.settings.path,
+            name: AppRoutes.settings.name,
+            builder: (_, _) => const SettingsPage(),
           ),
         ],
       ),
@@ -93,6 +99,14 @@ List<_ShellDestinationRoute> _localizedShellDestinations(
         label: l10n.navigationHomeLabel,
         icon: Icons.home_outlined,
         selectedIcon: Icons.home,
+      ),
+    ),
+    _ShellDestinationRoute(
+      route: AppRoutes.settings,
+      destination: ResponsiveShellDestination(
+        label: l10n.navigationSettingsLabel,
+        icon: Icons.settings_outlined,
+        selectedIcon: Icons.settings,
       ),
     ),
   ];

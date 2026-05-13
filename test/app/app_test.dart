@@ -43,10 +43,31 @@ void main() {
     await tester.pumpAndSettle();
 
     final l10n = tester.element(find.byType(HomePage)).l10n;
+    final Scaffold scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
 
     expect(find.text(l10n.homeReadyTitle), findsOneWidget);
     expect(find.byType(NavigationBar), findsNothing);
+    expect(scaffold.drawer, isNotNull);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('navigates to settings and shows starter preferences', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const ProviderScope(child: TemplateApp()));
+    await tester.pumpAndSettle();
+
+    final homeContext = tester.element(find.byType(HomePage));
+    final l10n = homeContext.l10n;
+
+    GoRouter.of(homeContext).go('/settings');
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.settingsTitle), findsWidgets);
+    expect(find.text(l10n.settingsBody), findsOneWidget);
+    expect(find.text(l10n.settingsLanguageFieldLabel), findsWidgets);
+    expect(find.text(l10n.settingsThemeModeFieldLabel), findsOneWidget);
+    expect(find.text(l10n.settingsLanguageEnglish), findsWidgets);
   });
 
   testWidgets('uses startup theme and locale providers', (

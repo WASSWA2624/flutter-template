@@ -115,6 +115,11 @@ abstract final class AppTheme {
       navigationRailTheme: const NavigationRailThemeData(
         indicatorShape: rectangularShape,
       ),
+      drawerTheme: const DrawerThemeData(shape: rectangularShape),
+      snackBarTheme: const SnackBarThemeData(
+        shape: rectangularShape,
+        behavior: SnackBarBehavior.fixed,
+      ),
       dialogTheme: const DialogThemeData(shape: rectangularShape),
     );
   }

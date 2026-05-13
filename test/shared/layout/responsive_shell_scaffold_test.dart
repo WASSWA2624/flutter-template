@@ -39,17 +39,18 @@ void main() {
   }
 
   group('ResponsiveShellScaffold', () {
-    testWidgets('uses bottom navigation for mobile widths', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('uses a drawer for mobile widths', (WidgetTester tester) async {
       await pumpShellAtSize(tester, const Size(320, 640));
 
-      expect(find.byType(NavigationBar), findsOneWidget);
+      final Scaffold scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+
+      expect(scaffold.drawer, isNotNull);
+      expect(find.byType(NavigationBar), findsNothing);
       expect(find.byType(NavigationRail), findsNothing);
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('omits mobile navigation for a single destination', (
+    testWidgets('omits the mobile drawer for a single destination', (
       WidgetTester tester,
     ) async {
       await pumpShellAtSize(
@@ -64,6 +65,9 @@ void main() {
         ],
       );
 
+      final Scaffold scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+
+      expect(scaffold.drawer, isNull);
       expect(find.byType(NavigationBar), findsNothing);
       expect(find.byType(NavigationRail), findsNothing);
       expect(find.text('Body'), findsOneWidget);
@@ -85,18 +89,15 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('extends the navigation rail for desktop widths', (
+    testWidgets('uses a sidebar for desktop widths', (
       WidgetTester tester,
     ) async {
       await pumpShellAtSize(tester, const Size(1200, 900));
 
-      final NavigationRail rail = tester.widget<NavigationRail>(
-        find.byType(NavigationRail),
-      );
-
       expect(find.byType(NavigationBar), findsNothing);
-      expect(rail.extended, isTrue);
-      expect(rail.labelType, isNull);
+      expect(find.byType(NavigationRail), findsNothing);
+      expect(find.text('Template'), findsOneWidget);
+      expect(find.text('Settings'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });

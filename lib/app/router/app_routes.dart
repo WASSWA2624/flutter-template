@@ -40,6 +40,10 @@ final class AppRouteData {
 
 abstract final class AppRoutes {
   static const AppRouteData home = AppRouteData(name: 'home', path: '/');
+  static const AppRouteData settings = AppRouteData(
+    name: 'settings',
+    path: '/settings',
+  );
 
   static const AppRouteData sessionRestoring = AppRouteData(
     name: 'sessionRestoring',
@@ -58,12 +62,13 @@ abstract final class AppRoutes {
 
   static const List<AppRouteData> all = <AppRouteData>[
     home,
+    settings,
     sessionRestoring,
     authRequired,
     forbidden,
   ];
 
-  static const List<AppRouteData> shellRoutes = <AppRouteData>[home];
+  static const List<AppRouteData> shellRoutes = <AppRouteData>[home, settings];
 
   static AppRouteData? matchPath(String locationPath) {
     for (final AppRouteData route in all) {

@@ -32,6 +32,10 @@
   "@navigationHomeLabel": {
     "description": "Navigation label for the home destination."
   },
+  "navigationSettingsLabel": "Settings",
+  "@navigationSettingsLabel": {
+    "description": "Navigation label for the settings destination."
+  },
   "homeReadyTitle": "Project setup complete",
   "@homeReadyTitle": {
     "description": "Home page title for the starter template readiness state."
@@ -39,6 +43,42 @@
   "homeReadyBody": "A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.",
   "@homeReadyBody": {
     "description": "Home page body for the starter template readiness state."
+  },
+  "homeStarterFeaturesLabel": "Starter foundation",
+  "@homeStarterFeaturesLabel": {
+    "description": "Heading for the starter template feature summary."
+  },
+  "homeFeatureResponsiveTitle": "Responsive layout",
+  "@homeFeatureResponsiveTitle": {
+    "description": "Feature summary title for responsive layout support."
+  },
+  "homeFeatureResponsiveBody": "Mobile, tablet, desktop, and web layouts share one adaptive shell.",
+  "@homeFeatureResponsiveBody": {
+    "description": "Feature summary body for responsive layout support."
+  },
+  "homeFeatureNavigationTitle": "Navigation",
+  "@homeFeatureNavigationTitle": {
+    "description": "Feature summary title for navigation support."
+  },
+  "homeFeatureNavigationBody": "Routes and menu destinations are centralized for simple expansion.",
+  "@homeFeatureNavigationBody": {
+    "description": "Feature summary body for navigation support."
+  },
+  "homeFeatureLocalizationTitle": "Localization",
+  "@homeFeatureLocalizationTitle": {
+    "description": "Feature summary title for localization support."
+  },
+  "homeFeatureLocalizationBody": "English is active now, with generated localization ready for more languages.",
+  "@homeFeatureLocalizationBody": {
+    "description": "Feature summary body for localization support."
+  },
+  "homeFeatureSettingsTitle": "Settings",
+  "@homeFeatureSettingsTitle": {
+    "description": "Feature summary title for settings support."
+  },
+  "homeFeatureSettingsBody": "Theme and language preferences are wired through persistent app state.",
+  "@homeFeatureSettingsBody": {
+    "description": "Feature summary body for settings support."
   },
   "homeLoadingTitle": "Preparing home",
   "@homeLoadingTitle": {
@@ -83,6 +123,70 @@
   "homeSupportedPlatformLinuxDesktop": "Linux desktop",
   "@homeSupportedPlatformLinuxDesktop": {
     "description": "Starter target platform label for Linux desktop."
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Settings page title."
+  },
+  "settingsBody": "Choose the starter preferences that should apply across the app.",
+  "@settingsBody": {
+    "description": "Settings page intro body."
+  },
+  "settingsLanguageSectionTitle": "Language",
+  "@settingsLanguageSectionTitle": {
+    "description": "Settings section title for language preferences."
+  },
+  "settingsLanguageSectionBody": "The template currently ships with English and can add more generated locales later.",
+  "@settingsLanguageSectionBody": {
+    "description": "Settings section body for language preferences."
+  },
+  "settingsLanguageFieldLabel": "App language",
+  "@settingsLanguageFieldLabel": {
+    "description": "Label for the language selection field."
+  },
+  "settingsLanguageEnglish": "English",
+  "@settingsLanguageEnglish": {
+    "description": "English language option label."
+  },
+  "settingsThemeSectionTitle": "Theme",
+  "@settingsThemeSectionTitle": {
+    "description": "Settings section title for theme preferences."
+  },
+  "settingsThemeSectionBody": "Use the system appearance or choose a fixed light or dark theme.",
+  "@settingsThemeSectionBody": {
+    "description": "Settings section body for theme preferences."
+  },
+  "settingsThemeModeFieldLabel": "App theme",
+  "@settingsThemeModeFieldLabel": {
+    "description": "Label for the theme mode selection control."
+  },
+  "settingsThemeModeSystem": "System",
+  "@settingsThemeModeSystem": {
+    "description": "Theme option label for following the system setting."
+  },
+  "settingsThemeModeSystemDescription": "Follow the platform appearance setting.",
+  "@settingsThemeModeSystemDescription": {
+    "description": "Theme option description for following the system setting."
+  },
+  "settingsThemeModeLight": "Light",
+  "@settingsThemeModeLight": {
+    "description": "Theme option label for light mode."
+  },
+  "settingsThemeModeLightDescription": "Use the light color scheme.",
+  "@settingsThemeModeLightDescription": {
+    "description": "Theme option description for light mode."
+  },
+  "settingsThemeModeDark": "Dark",
+  "@settingsThemeModeDark": {
+    "description": "Theme option label for dark mode."
+  },
+  "settingsThemeModeDarkDescription": "Use the dark color scheme.",
+  "@settingsThemeModeDarkDescription": {
+    "description": "Theme option description for dark mode."
+  },
+  "settingsSaveErrorMessage": "The preference could not be saved.",
+  "@settingsSaveErrorMessage": {
+    "description": "Snackbar message shown when saving a setting fails."
   },
   "routeSessionRestoringTitle": "Checking session",
   "@routeSessionRestoringTitle": {

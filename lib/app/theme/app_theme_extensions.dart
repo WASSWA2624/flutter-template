@@ -83,10 +83,10 @@ final class AppRadiusTokens extends ThemeExtension<AppRadiusTokens> {
 
   static const AppRadiusTokens standard = AppRadiusTokens(
     none: 0,
-    sm: 8,
-    md: 12,
-    lg: 16,
-    xl: 24,
+    sm: 0,
+    md: 0,
+    lg: 0,
+    xl: 0,
   );
 
   final double none;

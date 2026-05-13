@@ -142,6 +142,12 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get navigationHomeLabel;
 
+  /// Navigation label for the settings destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get navigationSettingsLabel;
+
   /// Home page title for the starter template readiness state.
   ///
   /// In en, this message translates to:
@@ -153,6 +159,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.'**
   String get homeReadyBody;
+
+  /// Heading for the starter template feature summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Starter foundation'**
+  String get homeStarterFeaturesLabel;
+
+  /// Feature summary title for responsive layout support.
+  ///
+  /// In en, this message translates to:
+  /// **'Responsive layout'**
+  String get homeFeatureResponsiveTitle;
+
+  /// Feature summary body for responsive layout support.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile, tablet, desktop, and web layouts share one adaptive shell.'**
+  String get homeFeatureResponsiveBody;
+
+  /// Feature summary title for navigation support.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation'**
+  String get homeFeatureNavigationTitle;
+
+  /// Feature summary body for navigation support.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes and menu destinations are centralized for simple expansion.'**
+  String get homeFeatureNavigationBody;
+
+  /// Feature summary title for localization support.
+  ///
+  /// In en, this message translates to:
+  /// **'Localization'**
+  String get homeFeatureLocalizationTitle;
+
+  /// Feature summary body for localization support.
+  ///
+  /// In en, this message translates to:
+  /// **'English is active now, with generated localization ready for more languages.'**
+  String get homeFeatureLocalizationBody;
+
+  /// Feature summary title for settings support.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get homeFeatureSettingsTitle;
+
+  /// Feature summary body for settings support.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme and language preferences are wired through persistent app state.'**
+  String get homeFeatureSettingsBody;
 
   /// Title shown while the home feature controller loads readiness state.
   ///
@@ -219,6 +279,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Linux desktop'**
   String get homeSupportedPlatformLinuxDesktop;
+
+  /// Settings page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// Settings page intro body.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the starter preferences that should apply across the app.'**
+  String get settingsBody;
+
+  /// Settings section title for language preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguageSectionTitle;
+
+  /// Settings section body for language preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'The template currently ships with English and can add more generated locales later.'**
+  String get settingsLanguageSectionBody;
+
+  /// Label for the language selection field.
+  ///
+  /// In en, this message translates to:
+  /// **'App language'**
+  String get settingsLanguageFieldLabel;
+
+  /// English language option label.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get settingsLanguageEnglish;
+
+  /// Settings section title for theme preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsThemeSectionTitle;
+
+  /// Settings section body for theme preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the system appearance or choose a fixed light or dark theme.'**
+  String get settingsThemeSectionBody;
+
+  /// Label for the theme mode selection control.
+  ///
+  /// In en, this message translates to:
+  /// **'App theme'**
+  String get settingsThemeModeFieldLabel;
+
+  /// Theme option label for following the system setting.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsThemeModeSystem;
+
+  /// Theme option description for following the system setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the platform appearance setting.'**
+  String get settingsThemeModeSystemDescription;
+
+  /// Theme option label for light mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeModeLight;
+
+  /// Theme option description for light mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the light color scheme.'**
+  String get settingsThemeModeLightDescription;
+
+  /// Theme option label for dark mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeModeDark;
+
+  /// Theme option description for dark mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the dark color scheme.'**
+  String get settingsThemeModeDarkDescription;
+
+  /// Snackbar message shown when saving a setting fails.
+  ///
+  /// In en, this message translates to:
+  /// **'The preference could not be saved.'**
+  String get settingsSaveErrorMessage;
 
   /// Title shown while session restoration blocks a guarded route.
   ///

@@ -34,11 +34,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navigationHomeLabel => 'Home';
 
   @override
+  String get navigationSettingsLabel => 'Settings';
+
+  @override
   String get homeReadyTitle => 'Project setup complete';
 
   @override
   String get homeReadyBody =>
       'A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.';
+
+  @override
+  String get homeStarterFeaturesLabel => 'Starter foundation';
+
+  @override
+  String get homeFeatureResponsiveTitle => 'Responsive layout';
+
+  @override
+  String get homeFeatureResponsiveBody =>
+      'Mobile, tablet, desktop, and web layouts share one adaptive shell.';
+
+  @override
+  String get homeFeatureNavigationTitle => 'Navigation';
+
+  @override
+  String get homeFeatureNavigationBody =>
+      'Routes and menu destinations are centralized for simple expansion.';
+
+  @override
+  String get homeFeatureLocalizationTitle => 'Localization';
+
+  @override
+  String get homeFeatureLocalizationBody =>
+      'English is active now, with generated localization ready for more languages.';
+
+  @override
+  String get homeFeatureSettingsTitle => 'Settings';
+
+  @override
+  String get homeFeatureSettingsBody =>
+      'Theme and language preferences are wired through persistent app state.';
 
   @override
   String get homeLoadingTitle => 'Preparing home';
@@ -72,6 +106,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeSupportedPlatformLinuxDesktop => 'Linux desktop';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsBody =>
+      'Choose the starter preferences that should apply across the app.';
+
+  @override
+  String get settingsLanguageSectionTitle => 'Language';
+
+  @override
+  String get settingsLanguageSectionBody =>
+      'The template currently ships with English and can add more generated locales later.';
+
+  @override
+  String get settingsLanguageFieldLabel => 'App language';
+
+  @override
+  String get settingsLanguageEnglish => 'English';
+
+  @override
+  String get settingsThemeSectionTitle => 'Theme';
+
+  @override
+  String get settingsThemeSectionBody =>
+      'Use the system appearance or choose a fixed light or dark theme.';
+
+  @override
+  String get settingsThemeModeFieldLabel => 'App theme';
+
+  @override
+  String get settingsThemeModeSystem => 'System';
+
+  @override
+  String get settingsThemeModeSystemDescription =>
+      'Follow the platform appearance setting.';
+
+  @override
+  String get settingsThemeModeLight => 'Light';
+
+  @override
+  String get settingsThemeModeLightDescription => 'Use the light color scheme.';
+
+  @override
+  String get settingsThemeModeDark => 'Dark';
+
+  @override
+  String get settingsThemeModeDarkDescription => 'Use the dark color scheme.';
+
+  @override
+  String get settingsSaveErrorMessage => 'The preference could not be saved.';
 
   @override
   String get routeSessionRestoringTitle => 'Checking session';

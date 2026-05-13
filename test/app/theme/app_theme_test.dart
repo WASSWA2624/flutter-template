@@ -16,10 +16,10 @@ void main() {
       expect(theme.spacing.lg, 16);
       expect(theme.spacing.xl, 24);
       expect(theme.spacing.xxl, 32);
-      expect(theme.radius.sm, 8);
-      expect(theme.radius.md, 12);
-      expect(theme.radius.lg, 16);
-      expect(theme.radius.xl, 24);
+      expect(theme.radius.sm, 0);
+      expect(theme.radius.md, 0);
+      expect(theme.radius.lg, 0);
+      expect(theme.radius.xl, 0);
       expect(theme.appTokens.pagePaddingMobile, 16);
       expect(theme.appTokens.pagePaddingTablet, 24);
       expect(theme.appTokens.pagePaddingDesktop, 32);
