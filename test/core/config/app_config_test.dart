@@ -87,5 +87,22 @@ void main() {
         ),
       );
     });
+
+    test('rejects verbose logging in production', () {
+      expect(
+        () => AppConfig.fromValues(
+          environmentName: 'production',
+          apiBaseUrl: 'https://api.example.com',
+          logLevelName: 'debug',
+        ),
+        throwsA(
+          isA<AppConfigException>().having(
+            (error) => error.messages,
+            'messages',
+            contains('LOG_LEVEL must not be debug in production.'),
+          ),
+        ),
+      );
+    });
   });
 }

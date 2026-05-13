@@ -120,6 +120,90 @@
   "@validationRequired": {
     "description": "Generic required-field validation message for forms."
   },
+  "errorNetworkTitle": "Connection problem",
+  "@errorNetworkTitle": {
+    "description": "Title for a generic network failure."
+  },
+  "errorNetworkMessage": "The request could not finish. Check your connection and try again.",
+  "@errorNetworkMessage": {
+    "description": "Safe user-facing message for a generic network failure."
+  },
+  "errorTimeoutTitle": "Request timed out",
+  "@errorTimeoutTitle": {
+    "description": "Title for a timeout failure."
+  },
+  "errorTimeoutMessage": "The request took too long. Try again.",
+  "@errorTimeoutMessage": {
+    "description": "Safe user-facing message for a timeout failure."
+  },
+  "errorOfflineTitle": "No connection",
+  "@errorOfflineTitle": {
+    "description": "Title for an offline failure."
+  },
+  "errorOfflineMessage": "Connect to the internet and try again.",
+  "@errorOfflineMessage": {
+    "description": "Safe user-facing message for an offline failure."
+  },
+  "errorCancelledTitle": "Request cancelled",
+  "@errorCancelledTitle": {
+    "description": "Title for a cancelled request failure."
+  },
+  "errorCancelledMessage": "The request was cancelled before it finished.",
+  "@errorCancelledMessage": {
+    "description": "Safe user-facing message for a cancelled request failure."
+  },
+  "errorUnauthorizedTitle": "Sign-in required",
+  "@errorUnauthorizedTitle": {
+    "description": "Title for an unauthorized failure."
+  },
+  "errorUnauthorizedMessage": "Sign in again to continue.",
+  "@errorUnauthorizedMessage": {
+    "description": "Safe user-facing message for an unauthorized failure."
+  },
+  "errorForbiddenTitle": "Access denied",
+  "@errorForbiddenTitle": {
+    "description": "Title for a forbidden failure."
+  },
+  "errorForbiddenMessage": "You do not have permission to complete this action.",
+  "@errorForbiddenMessage": {
+    "description": "Safe user-facing message for a forbidden failure."
+  },
+  "errorNotFoundTitle": "Not found",
+  "@errorNotFoundTitle": {
+    "description": "Title for a not-found failure."
+  },
+  "errorNotFoundMessage": "The requested item does not exist or is no longer available.",
+  "@errorNotFoundMessage": {
+    "description": "Safe user-facing message for a not-found failure."
+  },
+  "errorValidationTitle": "Check the details",
+  "@errorValidationTitle": {
+    "description": "Title for a validation failure."
+  },
+  "errorValidationMessage": "Some details need attention before you can continue.",
+  "@errorValidationMessage": {
+    "description": "Safe user-facing message for a validation failure."
+  },
+  "errorUnexpectedResponseTitle": "Unexpected response",
+  "@errorUnexpectedResponseTitle": {
+    "description": "Title for an unexpected API response failure."
+  },
+  "errorUnexpectedResponseMessage": "The response could not be processed. Try again later.",
+  "@errorUnexpectedResponseMessage": {
+    "description": "Safe user-facing message for an unexpected API response failure."
+  },
+  "errorStorageTitle": "Storage unavailable",
+  "@errorStorageTitle": {
+    "description": "Title for a local storage failure."
+  },
+  "errorStorageMessage": "Local data could not be accessed. Try again.",
+  "@errorStorageMessage": {
+    "description": "Safe user-facing message for a local storage failure."
+  },
+  "errorUnexpectedTitle": "Something went wrong",
+  "@errorUnexpectedTitle": {
+    "description": "Title for an unexpected failure."
+  },
   "errorUnexpectedMessage": "Something went wrong. Try again.",
   "@errorUnexpectedMessage": {
     "description": "Generic safe error message for unexpected recoverable failures."

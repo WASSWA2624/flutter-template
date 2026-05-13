@@ -12,7 +12,7 @@ enum AppFailureCategory {
   unexpected,
 }
 
-final class AppFailure {
+sealed class AppFailure {
   const AppFailure._({
     required this.category,
     required this.code,
@@ -22,124 +22,38 @@ final class AppFailure {
     this.validationFields = const <String>{},
   });
 
-  factory AppFailure.network({
-    String code = 'network.request_failed',
+  const factory AppFailure.network({
+    String code,
     int? statusCode,
-    bool isRetryable = true,
-  }) {
-    return AppFailure._(
-      category: AppFailureCategory.network,
-      code: code,
-      messageKey: 'errors.network',
-      isRetryable: isRetryable,
-      statusCode: statusCode,
-    );
-  }
+    bool isRetryable,
+  }) = NetworkFailure;
 
-  factory AppFailure.timeout({int? statusCode}) {
-    return AppFailure._(
-      category: AppFailureCategory.timeout,
-      code: 'network.timeout',
-      messageKey: 'errors.timeout',
-      isRetryable: true,
-      statusCode: statusCode,
-    );
-  }
+  const factory AppFailure.timeout({int? statusCode}) = TimeoutFailure;
 
-  factory AppFailure.offline({int? statusCode}) {
-    return AppFailure._(
-      category: AppFailureCategory.offline,
-      code: 'network.offline',
-      messageKey: 'errors.offline',
-      isRetryable: true,
-      statusCode: statusCode,
-    );
-  }
+  const factory AppFailure.offline({int? statusCode}) = OfflineFailure;
 
-  factory AppFailure.cancelled() {
-    return const AppFailure._(
-      category: AppFailureCategory.cancelled,
-      code: 'network.cancelled',
-      messageKey: 'errors.cancelled',
-      isRetryable: false,
-    );
-  }
+  const factory AppFailure.cancelled() = CancelledFailure;
 
-  factory AppFailure.unauthorized({int? statusCode}) {
-    return AppFailure._(
-      category: AppFailureCategory.unauthorized,
-      code: 'auth.unauthorized',
-      messageKey: 'errors.unauthorized',
-      isRetryable: false,
-      statusCode: statusCode,
-    );
-  }
+  const factory AppFailure.unauthorized({int? statusCode}) =
+      UnauthorizedFailure;
 
-  factory AppFailure.forbidden({int? statusCode}) {
-    return AppFailure._(
-      category: AppFailureCategory.forbidden,
-      code: 'auth.forbidden',
-      messageKey: 'errors.forbidden',
-      isRetryable: false,
-      statusCode: statusCode,
-    );
-  }
+  const factory AppFailure.forbidden({int? statusCode}) = ForbiddenFailure;
 
-  factory AppFailure.notFound({int? statusCode}) {
-    return AppFailure._(
-      category: AppFailureCategory.notFound,
-      code: 'network.not_found',
-      messageKey: 'errors.notFound',
-      isRetryable: false,
-      statusCode: statusCode,
-    );
-  }
+  const factory AppFailure.notFound({int? statusCode}) = NotFoundFailure;
 
   factory AppFailure.validation({
-    String code = 'validation.failed',
+    String code,
     int? statusCode,
-    Set<String> validationFields = const <String>{},
-  }) {
-    return AppFailure._(
-      category: AppFailureCategory.validation,
-      code: code,
-      messageKey: 'errors.validation',
-      isRetryable: false,
-      statusCode: statusCode,
-      validationFields: _normalizedFields(validationFields),
-    );
-  }
+    Set<String> validationFields,
+  }) = ValidationFailure;
 
-  factory AppFailure.unexpectedResponse({int? statusCode}) {
-    return AppFailure._(
-      category: AppFailureCategory.unexpectedResponse,
-      code: 'network.unexpected_response',
-      messageKey: 'errors.unexpectedResponse',
-      isRetryable: false,
-      statusCode: statusCode,
-    );
-  }
+  const factory AppFailure.unexpectedResponse({int? statusCode}) =
+      UnexpectedResponseFailure;
 
-  factory AppFailure.storage({
-    String code = 'storage.failed',
-    bool isRetryable = false,
-  }) {
-    return AppFailure._(
-      category: AppFailureCategory.storage,
-      code: code,
-      messageKey: 'errors.storage',
-      isRetryable: isRetryable,
-    );
-  }
+  const factory AppFailure.storage({String code, bool isRetryable}) =
+      StorageFailure;
 
-  factory AppFailure.unexpected() {
-    return const AppFailure._(
-      category: AppFailureCategory.unexpected,
-      code: 'unexpected.failed',
-      messageKey: 'errors.unexpected',
-      isRetryable: false,
-    );
-  }
+  const factory AppFailure.unexpected() = UnexpectedFailure;
 
   final AppFailureCategory category;
   final String code;
@@ -194,4 +108,118 @@ final class AppFailure {
 
     return true;
   }
+}
+
+final class NetworkFailure extends AppFailure {
+  const NetworkFailure({
+    super.code = 'network.request_failed',
+    super.statusCode,
+    super.isRetryable = true,
+  }) : super._(
+         category: AppFailureCategory.network,
+         messageKey: 'errors.network',
+       );
+}
+
+final class TimeoutFailure extends AppFailure {
+  const TimeoutFailure({super.statusCode})
+    : super._(
+        category: AppFailureCategory.timeout,
+        code: 'network.timeout',
+        messageKey: 'errors.timeout',
+        isRetryable: true,
+      );
+}
+
+final class OfflineFailure extends AppFailure {
+  const OfflineFailure({super.statusCode})
+    : super._(
+        category: AppFailureCategory.offline,
+        code: 'network.offline',
+        messageKey: 'errors.offline',
+        isRetryable: true,
+      );
+}
+
+final class CancelledFailure extends AppFailure {
+  const CancelledFailure()
+    : super._(
+        category: AppFailureCategory.cancelled,
+        code: 'network.cancelled',
+        messageKey: 'errors.cancelled',
+        isRetryable: false,
+      );
+}
+
+final class UnauthorizedFailure extends AppFailure {
+  const UnauthorizedFailure({super.statusCode})
+    : super._(
+        category: AppFailureCategory.unauthorized,
+        code: 'auth.unauthorized',
+        messageKey: 'errors.unauthorized',
+        isRetryable: false,
+      );
+}
+
+final class ForbiddenFailure extends AppFailure {
+  const ForbiddenFailure({super.statusCode})
+    : super._(
+        category: AppFailureCategory.forbidden,
+        code: 'auth.forbidden',
+        messageKey: 'errors.forbidden',
+        isRetryable: false,
+      );
+}
+
+final class NotFoundFailure extends AppFailure {
+  const NotFoundFailure({super.statusCode})
+    : super._(
+        category: AppFailureCategory.notFound,
+        code: 'network.not_found',
+        messageKey: 'errors.notFound',
+        isRetryable: false,
+      );
+}
+
+final class ValidationFailure extends AppFailure {
+  ValidationFailure({
+    super.code = 'validation.failed',
+    super.statusCode,
+    Set<String> validationFields = const <String>{},
+  }) : super._(
+         category: AppFailureCategory.validation,
+         messageKey: 'errors.validation',
+         isRetryable: false,
+         validationFields: AppFailure._normalizedFields(validationFields),
+       );
+}
+
+final class UnexpectedResponseFailure extends AppFailure {
+  const UnexpectedResponseFailure({super.statusCode})
+    : super._(
+        category: AppFailureCategory.unexpectedResponse,
+        code: 'network.unexpected_response',
+        messageKey: 'errors.unexpectedResponse',
+        isRetryable: false,
+      );
+}
+
+final class StorageFailure extends AppFailure {
+  const StorageFailure({
+    super.code = 'storage.failed',
+    super.isRetryable = false,
+  }) : super._(
+         category: AppFailureCategory.storage,
+         messageKey: 'errors.storage',
+       );
+}
+
+final class UnexpectedFailure extends AppFailure {
+  const UnexpectedFailure()
+    : super._(
+        category: AppFailureCategory.unexpected,
+        code: 'unexpected.failed',
+        messageKey: 'errors.unexpected',
+        isRetryable: false,
+      );
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_template/core/errors/app_failure.dart';
+import 'package:flutter_template/core/errors/result.dart';
 import 'package:flutter_template/shared/components/components.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -41,5 +44,67 @@ void main() {
     expect(find.text('Try the request again.'), findsOneWidget);
     expect(find.text('Retry'), findsOneWidget);
     expect(find.byIcon(Icons.error_outline), findsOneWidget);
+  });
+
+  testWidgets('AppFailureStateView renders localized retryable failures', (
+    WidgetTester tester,
+  ) async {
+    var retryCount = 0;
+
+    await pumpComponent(
+      tester,
+      AppFailureStateView(
+        failure: const AppFailure.timeout(),
+        onRetry: () {
+          retryCount += 1;
+        },
+      ),
+    );
+
+    expect(find.text('Request timed out'), findsOneWidget);
+    expect(find.text('The request took too long. Try again.'), findsOneWidget);
+    expect(find.text('Try again'), findsOneWidget);
+    expect(find.byIcon(Icons.refresh), findsOneWidget);
+
+    await tester.tap(find.text('Try again'));
+    expect(retryCount, 1);
+  });
+
+  testWidgets('AppFailureStateView hides retry for non-retryable failures', (
+    WidgetTester tester,
+  ) async {
+    await pumpComponent(
+      tester,
+      const AppFailureStateView(failure: AppFailure.forbidden()),
+    );
+
+    expect(find.text('Access denied'), findsOneWidget);
+    expect(
+      find.text('You do not have permission to complete this action.'),
+      findsOneWidget,
+    );
+    expect(find.text('Try again'), findsNothing);
+  });
+
+  testWidgets('AsyncStateScaffold maps typed result failures to error views', (
+    WidgetTester tester,
+  ) async {
+    await pumpComponent(
+      tester,
+      AsyncStateScaffold<String>(
+        value: const AsyncData<Result<String>>(
+          Result<String>.failure(AppFailure.offline()),
+        ),
+        loadingTitle: 'Loading',
+        loadingBody: 'Preparing content.',
+        onRetry: () {},
+        dataBuilder: (_, value) => Text(value),
+      ),
+    );
+
+    expect(find.text('No connection'), findsOneWidget);
+    expect(find.text('Connect to the internet and try again.'), findsOneWidget);
+    expect(find.text('Try again'), findsOneWidget);
+    expect(find.text('Loading'), findsNothing);
   });
 }

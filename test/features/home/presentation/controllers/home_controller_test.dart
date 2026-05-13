@@ -37,9 +37,9 @@ void main() {
     });
 
     test('exposes repository failures as typed result state', () async {
-      final failure = AppFailure.network();
+      const failure = AppFailure.network();
       final repository = _FakeHomeRepository(
-        Result<HomeReadinessSnapshot>.failure(failure),
+        const Result<HomeReadinessSnapshot>.failure(failure),
       );
       final container = ProviderContainer(
         overrides: [homeRepositoryProvider.overrideWithValue(repository)],

@@ -20,24 +20,24 @@ final class NetworkFailureMapper {
     }
 
     if (error is TimeoutException) {
-      return AppFailure.timeout();
+      return const AppFailure.timeout();
     }
 
     if (error is FormatException || error is TypeError) {
-      return AppFailure.unexpectedResponse();
+      return const AppFailure.unexpectedResponse();
     }
 
-    return AppFailure.unexpected();
+    return const AppFailure.unexpected();
   }
 
   AppFailure _mapDioException(DioException error) {
     return switch (error.type) {
       DioExceptionType.connectionTimeout ||
       DioExceptionType.sendTimeout ||
-      DioExceptionType.receiveTimeout => AppFailure.timeout(),
-      DioExceptionType.connectionError => AppFailure.offline(),
-      DioExceptionType.cancel => AppFailure.cancelled(),
-      DioExceptionType.badCertificate => AppFailure.network(
+      DioExceptionType.receiveTimeout => const AppFailure.timeout(),
+      DioExceptionType.connectionError => const AppFailure.offline(),
+      DioExceptionType.cancel => const AppFailure.cancelled(),
+      DioExceptionType.badCertificate => const AppFailure.network(
         code: 'network.bad_certificate',
         isRetryable: false,
       ),
@@ -50,7 +50,7 @@ final class NetworkFailureMapper {
     final statusCode = response?.statusCode;
 
     if (statusCode == null) {
-      return AppFailure.unexpectedResponse();
+      return const AppFailure.unexpectedResponse();
     }
 
     if (statusCode == 400 || statusCode == 422) {
@@ -86,14 +86,14 @@ final class NetworkFailureMapper {
     final innerError = error.error;
 
     if (innerError is TimeoutException) {
-      return AppFailure.timeout();
+      return const AppFailure.timeout();
     }
 
     if (innerError is FormatException || innerError is TypeError) {
-      return AppFailure.unexpectedResponse();
+      return const AppFailure.unexpectedResponse();
     }
 
-    return AppFailure.unexpected();
+    return const AppFailure.unexpected();
   }
 
   Set<String> _validationFields(Object? data) {

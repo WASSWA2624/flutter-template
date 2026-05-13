@@ -105,5 +105,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validationRequired => 'This field is required.';
 
   @override
+  String get errorNetworkTitle => 'Connection problem';
+
+  @override
+  String get errorNetworkMessage =>
+      'The request could not finish. Check your connection and try again.';
+
+  @override
+  String get errorTimeoutTitle => 'Request timed out';
+
+  @override
+  String get errorTimeoutMessage => 'The request took too long. Try again.';
+
+  @override
+  String get errorOfflineTitle => 'No connection';
+
+  @override
+  String get errorOfflineMessage => 'Connect to the internet and try again.';
+
+  @override
+  String get errorCancelledTitle => 'Request cancelled';
+
+  @override
+  String get errorCancelledMessage =>
+      'The request was cancelled before it finished.';
+
+  @override
+  String get errorUnauthorizedTitle => 'Sign-in required';
+
+  @override
+  String get errorUnauthorizedMessage => 'Sign in again to continue.';
+
+  @override
+  String get errorForbiddenTitle => 'Access denied';
+
+  @override
+  String get errorForbiddenMessage =>
+      'You do not have permission to complete this action.';
+
+  @override
+  String get errorNotFoundTitle => 'Not found';
+
+  @override
+  String get errorNotFoundMessage =>
+      'The requested item does not exist or is no longer available.';
+
+  @override
+  String get errorValidationTitle => 'Check the details';
+
+  @override
+  String get errorValidationMessage =>
+      'Some details need attention before you can continue.';
+
+  @override
+  String get errorUnexpectedResponseTitle => 'Unexpected response';
+
+  @override
+  String get errorUnexpectedResponseMessage =>
+      'The response could not be processed. Try again later.';
+
+  @override
+  String get errorStorageTitle => 'Storage unavailable';
+
+  @override
+  String get errorStorageMessage =>
+      'Local data could not be accessed. Try again.';
+
+  @override
+  String get errorUnexpectedTitle => 'Something went wrong';
+
+  @override
   String get errorUnexpectedMessage => 'Something went wrong. Try again.';
 }

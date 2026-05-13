@@ -274,6 +274,132 @@ abstract class AppLocalizations {
   /// **'This field is required.'**
   String get validationRequired;
 
+  /// Title for a generic network failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection problem'**
+  String get errorNetworkTitle;
+
+  /// Safe user-facing message for a generic network failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The request could not finish. Check your connection and try again.'**
+  String get errorNetworkMessage;
+
+  /// Title for a timeout failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Request timed out'**
+  String get errorTimeoutTitle;
+
+  /// Safe user-facing message for a timeout failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The request took too long. Try again.'**
+  String get errorTimeoutMessage;
+
+  /// Title for an offline failure.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection'**
+  String get errorOfflineTitle;
+
+  /// Safe user-facing message for an offline failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet and try again.'**
+  String get errorOfflineMessage;
+
+  /// Title for a cancelled request failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Request cancelled'**
+  String get errorCancelledTitle;
+
+  /// Safe user-facing message for a cancelled request failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The request was cancelled before it finished.'**
+  String get errorCancelledMessage;
+
+  /// Title for an unauthorized failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in required'**
+  String get errorUnauthorizedTitle;
+
+  /// Safe user-facing message for an unauthorized failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again to continue.'**
+  String get errorUnauthorizedMessage;
+
+  /// Title for a forbidden failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Access denied'**
+  String get errorForbiddenTitle;
+
+  /// Safe user-facing message for a forbidden failure.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to complete this action.'**
+  String get errorForbiddenMessage;
+
+  /// Title for a not-found failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found'**
+  String get errorNotFoundTitle;
+
+  /// Safe user-facing message for a not-found failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested item does not exist or is no longer available.'**
+  String get errorNotFoundMessage;
+
+  /// Title for a validation failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the details'**
+  String get errorValidationTitle;
+
+  /// Safe user-facing message for a validation failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Some details need attention before you can continue.'**
+  String get errorValidationMessage;
+
+  /// Title for an unexpected API response failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected response'**
+  String get errorUnexpectedResponseTitle;
+
+  /// Safe user-facing message for an unexpected API response failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The response could not be processed. Try again later.'**
+  String get errorUnexpectedResponseMessage;
+
+  /// Title for a local storage failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage unavailable'**
+  String get errorStorageTitle;
+
+  /// Safe user-facing message for a local storage failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Local data could not be accessed. Try again.'**
+  String get errorStorageMessage;
+
+  /// Title for an unexpected failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorUnexpectedTitle;
+
   /// Generic safe error message for unexpected recoverable failures.
   ///
   /// In en, this message translates to:

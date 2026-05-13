@@ -121,6 +121,10 @@ final class AppConfig {
       );
     }
 
+    if (isProduction && logLevel == AppLogLevel.debug) {
+      errors.add('LOG_LEVEL must not be debug in production.');
+    }
+
     if (errors.isNotEmpty) {
       throw AppConfigException(errors);
     }

@@ -33,7 +33,7 @@ void main() {
       'returns typed validation failures for invalid repository input',
       () async {
         final remoteDataSource = _FakeRemoteDataSource(
-          ResultFailure<ExampleResourceDto>(AppFailure.unexpected()),
+          const ResultFailure<ExampleResourceDto>(AppFailure.unexpected()),
         );
         final repository = ExampleResourceRepositoryImpl(
           remoteDataSource: remoteDataSource,
