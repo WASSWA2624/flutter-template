@@ -11,8 +11,8 @@ This template follows the shared platform rules in:
 
 The generated project files support Android, iOS, Web, Windows, macOS, and
 Linux. Host toolchains still apply: iOS and macOS require Xcode on macOS,
-Windows requires the Visual Studio C++ desktop workload, and Linux requires the
-Flutter Linux desktop dependencies.
+Windows requires Developer Mode plus the Visual Studio C++ desktop workload,
+and Linux requires the Flutter Linux desktop dependencies.
 
 ## Safe areas and keyboard insets
 

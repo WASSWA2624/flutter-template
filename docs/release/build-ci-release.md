@@ -88,6 +88,17 @@ flutter build ios --release --no-codesign \
 Use `flutter build ipa --release` with app-specific signing and export options
 when distribution credentials are available on a secure macOS build host.
 
+### Windows
+
+```sh
+flutter build windows --release --dart-define-from-file=env/production.json
+```
+
+Artifact path: `build/windows/x64/runner/Release/`.
+
+Windows builds require Developer Mode for plugin symlink support and Visual
+Studio with the Desktop development with C++ workload.
+
 ### Linux
 
 ```sh

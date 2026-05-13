@@ -28,7 +28,8 @@ professional baseline before product-specific behavior is added. It provides:
 
 iOS and macOS builds require macOS with Xcode. Linux desktop builds require a
 Linux host with the Flutter desktop toolchain installed. Windows desktop builds
-require a Windows host with the Visual Studio C++ desktop workload.
+require a Windows host with Developer Mode enabled and the Visual Studio C++
+desktop workload installed.
 
 ## Setup
 
@@ -55,14 +56,19 @@ Run the starter app on Chrome:
 flutter run -d chrome --dart-define-from-file=env/development.json
 ```
 
+Run the starter app on Windows desktop:
+
+```sh
+flutter run -d windows --dart-define-from-file=env/development.json
+```
+
 Useful platform run commands:
 
 ```sh
-flutter run -d android
-flutter run -d ios
-flutter run -d windows
-flutter run -d macos
-flutter run -d linux
+flutter run -d android --dart-define-from-file=env/development.json
+flutter run -d ios --dart-define-from-file=env/development.json
+flutter run -d macos --dart-define-from-file=env/development.json
+flutter run -d linux --dart-define-from-file=env/development.json
 ```
 
 Run platform-specific commands only on hosts with the required SDKs installed.

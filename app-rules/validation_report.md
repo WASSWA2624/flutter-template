@@ -38,6 +38,7 @@ Validated on 2026-05-13 against the full `app-rules/` rule set, `dev-plan/01` th
 | `flutter test integration_test -d windows` | Host blocked | Windows Developer Mode or symlink support is required for plugin builds. |
 | `flutter test integration_test -d chrome` | Host unsupported | Flutter does not support web devices for `integration_test`. |
 | `flutter build web --release --dart-define-from-file=env/production.json` | Passed | Built `build/web`. |
+| `flutter build windows --debug --dart-define-from-file=env/development.json` | Host blocked | Windows Developer Mode or symlink support is required for plugin builds. `flutter doctor` also reports the Visual Studio C++ desktop workload is not installed. |
 | `flutter build apk --release --dart-define-from-file=env/production.json` | Host blocked | Local Android SDK is incomplete and NDK `28.2.13676358` is malformed; `flutter doctor` also reports missing Android cmdline tools. |
 
 ## Responsive validation results
@@ -57,7 +58,7 @@ Validated on 2026-05-13 against the full `app-rules/` rule set, `dev-plan/01` th
 - A developer can follow `01` through `23` in order.
 - The result is a working reusable Flutter foundation on a correctly configured Flutter host.
 - Architecture, UI behavior, and conventions are deterministic through rules, tests, docs, and CI gates.
-- Local host follow-up: enable Windows Developer Mode or use a CI-like Linux desktop test host for integration smoke tests; repair or reinstall the Android SDK cmdline tools and NDK before local APK release validation.
+- Local host follow-up: enable Windows Developer Mode and install the Visual Studio C++ desktop workload for Windows desktop builds, or use a CI-like Linux desktop test host for integration smoke tests; repair or reinstall the Android SDK cmdline tools and NDK before local APK release validation.
 
 ## Required final commands for generated projects
 ```bash
