@@ -154,6 +154,30 @@ abstract class AppLocalizations {
   /// **'A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.'**
   String get homeReadyBody;
 
+  /// Title shown while the home feature controller loads readiness state.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing home'**
+  String get homeLoadingTitle;
+
+  /// Body shown while the home feature controller loads readiness state.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading the starter readiness state.'**
+  String get homeLoadingBody;
+
+  /// Title shown when the home feature controller fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Home could not load'**
+  String get homeLoadErrorTitle;
+
+  /// Body shown when the home feature controller fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Try the request again.'**
+  String get homeLoadErrorBody;
+
   /// Heading for the list of starter target platforms.
   ///
   /// In en, this message translates to:

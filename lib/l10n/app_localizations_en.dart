@@ -41,6 +41,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.';
 
   @override
+  String get homeLoadingTitle => 'Preparing home';
+
+  @override
+  String get homeLoadingBody => 'Loading the starter readiness state.';
+
+  @override
+  String get homeLoadErrorTitle => 'Home could not load';
+
+  @override
+  String get homeLoadErrorBody => 'Try the request again.';
+
+  @override
   String get homeSupportedPlatformsLabel => 'Supported starter targets';
 
   @override

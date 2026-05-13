@@ -1,10 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
+import 'package:flutter_template/features/home/domain/entities/home_readiness_snapshot.dart';
+import 'package:flutter_template/features/home/presentation/controllers/home_controller.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
+import 'package:flutter_template/shared/components/components.dart';
 import 'package:flutter_template/shared/layout/responsive_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final readiness = ref.watch(homeControllerProvider);
+
+    return readiness.when(
+      data: (HomeReadinessSnapshot snapshot) {
+        if (!snapshot.isReady) {
+          return const _HomeLoadingView();
+        }
+
+        return const _HomeReadyContent();
+      },
+      error: (_, _) => _HomeErrorView(
+        onRetry: () {
+          ref.read(homeControllerProvider.notifier).refresh();
+        },
+      ),
+      loading: () => const _HomeLoadingView(),
+    );
+  }
+}
+
+class _HomeReadyContent extends StatelessWidget {
+  const _HomeReadyContent();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +55,50 @@ class HomePage extends StatelessWidget {
           SizedBox(height: spacing.lg),
           const _SupportedPlatformList(),
         ],
+      ),
+    );
+  }
+}
+
+class _HomeLoadingView extends StatelessWidget {
+  const _HomeLoadingView();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return ResponsivePage(
+      maxWidth: PageMaxWidth.form,
+      centerVertically: true,
+      child: AppStateView(
+        variant: AppStateViewVariant.loading,
+        title: l10n.homeLoadingTitle,
+        body: l10n.homeLoadingBody,
+      ),
+    );
+  }
+}
+
+class _HomeErrorView extends StatelessWidget {
+  const _HomeErrorView({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return ResponsivePage(
+      maxWidth: PageMaxWidth.form,
+      centerVertically: true,
+      child: AppStateView(
+        variant: AppStateViewVariant.error,
+        title: l10n.homeLoadErrorTitle,
+        body: l10n.homeLoadErrorBody,
+        action: AppButton.primary(
+          label: l10n.commonRetryActionLabel,
+          onPressed: onRetry,
+        ),
       ),
     );
   }

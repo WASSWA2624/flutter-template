@@ -40,6 +40,22 @@
   "@homeReadyBody": {
     "description": "Home page body for the starter template readiness state."
   },
+  "homeLoadingTitle": "Preparing home",
+  "@homeLoadingTitle": {
+    "description": "Title shown while the home feature controller loads readiness state."
+  },
+  "homeLoadingBody": "Loading the starter readiness state.",
+  "@homeLoadingBody": {
+    "description": "Body shown while the home feature controller loads readiness state."
+  },
+  "homeLoadErrorTitle": "Home could not load",
+  "@homeLoadErrorTitle": {
+    "description": "Title shown when the home feature controller fails."
+  },
+  "homeLoadErrorBody": "Try the request again.",
+  "@homeLoadErrorBody": {
+    "description": "Body shown when the home feature controller fails."
+  },
   "homeSupportedPlatformsLabel": "Supported starter targets",
   "@homeSupportedPlatformsLabel": {
     "description": "Heading for the list of starter target platforms."
