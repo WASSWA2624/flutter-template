@@ -35,11 +35,35 @@ class AppSelectField<T> extends StatelessWidget {
     this.enabled = true,
     this.isLoading = false,
     this.searchable = false,
+    this.filterCallback,
+    this.searchCallback,
     this.focusNode,
     this.restorationId,
     this.menuHeight,
     super.key,
   });
+
+  const AppSelectField.searchable({
+    required this.options,
+    this.value,
+    this.onChanged,
+    this.labelText,
+    this.hintText,
+    this.helperText,
+    this.errorText,
+    this.semanticLabel,
+    this.validator,
+    this.onSaved,
+    this.autovalidateMode = AutovalidateMode.disabled,
+    this.enabled = true,
+    this.isLoading = false,
+    this.filterCallback,
+    this.searchCallback,
+    this.focusNode,
+    this.restorationId,
+    this.menuHeight,
+    super.key,
+  }) : searchable = true;
 
   final List<AppSelectOption<T>> options;
   final T? value;
@@ -55,6 +79,8 @@ class AppSelectField<T> extends StatelessWidget {
   final bool enabled;
   final bool isLoading;
   final bool searchable;
+  final FilterCallback<T>? filterCallback;
+  final SearchCallback<T>? searchCallback;
   final FocusNode? focusNode;
   final String? restorationId;
   final double? menuHeight;
@@ -82,6 +108,8 @@ class AppSelectField<T> extends StatelessWidget {
           trailingIcon: isLoading ? const _SelectLoadingIcon() : null,
           enableFilter: searchable,
           enableSearch: searchable,
+          filterCallback: filterCallback,
+          searchCallback: searchCallback,
           requestFocusOnTap: true,
           focusNode: focusNode,
           autovalidateMode: autovalidateMode,

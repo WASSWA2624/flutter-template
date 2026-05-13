@@ -44,6 +44,38 @@ void main() {
     expect(find.text('Choose a status'), findsOneWidget);
   });
 
+  testWidgets('AppSelectField.searchable filters options in the menu overlay', (
+    WidgetTester tester,
+  ) async {
+    String? selected;
+
+    await pumpComponent(
+      tester,
+      AppSelectField<String>.searchable(
+        labelText: 'Status',
+        options: const <AppSelectOption<String>>[
+          AppSelectOption<String>(value: 'draft', label: 'Draft'),
+          AppSelectOption<String>(value: 'live', label: 'Live'),
+        ],
+        onChanged: (String? value) {
+          selected = value;
+        },
+      ),
+    );
+
+    await tester.tap(find.byType(EditableText));
+    await tester.enterText(find.byType(EditableText), 'liv');
+    await tester.pumpAndSettle();
+
+    expect(find.text('Draft').hitTestable(), findsNothing);
+    expect(find.text('Live').hitTestable(), findsOneWidget);
+
+    await tester.tap(find.text('Live').hitTestable());
+    await tester.pumpAndSettle();
+
+    expect(selected, 'live');
+  });
+
   testWidgets('AppRadioGroup changes the selected value', (
     WidgetTester tester,
   ) async {
