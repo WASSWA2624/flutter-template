@@ -45,16 +45,14 @@ dart run build_runner build --delete-conflicting-outputs
 ```
 
 See `docs/setup/development.md` for local prerequisite notes and
-`docs/setup/environment.md` for supported public `--dart-define` values.
+`docs/setup/environment.md` for supported public Flutter define files.
 
 ## Run
 
 Run the starter app on Chrome:
 
 ```sh
-flutter run -d chrome \
-  --dart-define=APP_ENV=development \
-  --dart-define=API_BASE_URL=http://localhost:8080
+flutter run -d chrome --dart-define-from-file=env/development.json
 ```
 
 Useful platform run commands:
@@ -68,7 +66,7 @@ flutter run -d linux
 ```
 
 Run platform-specific commands only on hosts with the required SDKs installed.
-Environment-specific public values are passed with `--dart-define`. See
+Environment-specific public values are passed with `--dart-define-from-file`. See
 `docs/setup/environment.md` for required keys and production constraints. See
 `docs/setup/platform-behavior.md` for safe-area, keyboard, accessibility, and
 platform limitation notes.
@@ -100,10 +98,7 @@ flutter test --coverage
 Build Web locally:
 
 ```sh
-flutter build web --release \
-  --dart-define=APP_ENV=production \
-  --dart-define=API_BASE_URL=https://api.example.com \
-  --dart-define=LOG_LEVEL=warn
+flutter build web --release --dart-define-from-file=env/production.json
 ```
 
 Platform release commands for Android, iOS, Linux, and CI are documented in

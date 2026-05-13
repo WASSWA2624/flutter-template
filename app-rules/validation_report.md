@@ -37,8 +37,8 @@ Validated on 2026-05-13 against the full `app-rules/` rule set, `dev-plan/01` th
 | `flutter test integration_test` | Host blocked | Flutter required an explicit device because Windows, Chrome, and Edge were available. |
 | `flutter test integration_test -d windows` | Host blocked | Windows Developer Mode or symlink support is required for plugin builds. |
 | `flutter test integration_test -d chrome` | Host unsupported | Flutter does not support web devices for `integration_test`. |
-| `flutter build web --release --dart-define=APP_ENV=production --dart-define=API_BASE_URL=https://api.example.com --dart-define=LOG_LEVEL=warn` | Passed | Built `build/web`. |
-| `flutter build apk --release --dart-define=APP_ENV=production --dart-define=API_BASE_URL=https://api.example.com --dart-define=LOG_LEVEL=warn` | Host blocked | Local Android SDK is incomplete and NDK `28.2.13676358` is malformed; `flutter doctor` also reports missing Android cmdline tools. |
+| `flutter build web --release --dart-define-from-file=env/production.json` | Passed | Built `build/web`. |
+| `flutter build apk --release --dart-define-from-file=env/production.json` | Host blocked | Local Android SDK is incomplete and NDK `28.2.13676358` is malformed; `flutter doctor` also reports missing Android cmdline tools. |
 
 ## Responsive validation results
 - `AppBreakpoints` tests cover `xs`, `sm`, `md`, `lg`, `xl`, and `xxl` breakpoint boundaries.
@@ -47,7 +47,7 @@ Validated on 2026-05-13 against the full `app-rules/` rule set, `dev-plan/01` th
 - `TemplateApp` renders successfully at `320px` width without framework exceptions.
 
 ## Backend-agnostic validation results
-- Runtime API configuration is environment-driven through `APP_ENV`, `API_BASE_URL`, `API_TIMEOUT_SECONDS`, and `LOG_LEVEL`.
+- Runtime API configuration is environment-driven through Flutter define files containing `APP_ENV`, `API_BASE_URL`, `API_TIMEOUT_SECONDS`, and `LOG_LEVEL`.
 - Production configuration enforces HTTPS and rejects debug logging.
 - Auth, repository, API, storage, and sync boundaries are expressed as contracts and provider-driven services.
 - Tests use provider overrides, mock storage values, or in-memory databases instead of production services or secrets.

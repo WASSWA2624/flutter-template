@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_template/app/app.dart';
 import 'package:flutter_template/app/startup/app_preferences_restorer.dart';
 import 'package:flutter_template/app/startup/app_startup_initializer.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
+import 'package:flutter_template/app/startup/startup_shell.dart';
 import 'package:flutter_template/core/config/app_config.dart';
 import 'package:flutter_template/core/security/session_controller.dart';
+import 'package:flutter_template/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,6 +43,28 @@ void main() {
         container.read(sessionStateProvider),
         result.state.sessionReadiness,
       );
+    });
+
+    testWidgets('replaces loading shell with configured app scope', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(const StartupLoadingApp());
+      await tester.pump();
+
+      final result = await const AppStartupInitializer().initialize(
+        config: AppConfig.fromValues(
+          environmentName: 'development',
+          apiBaseUrl: 'http://localhost:8080',
+        ),
+      );
+
+      await tester.pumpWidget(
+        result.buildProviderScope(child: const TemplateApp()),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HomePage), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
   });
 }

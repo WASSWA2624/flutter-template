@@ -14,9 +14,7 @@
 ```sh
 flutter pub get
 flutter test
-flutter run -d chrome \
-  --dart-define=APP_ENV=development \
-  --dart-define=API_BASE_URL=http://localhost:8080
+flutter run -d chrome --dart-define-from-file=env/development.json
 ```
 
 See `environment.md` for all supported public configuration keys.

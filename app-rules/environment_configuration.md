@@ -6,7 +6,7 @@ Defines how development, staging, and production configuration is represented.
 ## Mandatory rules
 - Keep environment-specific values outside feature widgets.
 - Do not commit secrets in source code, assets, config files, or docs.
-- Use compile-time configuration where possible for non-secret public values.
+- Use Flutter compile-time define files for non-secret public values.
 - Validate required configuration during startup.
 - Separate development, staging, and production values.
 - Production API base URLs must use HTTPS unless a controlled private network explicitly requires otherwise.

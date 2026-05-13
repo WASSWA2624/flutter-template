@@ -9,8 +9,9 @@ Rule sources:
 - `app-rules/testing.md`
 
 This template keeps build inputs public and non-secret. Pass runtime values with
-`--dart-define`; do not commit API keys, passwords, tokens, private
-certificates, signing files, or production credentials.
+Flutter define files through `--dart-define-from-file`; do not commit API keys,
+passwords, tokens, private certificates, signing files, or production
+credentials.
 
 ## Local Quality Gates
 
@@ -38,17 +39,15 @@ The workflow at `.github/workflows/ci.yml` runs the same quality gates on pull
 requests, pushes to `main`, and manual dispatches. It also runs unsigned release
 smoke builds for Web, Android APK, Linux, and iOS.
 
-CI uses these production-safe placeholder values:
+CI uses the production-safe placeholder values in `env/production.json`:
 
 ```sh
---dart-define=APP_ENV=production
---dart-define=API_BASE_URL=https://api.example.com
---dart-define=LOG_LEVEL=warn
+flutter build web --release --dart-define-from-file=env/production.json
 ```
 
-Replace the placeholder URL through repository variables or environment-specific
-workflow configuration when a real backend exists. Keep credentials and signing
-material out of the repository and out of logs.
+Replace the placeholder URL by committing a public, non-secret product endpoint
+or by adding CI-only `--dart-define=API_BASE_URL=...` overrides. Keep
+credentials and signing material out of the repository and out of logs.
 
 ## Platform Build Commands
 
@@ -57,10 +56,7 @@ Run platform builds only on hosts with the required SDKs installed.
 ### Web
 
 ```sh
-flutter build web --release \
-  --dart-define=APP_ENV=production \
-  --dart-define=API_BASE_URL=https://api.example.com \
-  --dart-define=LOG_LEVEL=warn
+flutter build web --release --dart-define-from-file=env/production.json
 ```
 
 Artifact path: `build/web/`.
@@ -68,17 +64,11 @@ Artifact path: `build/web/`.
 ### Android
 
 ```sh
-flutter build apk --release \
-  --dart-define=APP_ENV=production \
-  --dart-define=API_BASE_URL=https://api.example.com \
-  --dart-define=LOG_LEVEL=warn
+flutter build apk --release --dart-define-from-file=env/production.json
 ```
 
 ```sh
-flutter build appbundle --release \
-  --dart-define=APP_ENV=production \
-  --dart-define=API_BASE_URL=https://api.example.com \
-  --dart-define=LOG_LEVEL=warn
+flutter build appbundle --release --dart-define-from-file=env/production.json
 ```
 
 Artifact paths: `build/app/outputs/flutter-apk/` and
@@ -92,9 +82,7 @@ for local release smoke builds only.
 
 ```sh
 flutter build ios --release --no-codesign \
-  --dart-define=APP_ENV=production \
-  --dart-define=API_BASE_URL=https://api.example.com \
-  --dart-define=LOG_LEVEL=warn
+  --dart-define-from-file=env/production.json
 ```
 
 Use `flutter build ipa --release` with app-specific signing and export options
@@ -105,9 +93,7 @@ when distribution credentials are available on a secure macOS build host.
 ```sh
 flutter config --enable-linux-desktop
 flutter build linux --release \
-  --dart-define=APP_ENV=production \
-  --dart-define=API_BASE_URL=https://api.example.com \
-  --dart-define=LOG_LEVEL=warn
+  --dart-define-from-file=env/production.json
 ```
 
 Install Flutter Linux desktop dependencies first, including GTK, CMake, Ninja,

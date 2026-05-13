@@ -12,9 +12,6 @@ permissions:
 
 env:
   FLUTTER_VERSION: '3.41.9'
-  CI_APP_ENV: production
-  CI_API_BASE_URL: https://api.example.com
-  CI_LOG_LEVEL: warn
 
 jobs:
   quality:
@@ -103,16 +100,12 @@ jobs:
       - name: Build web release
         run: >
           flutter build web --release
-          --dart-define=APP_ENV=${{ env.CI_APP_ENV }}
-          --dart-define=API_BASE_URL=${{ env.CI_API_BASE_URL }}
-          --dart-define=LOG_LEVEL=${{ env.CI_LOG_LEVEL }}
+          --dart-define-from-file=env/production.json
 
       - name: Build Android APK release
         run: >
           flutter build apk --release
-          --dart-define=APP_ENV=${{ env.CI_APP_ENV }}
-          --dart-define=API_BASE_URL=${{ env.CI_API_BASE_URL }}
-          --dart-define=LOG_LEVEL=${{ env.CI_LOG_LEVEL }}
+          --dart-define-from-file=env/production.json
 
   linux_release_smoke:
     name: Linux release smoke
@@ -154,9 +147,7 @@ jobs:
       - name: Build Linux release
         run: >
           flutter build linux --release
-          --dart-define=APP_ENV=${{ env.CI_APP_ENV }}
-          --dart-define=API_BASE_URL=${{ env.CI_API_BASE_URL }}
-          --dart-define=LOG_LEVEL=${{ env.CI_LOG_LEVEL }}
+          --dart-define-from-file=env/production.json
 
   ios_release_smoke:
     name: iOS release smoke
@@ -183,6 +174,4 @@ jobs:
       - name: Build iOS release without signing
         run: >
           flutter build ios --release --no-codesign
-          --dart-define=APP_ENV=${{ env.CI_APP_ENV }}
-          --dart-define=API_BASE_URL=${{ env.CI_API_BASE_URL }}
-          --dart-define=LOG_LEVEL=${{ env.CI_LOG_LEVEL }}
+          --dart-define-from-file=env/production.json

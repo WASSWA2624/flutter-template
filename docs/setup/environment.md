@@ -8,8 +8,21 @@ Rule sources:
 - `app-rules/feature_flags.md`
 
 The app reads public, non-secret configuration from Flutter compile-time
-defines. Do not commit secrets, tokens, passwords, private certificates, or API
-keys in source code, docs, assets, or local environment files.
+defines. Store environment-specific values in Flutter define files under
+`env/` and pass them with `--dart-define-from-file`. Do not commit secrets,
+tokens, passwords, private certificates, or API keys in source code, docs,
+assets, or local environment files.
+
+## Files
+
+| File | Purpose |
+|---|---|
+| `env/development.json` | Local development values. |
+| `env/staging.json` | Staging placeholder values. |
+| `env/production.json` | Production-safe placeholder values for release smoke builds. |
+
+Use `env/*.local.json` for machine-specific overrides. These files are ignored
+by Git.
 
 ## Values
 
@@ -29,25 +42,22 @@ usernames, passwords, tokens, or other credentials.
 Development can use a local HTTP endpoint:
 
 ```sh
-flutter run -d chrome \
-  --dart-define=APP_ENV=development \
-  --dart-define=API_BASE_URL=http://localhost:8080
+flutter run -d chrome --dart-define-from-file=env/development.json
 ```
 
 Staging and production should use public HTTPS endpoints:
 
 ```sh
-flutter run -d chrome \
-  --dart-define=APP_ENV=staging \
-  --dart-define=API_BASE_URL=https://staging-api.example.com
+flutter run -d chrome --dart-define-from-file=env/staging.json
 ```
 
 ```sh
-flutter build web \
-  --dart-define=APP_ENV=production \
-  --dart-define=API_BASE_URL=https://api.example.com \
-  --dart-define=LOG_LEVEL=warn
+flutter build web --release --dart-define-from-file=env/production.json
 ```
+
+Command-line `--dart-define=KEY=value` entries can still be used for CI or
+temporary overrides; Flutter gives them precedence over matching keys from
+define files.
 
 ## Tests
 
