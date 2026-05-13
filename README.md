@@ -67,6 +67,9 @@ flutter test
 The analyzer uses Flutter lints plus `custom_lint` so Riverpod rules run with
 the normal analysis workflow.
 
+CI, platform release commands, versioning rules, and the release checklist are
+documented in `docs/release/build-ci-release.md`.
+
 ## Dependency stack
 
 The starter dependency set follows `app-rules/dependencies.md`.

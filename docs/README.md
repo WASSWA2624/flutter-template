@@ -16,3 +16,6 @@ Flutter template.
   - `environment.md` documents required public runtime configuration values.
   - `platform-behavior.md` documents safe areas, keyboard input,
     accessibility, and platform limitations.
+- `release/` contains CI, build, versioning, and release readiness notes.
+  - `build-ci-release.md` documents local quality gates, CI checks, platform
+    release commands, and the release checklist.

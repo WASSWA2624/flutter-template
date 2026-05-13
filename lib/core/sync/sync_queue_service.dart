@@ -38,15 +38,17 @@ final class DriftSyncQueueService implements SyncQueueService {
   Future<void> enqueue(SyncQueueEnqueueRequest request) async {
     final DateTime now = _clock().toUtc();
 
-    await _database.into(_database.syncQueueEntries).insertOnConflictUpdate(
-      SyncQueueEntriesCompanion.insert(
-        localId: request.localId,
-        operation: request.operation,
-        payloadJson: request.payload.value,
-        createdAt: now,
-        updatedAt: now,
-      ),
-    );
+    await _database
+        .into(_database.syncQueueEntries)
+        .insertOnConflictUpdate(
+          SyncQueueEntriesCompanion.insert(
+            localId: request.localId,
+            operation: request.operation,
+            payloadJson: request.payload.value,
+            createdAt: now,
+            updatedAt: now,
+          ),
+        );
   }
 
   @override
@@ -81,10 +83,7 @@ final class DriftSyncQueueService implements SyncQueueService {
 
   @override
   Future<void> markSynced(String localId) {
-    return _mark(
-      localId,
-      status: SyncQueueStatus.synced,
-    );
+    return _mark(localId, status: SyncQueueStatus.synced);
   }
 
   @override
@@ -104,10 +103,7 @@ final class DriftSyncQueueService implements SyncQueueService {
   }
 
   @override
-  Future<void> markConflict(
-    String localId, {
-    required String failureCode,
-  }) {
+  Future<void> markConflict(String localId, {required String failureCode}) {
     return _mark(
       localId,
       status: SyncQueueStatus.conflict,
@@ -128,19 +124,19 @@ final class DriftSyncQueueService implements SyncQueueService {
       return;
     }
 
-    await (_database.update(_database.syncQueueEntries)
-          ..where((table) => table.localId.equals(normalizedLocalId)))
-        .write(
-          SyncQueueEntriesCompanion(
-            status: Value(status),
-            updatedAt: Value(_clock().toUtc()),
-            lastAttemptAt: Value(lastAttemptAt),
-            failureCode: Value(failureCode),
-            retryCount: retryCount == null
-                ? const Value.absent()
-                : Value(retryCount),
-          ),
-        );
+    await (_database.update(
+      _database.syncQueueEntries,
+    )..where((table) => table.localId.equals(normalizedLocalId))).write(
+      SyncQueueEntriesCompanion(
+        status: Value(status),
+        updatedAt: Value(_clock().toUtc()),
+        lastAttemptAt: Value(lastAttemptAt),
+        failureCode: Value(failureCode),
+        retryCount: retryCount == null
+            ? const Value.absent()
+            : Value(retryCount),
+      ),
+    );
   }
 
   Future<SyncQueueEntryRow?> _rowByLocalId(String localId) {
