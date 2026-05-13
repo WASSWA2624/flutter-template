@@ -81,19 +81,46 @@ The starter dependency set follows `app-rules/dependencies.md`.
 ## Project structure
 
 ```txt
+docs/
+  architecture/
+  decisions/
+  setup/
 lib/
   main.dart
   bootstrap.dart
+  app/
+    app.dart
+    router/
+    startup/
+    theme/
+  core/
+    config/
+    errors/
+    logging/
+    network/
+    permissions/
+    responsive/
+    security/
+    storage/
+    sync/
+    utils/
+  features/
+    <feature_name>/
+      data/
+      domain/
+      presentation/
+  l10n/
+  shared/
+    components/
+    forms/
+    layout/
+    widgets/
+test/
   app/
   core/
   features/
   l10n/
   shared/
-docs/
-  architecture/
-  decisions/
-  setup/
-test/
 integration_test/
 tool/
 android/
@@ -104,13 +131,17 @@ macos/
 linux/
 ```
 
-- `app/` contains the application shell, startup wiring, routing, and theme.
-- `core/` contains cross-cutting infrastructure shared by multiple features.
-- `features/` contains feature-first code grouped by data, domain, and
+- `lib/app/` contains the application shell, startup wiring, routing, and theme.
+- `lib/core/` contains cross-cutting infrastructure shared by multiple
+  features, including configuration, errors, logging, networking, responsive
+  helpers, security, storage, sync, permissions, and utilities.
+- `lib/features/` contains feature-first code grouped by data, domain, and
   presentation layers.
-- `shared/` contains reusable UI and layout pieces that are not feature-owned.
-- `l10n/` is reserved for localization resources and generated localization
-  accessors.
+- `lib/shared/` contains reusable components, forms, layout primitives, and
+  widgets that are not feature-owned.
+- `lib/l10n/` is reserved for localization resources and generated
+  localization accessors.
+- `test/` mirrors the source structure where unit and widget coverage belongs.
 
 ## Architecture
 
