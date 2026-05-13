@@ -21,6 +21,21 @@ flutter run -d chrome \
 
 See `environment.md` for all supported public configuration keys.
 
+## Test commands
+
+```sh
+flutter test
+flutter test test/shared/layout
+flutter test integration_test
+flutter test integration_test -d <deviceId>
+flutter test --coverage
+```
+
+Use `flutter test` for unit and widget coverage. Use
+`flutter test integration_test` for startup and navigation smoke coverage that
+uses provider overrides instead of production services. Add `-d <deviceId>`
+when more than one Flutter device is available.
+
 ## Platform notes
 
 - Android, iOS, Web, Windows, macOS, and Linux project files are generated in
