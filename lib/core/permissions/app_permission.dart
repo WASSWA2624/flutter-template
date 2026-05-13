@@ -41,6 +41,16 @@ final class AppPermissionGrant {
       ...other.permissions,
     });
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AppPermissionGrant &&
+        permissions.length == other.permissions.length &&
+        permissions.containsAll(other.permissions);
+  }
+
+  @override
+  int get hashCode => Object.hashAllUnordered(permissions);
 }
 
 extension AppPermissionIterableX on Iterable<AppPermission> {

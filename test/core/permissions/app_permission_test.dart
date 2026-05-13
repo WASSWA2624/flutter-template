@@ -27,5 +27,19 @@ void main() {
         isTrue,
       );
     });
+
+    test('compares grants by permission values', () {
+      final firstGrant = AppPermissionGrant(<AppPermission>{
+        usersReadPermission,
+        reportsReadPermission,
+      });
+      final secondGrant = AppPermissionGrant(<AppPermission>{
+        reportsReadPermission,
+        usersReadPermission,
+      });
+
+      expect(firstGrant, secondGrant);
+      expect(firstGrant.hashCode, secondGrant.hashCode);
+    });
   });
 }

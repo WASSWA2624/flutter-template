@@ -9,6 +9,7 @@ typedef AppDataCellBuilder<T> = Widget Function(BuildContext context, T item);
 typedef AppDataMobileItemBuilder<T> =
     Widget Function(BuildContext context, T item);
 typedef AppDataItemKeyBuilder<T> = LocalKey Function(T item);
+typedef AppDataPageLabelBuilder<T> = String Function(AppPage<T> page);
 
 class AppDataColumn<T> {
   const AppDataColumn({
@@ -114,6 +115,72 @@ class AppDataList<T> extends StatelessWidget {
         Expanded(child: content),
         resolvedFooter,
       ],
+    );
+  }
+}
+
+class AppPaginatedDataList<T> extends StatelessWidget {
+  const AppPaginatedDataList({
+    required this.page,
+    required this.columns,
+    required this.mobileItemBuilder,
+    required this.pageLabelBuilder,
+    required this.previousPageLabel,
+    required this.nextPageLabel,
+    this.itemKeyBuilder,
+    this.onRowSelected,
+    this.onPageChanged,
+    this.emptyBuilder,
+    this.loadingBuilder,
+    this.errorBuilder,
+    this.isLoading = false,
+    this.error,
+    this.shrinkWrap = false,
+    this.physics,
+    super.key,
+  });
+
+  final AppPage<T> page;
+  final List<AppDataColumn<T>> columns;
+  final AppDataMobileItemBuilder<T> mobileItemBuilder;
+  final AppDataPageLabelBuilder<T> pageLabelBuilder;
+  final String previousPageLabel;
+  final String nextPageLabel;
+  final AppDataItemKeyBuilder<T>? itemKeyBuilder;
+  final ValueChanged<T>? onRowSelected;
+  final ValueChanged<AppPageRequest>? onPageChanged;
+  final WidgetBuilder? emptyBuilder;
+  final WidgetBuilder? loadingBuilder;
+  final Widget Function(BuildContext context, Object error)? errorBuilder;
+  final bool isLoading;
+  final Object? error;
+  final bool shrinkWrap;
+  final ScrollPhysics? physics;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppDataList<T>(
+      items: page.items,
+      columns: columns,
+      mobileItemBuilder: mobileItemBuilder,
+      itemKeyBuilder: itemKeyBuilder,
+      onRowSelected: onRowSelected,
+      emptyBuilder: emptyBuilder,
+      loadingBuilder: loadingBuilder,
+      errorBuilder: errorBuilder,
+      isLoading: isLoading,
+      error: error,
+      shrinkWrap: shrinkWrap,
+      physics: physics,
+      footer: AppPaginationControls(
+        pageRequest: page.request,
+        hasPreviousPage: page.hasPreviousPage,
+        hasNextPage: page.hasNextPage,
+        pageLabel: pageLabelBuilder(page),
+        previousPageLabel: previousPageLabel,
+        nextPageLabel: nextPageLabel,
+        onPageChanged: onPageChanged,
+      ),
     );
   }
 }

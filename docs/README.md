@@ -6,6 +6,8 @@ Flutter template.
 - `architecture/` explains the structure and major app boundaries.
   - `app-architecture.md` documents dependency direction, layer boundaries, and
     provider placement.
+  - `performance-and-scalability.md` documents rebuild, list pagination,
+    startup, and release-readiness checks.
   - `project-structure.md` documents the canonical repository layout.
 - `decisions/` records architecture decisions that affect future work.
   - `0002-storage-and-offline-sync-foundation.md` documents Drift,

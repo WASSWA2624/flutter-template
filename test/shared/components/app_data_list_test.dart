@@ -92,6 +92,75 @@ void main() {
     expect(find.text('Alpha'), findsOneWidget);
   });
 
+  testWidgets('AppDataList builds mobile rows lazily', (
+    WidgetTester tester,
+  ) async {
+    final pagedItems = List<_RowItem>.generate(1000, (int index) {
+      return _RowItem(id: '$index', title: 'Item $index', status: 'Active');
+    });
+    final builtIndexes = <int>{};
+
+    await pumpComponent(
+      tester,
+      SizedBox(
+        height: 120,
+        child: AppDataList<_RowItem>(
+          items: pagedItems,
+          columns: _columns,
+          mobileItemBuilder: (BuildContext context, _RowItem item) {
+            builtIndexes.add(int.parse(item.id));
+
+            return ListTile(title: Text(item.title));
+          },
+        ),
+      ),
+      size: const Size(500, 600),
+    );
+
+    expect(builtIndexes.length, lessThan(pagedItems.length));
+    expect(find.text('Item 999'), findsNothing);
+  });
+
+  testWidgets('AppPaginatedDataList wires page controls to page requests', (
+    WidgetTester tester,
+  ) async {
+    AppPageRequest? nextRequest;
+
+    await pumpComponent(
+      tester,
+      SizedBox(
+        height: 360,
+        child: AppPaginatedDataList<_RowItem>(
+          page: const AppPage<_RowItem>(
+            items: items,
+            request: AppPageRequest(pageIndex: 1, pageSize: 2),
+            totalItemCount: 6,
+          ),
+          columns: _columns,
+          mobileItemBuilder: (BuildContext context, _RowItem item) {
+            return Text(item.title);
+          },
+          pageLabelBuilder: (AppPage<_RowItem> page) {
+            return '${page.firstItemNumber}-${page.lastItemNumber}';
+          },
+          previousPageLabel: 'Previous page',
+          nextPageLabel: 'Next page',
+          onPageChanged: (AppPageRequest request) {
+            nextRequest = request;
+          },
+        ),
+      ),
+      size: const Size(900, 600),
+    );
+
+    expect(find.text('3-4'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Next page'));
+    await tester.pump();
+
+    expect(nextRequest, const AppPageRequest(pageIndex: 2, pageSize: 2));
+  });
+
   testWidgets('AppPaginationControls emits page requests', (
     WidgetTester tester,
   ) async {
