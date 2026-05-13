@@ -8,6 +8,10 @@ Rule sources:
 - `app-rules/project_structure.md`
 - `app-rules/state_management.md`
 - `app-rules/data_modeling.md`
+- `app-rules/navigation.md`
+- `app-rules/localization_i18n.md`
+- `app-rules/testing.md`
+- `app-rules/code_generation.md`
 
 ## Dependency Direction
 
@@ -79,13 +83,17 @@ lib/
 |-- l10n/
 `-- shared/
     |-- components/
+    |-- data/
     |-- forms/
     |-- layout/
+    |-- search/
     `-- widgets/
 ```
 
 The `home` feature is the starter example feature. Its folders are intentionally
 minimal and demonstrate where production code belongs when the feature grows.
+Shared pagination models and search/filter controllers live under `shared`
+because they are feature-neutral UI/data helpers.
 
 ## Provider Placement
 
@@ -102,6 +110,59 @@ Providers should live close to the layer they create:
 Widgets should read controllers or UI state from providers. They should not
 instantiate repositories, clients, databases, or storage services.
 
+## Routing
+
+Routing is centralized in `lib/app/router` with GoRouter. Route names and paths
+belong in `app_routes.dart`; route construction belongs in `app_router.dart`;
+guard rules belong in `route_guards.dart`.
+
+Feature pages should be imported by the router, but features should not
+navigate by hard-coded strings. Add route metadata before wiring protected or
+permission-gated pages so guards can make decisions from typed route data.
+
+## Localization
+
+User-facing strings belong in `lib/l10n/app_en.arb` and are accessed through
+the generated localization API and `app_localizations_x.dart`. Widgets,
+controllers, validators, and shared components must not hard-code user-facing
+copy.
+
+Locale-aware dates, numbers, currencies, and plural text should use shared
+formatting utilities from `lib/core/utils` or generated localization helpers.
+
+## Testing
+
+Tests mirror the source structure where practical:
+
+```txt
+test/
+|-- app/
+|-- core/
+|-- features/
+|-- l10n/
+`-- shared/
+integration_test/
+```
+
+Use unit tests for entities, value objects, mappers, validators, repositories,
+and controller logic. Use widget tests for pages, shared components, forms, and
+responsive layout. Use integration tests for startup, routing, and
+platform-critical smoke flows. Tests should use provider overrides or mocks and
+must not depend on production services or secrets.
+
+## Code Generation
+
+Generated Dart files stay beside their source files when required by Flutter,
+Riverpod, Drift, Freezed, or JSON serialization tooling. Run generation before
+analysis, tests, and release builds:
+
+```sh
+dart run build_runner build --delete-conflicting-outputs
+```
+
+Do not manually edit generated files. If generated output changes, commit both
+the source file and generated file together.
+
 ## Boundary Checklist
 
 - Widgets do not call APIs, databases, secure storage, or platform services.
@@ -112,3 +173,4 @@ instantiate repositories, clients, databases, or storage services.
 - `shared` contains reusable UI only.
 - Features expose intentional entry points and do not import implementation
   details from other features.
+- New features follow `docs/workflows/feature-workflow.md`.
