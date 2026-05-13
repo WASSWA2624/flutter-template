@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_template/app/router/app_router.dart';
 import 'package:flutter_template/app/startup/app_preferences_restorer.dart';
 import 'package:flutter_template/app/startup/app_startup_state.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
@@ -58,25 +59,32 @@ final class AppStartupResult {
   final FlutterSecureStorage secureStorage;
   final AppStartupState state;
 
-  ProviderScope buildProviderScope({required Widget child}) {
+  ProviderScope buildProviderScope({
+    required Widget child,
+    String? initialLocation,
+  }) {
     return ProviderScope(
       overrides: [
         appConfigProvider.overrideWithValue(config),
         sharedPreferencesProvider.overrideWithValue(preferences),
         secureStorageProvider.overrideWithValue(secureStorage),
         appStartupStateProvider.overrideWithValue(state),
+        if (initialLocation != null)
+          appInitialLocationProvider.overrideWithValue(initialLocation),
       ],
       child: child,
     );
   }
 
-  ProviderContainer createProviderContainer() {
+  ProviderContainer createProviderContainer({String? initialLocation}) {
     return ProviderContainer(
       overrides: [
         appConfigProvider.overrideWithValue(config),
         sharedPreferencesProvider.overrideWithValue(preferences),
         secureStorageProvider.overrideWithValue(secureStorage),
         appStartupStateProvider.overrideWithValue(state),
+        if (initialLocation != null)
+          appInitialLocationProvider.overrideWithValue(initialLocation),
       ],
     );
   }

@@ -1,0 +1,25 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_template/app/startup/startup_providers.dart';
+import 'package:flutter_template/core/permissions/permission_providers.dart';
+
+final routeRefreshListenableProvider = Provider<RouteRefreshListenable>((ref) {
+  final RouteRefreshListenable listenable = RouteRefreshListenable();
+
+  ref
+    ..listen(sessionReadinessProvider, (_, _) {
+      listenable.refresh();
+    })
+    ..listen(grantedAppPermissionsProvider, (_, _) {
+      listenable.refresh();
+    })
+    ..onDispose(listenable.dispose);
+
+  return listenable;
+});
+
+final class RouteRefreshListenable extends ChangeNotifier {
+  void refresh() {
+    notifyListeners();
+  }
+}

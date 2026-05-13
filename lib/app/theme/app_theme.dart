@@ -40,6 +40,12 @@ abstract final class AppTheme {
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
+      navigationBarTheme: const NavigationBarThemeData(
+        indicatorShape: rectangularShape,
+      ),
+      navigationRailTheme: const NavigationRailThemeData(
+        indicatorShape: rectangularShape,
+      ),
       dialogTheme: const DialogThemeData(shape: rectangularShape),
     );
   }

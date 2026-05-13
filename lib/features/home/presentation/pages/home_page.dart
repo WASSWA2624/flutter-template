@@ -8,25 +8,22 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.appTitle)),
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 720),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(AppStrings.readyTitle, style: textTheme.headlineSmall),
-                  const SizedBox(height: 12),
-                  Text(AppStrings.readyBody, style: textTheme.bodyLarge),
-                  const SizedBox(height: 24),
-                  const _SupportedPlatformList(),
-                ],
-              ),
+    return SafeArea(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(AppStrings.readyTitle, style: textTheme.headlineSmall),
+                const SizedBox(height: 12),
+                Text(AppStrings.readyBody, style: textTheme.bodyLarge),
+                const SizedBox(height: 24),
+                const _SupportedPlatformList(),
+              ],
             ),
           ),
         ),

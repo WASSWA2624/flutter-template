@@ -11,7 +11,9 @@ abstract final class AppStrings {
   static const String startupErrorBody =
       'Restart the app or try again. Diagnostic details were logged safely.';
   static const String retryActionLabel = 'Try again';
+  static const String goHomeActionLabel = 'Go home';
 
+  static const String homeRouteLabel = 'Home';
   static const String readyTitle = 'Project setup complete';
   static const String readyBody =
       'A minimal app shell is ready for shared architecture, routing, '
@@ -25,4 +27,17 @@ abstract final class AppStrings {
     'macOS desktop',
     'Linux desktop',
   ];
+
+  static const String sessionRestoringTitle = 'Checking session';
+  static const String sessionRestoringBody =
+      'Session restoration must finish before this page can open.';
+  static const String authRequiredTitle = 'Sign-in required';
+  static const String authRequiredBody =
+      'A valid session is required before this page can open.';
+  static const String forbiddenTitle = 'Access denied';
+  static const String forbiddenBody =
+      'Your current session does not have permission to open this page.';
+  static const String notFoundTitle = 'Page not found';
+  static const String notFoundBody =
+      'The requested route does not exist or is no longer available.';
 }

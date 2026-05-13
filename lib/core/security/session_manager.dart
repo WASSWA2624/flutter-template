@@ -4,6 +4,6 @@ final class SessionManager {
   const SessionManager();
 
   Future<SessionReadiness> restore() async {
-    return const SessionReadiness.ready();
+    return const SessionReadiness.unauthenticated();
   }
 }

@@ -1,0 +1,113 @@
+import 'package:flutter_template/app/router/app_routes.dart';
+import 'package:flutter_template/app/router/route_guards.dart';
+import 'package:flutter_template/core/permissions/app_permission.dart';
+import 'package:flutter_template/core/security/session_readiness.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  const AppRouteData publicRoute = AppRouteData(
+    name: 'public',
+    path: '/public',
+  );
+  const AppRouteData protectedRoute = AppRouteData(
+    name: 'protected',
+    path: '/protected',
+    access: AppRouteAccess.authenticated,
+  );
+  const AppPermission reportsReadPermission = AppPermission('reports.read');
+  final AppRouteData permissionRoute = AppRouteData(
+    name: 'reports',
+    path: '/reports',
+    requiredPermissions: <AppPermission>{reportsReadPermission},
+  );
+
+  group('AppRouteGuards', () {
+    test('allows public and unknown routes', () {
+      const AppRouteGuards guards = AppRouteGuards(
+        sessionReadiness: SessionReadiness.ready(),
+        routes: <AppRouteData>[publicRoute],
+      );
+
+      expect(
+        guards.redirect(
+          AppRouteGuardRequest(location: Uri(path: publicRoute.path)),
+        ),
+        isNull,
+      );
+      expect(
+        guards.redirect(AppRouteGuardRequest(location: Uri(path: '/unknown'))),
+        isNull,
+      );
+    });
+
+    test('redirects protected routes while the session is restoring', () {
+      final Uri targetLocation = Uri(path: protectedRoute.path);
+      const AppRouteGuards guards = AppRouteGuards(
+        sessionReadiness: SessionReadiness.notReady(),
+        routes: <AppRouteData>[protectedRoute],
+      );
+
+      expect(
+        guards.redirect(AppRouteGuardRequest(location: targetLocation)),
+        AppRoutes.sessionRestoring.locationWithFrom(targetLocation),
+      );
+    });
+
+    test('redirects protected routes without an authenticated session', () {
+      final Uri targetLocation = Uri(path: protectedRoute.path);
+      const AppRouteGuards guards = AppRouteGuards(
+        sessionReadiness: SessionReadiness.ready(),
+        routes: <AppRouteData>[protectedRoute],
+      );
+
+      expect(
+        guards.redirect(AppRouteGuardRequest(location: targetLocation)),
+        AppRoutes.authRequired.locationWithFrom(targetLocation),
+      );
+    });
+
+    test('allows protected routes with an authenticated session', () {
+      const AppRouteGuards guards = AppRouteGuards(
+        sessionReadiness: SessionReadiness.authenticated(),
+        routes: <AppRouteData>[protectedRoute],
+      );
+
+      expect(
+        guards.redirect(
+          AppRouteGuardRequest(location: Uri(path: protectedRoute.path)),
+        ),
+        isNull,
+      );
+    });
+
+    test('redirects authenticated users without required permissions', () {
+      final Uri targetLocation = Uri(path: permissionRoute.path);
+      final AppRouteGuards guards = AppRouteGuards(
+        sessionReadiness: const SessionReadiness.authenticated(),
+        routes: <AppRouteData>[permissionRoute],
+      );
+
+      expect(
+        guards.redirect(AppRouteGuardRequest(location: targetLocation)),
+        AppRoutes.forbidden.locationWithFrom(targetLocation),
+      );
+    });
+
+    test('allows authenticated users with required permissions', () {
+      final AppRouteGuards guards = AppRouteGuards(
+        sessionReadiness: const SessionReadiness.authenticated(),
+        routes: <AppRouteData>[permissionRoute],
+      );
+
+      expect(
+        guards.redirect(
+          AppRouteGuardRequest(
+            location: Uri(path: permissionRoute.path),
+            grantedPermissions: <AppPermission>{reportsReadPermission},
+          ),
+        ),
+        isNull,
+      );
+    });
+  });
+}

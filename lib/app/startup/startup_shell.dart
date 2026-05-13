@@ -51,27 +51,47 @@ class _StartupShell extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      home: Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(body, style: Theme.of(context).textTheme.bodyLarge),
-                    const SizedBox(height: 24),
-                    action,
-                  ],
-                ),
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) =>
+              _StartupScaffold(title: title, body: body, action: action),
+        );
+      },
+    );
+  }
+}
+
+class _StartupScaffold extends StatelessWidget {
+  const _StartupScaffold({
+    required this.title,
+    required this.body,
+    required this.action,
+  });
+
+  final String title;
+  final String body;
+  final Widget action;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(title, style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(height: 12),
+                  Text(body, style: Theme.of(context).textTheme.bodyLarge),
+                  const SizedBox(height: 24),
+                  action,
+                ],
               ),
             ),
           ),
