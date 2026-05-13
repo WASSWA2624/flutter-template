@@ -10,9 +10,7 @@ abstract final class AppTheme {
       seedColor: const Color(0xFF0F766E),
       brightness: brightness,
     );
-    const RoundedRectangleBorder rectangularShape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-    );
+    const RoundedRectangleBorder rectangularShape = RoundedRectangleBorder();
 
     return ThemeData(
       useMaterial3: true,
