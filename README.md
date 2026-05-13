@@ -50,6 +50,11 @@ See `docs/setup/development.md` for local prerequisite notes and
 
 ## Run
 
+For the closest Nodemon-like development loop, open this workspace in VS Code
+with the recommended Dart and Flutter extensions, then run one of the included
+Flutter debug launch configurations. The workspace enables auto save and Flutter
+hot reload on save for active debug sessions.
+
 Run the starter app on Chrome:
 
 ```sh
@@ -70,6 +75,10 @@ flutter run -d ios --dart-define-from-file=env/development.json
 flutter run -d macos --dart-define-from-file=env/development.json
 flutter run -d linux --dart-define-from-file=env/development.json
 ```
+
+When running from a terminal, press `r` for hot reload, `R` for hot restart, and
+`q` to quit. Use hot restart for startup, route, dependency injection, generated
+code, native platform, asset, or environment define changes.
 
 Run platform-specific commands only on hosts with the required SDKs installed.
 Environment-specific public values are passed with `--dart-define-from-file`. See

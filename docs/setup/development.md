@@ -21,6 +21,55 @@ flutter run -d windows --dart-define-from-file=env/development.json
 
 See `environment.md` for all supported public configuration keys.
 
+## Hot reload development workflow
+
+Flutter already provides the development reload loop that this template uses.
+Run the app in debug mode, then update code while the app is running.
+
+For the closest Nodemon-like workflow, use VS Code with the recommended Flutter
+and Dart extensions. This repository configures:
+
+- Auto save after a short delay.
+- Flutter hot reload on save for active debug sessions.
+- Debug launch targets for Web, Android, iOS, macOS, Windows, and Linux.
+
+Open **Run and Debug** in VS Code and start one of these configurations:
+
+- `Flutter: Web Chrome (development)`
+- `Flutter: Android (development)`
+- `Flutter: iOS (development)`
+- `Flutter: macOS (development)`
+- `Flutter: Windows (development)`
+- `Flutter: Linux (development)`
+
+When a launch target is running, normal Dart and widget changes are hot reloaded
+after save. Use hot restart for startup, provider bootstrap, route table,
+environment define, asset, dependency, generated code, or native platform
+changes.
+
+Terminal development uses the same Flutter debug runtime. Start the app with the
+target platform command, then press `r` for hot reload, `R` for hot restart, and
+`q` to quit.
+
+```sh
+flutter run -d chrome --dart-define-from-file=env/development.json
+flutter run -d android --dart-define-from-file=env/development.json
+flutter run -d ios --dart-define-from-file=env/development.json
+flutter run -d macos --dart-define-from-file=env/development.json
+```
+
+Use `flutter devices` to find exact device IDs when more than one simulator,
+emulator, browser, or physical device is available:
+
+```sh
+flutter devices
+flutter run -d <deviceId> --dart-define-from-file=env/development.json
+```
+
+Platform requirements still apply: iOS and macOS require macOS with Xcode,
+Android requires an emulator or physical device, and Web requires a supported
+browser target such as Chrome.
+
 ## Windows desktop
 
 Windows desktop builds need both Flutter's Windows target and host-level build
