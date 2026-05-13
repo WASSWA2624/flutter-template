@@ -61,6 +61,8 @@ class AppCheckboxField extends StatelessWidget {
               subtitle: subtitle == null ? null : Text(subtitle!),
               secondary: secondary,
               enabled: canChange,
+              dense: true,
+              visualDensity: VisualDensity.compact,
               contentPadding: contentPadding ?? EdgeInsets.zero,
               controlAffinity: ListTileControlAffinity.leading,
             ),

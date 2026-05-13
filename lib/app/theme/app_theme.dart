@@ -14,6 +14,11 @@ abstract final class AppTheme {
     const RoundedRectangleBorder rectangularShape = RoundedRectangleBorder();
     const AppSpacingTokens spacing = AppSpacingTokens.standard;
     const AppDesignTokens appTokens = AppDesignTokens.standard;
+    const Size minimumControlSize = Size(40, 40);
+    final EdgeInsets buttonPadding = EdgeInsets.symmetric(
+      horizontal: spacing.lg,
+      vertical: spacing.sm,
+    );
     final AppStatusColors statusColors = switch (brightness) {
       Brightness.light => AppStatusColors.light,
       Brightness.dark => AppStatusColors.dark,
@@ -35,7 +40,8 @@ abstract final class AppTheme {
       hoverColor: colorScheme.surfaceContainerHighest,
       splashColor: colorScheme.primary.withValues(alpha: 0.08),
       highlightColor: colorScheme.primary.withValues(alpha: 0.06),
-      visualDensity: VisualDensity.standard,
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       textTheme: baseTextTheme.apply(
         bodyColor: colorScheme.onSurface,
         displayColor: colorScheme.onSurface,
@@ -64,51 +70,65 @@ abstract final class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(
-            appTokens.minInteractiveDimension,
-            appTokens.minInteractiveDimension,
-          ),
+          minimumSize: minimumControlSize,
+          padding: buttonPadding,
           shape: rectangularShape,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          minimumSize: Size(
-            appTokens.minInteractiveDimension,
-            appTokens.minInteractiveDimension,
-          ),
+          minimumSize: minimumControlSize,
+          padding: buttonPadding,
           shape: rectangularShape,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          minimumSize: Size(
-            appTokens.minInteractiveDimension,
-            appTokens.minInteractiveDimension,
-          ),
+          minimumSize: minimumControlSize,
+          padding: buttonPadding,
           shape: rectangularShape,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          minimumSize: Size(
-            appTokens.minInteractiveDimension,
-            appTokens.minInteractiveDimension,
-          ),
+          minimumSize: minimumControlSize,
+          padding: buttonPadding,
           shape: rectangularShape,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
         ),
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
-          minimumSize: const Size.square(40),
-          padding: EdgeInsets.all(spacing.sm),
+          minimumSize: const Size.square(36),
+          padding: EdgeInsets.all(spacing.xs),
           shape: rectangularShape,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
+        isDense: true,
         contentPadding: EdgeInsets.symmetric(
-          horizontal: spacing.lg,
-          vertical: spacing.md,
+          horizontal: spacing.md,
+          vertical: spacing.sm,
+        ),
+        constraints: BoxConstraints(
+          minHeight: appTokens.minInteractiveDimension,
+        ),
+        prefixIconConstraints: const BoxConstraints(
+          minWidth: 36,
+          minHeight: 36,
+        ),
+        suffixIconConstraints: const BoxConstraints(
+          minWidth: 36,
+          minHeight: 36,
         ),
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
         enabledBorder: const OutlineInputBorder(
@@ -135,11 +155,25 @@ abstract final class AppTheme {
       ),
       drawerTheme: DrawerThemeData(
         backgroundColor: colorScheme.surface,
+        width: 288,
         shape: rectangularShape,
       ),
-      listTileTheme: const ListTileThemeData(
+      listTileTheme: ListTileThemeData(
+        contentPadding: EdgeInsets.symmetric(horizontal: spacing.sm),
         dense: true,
+        horizontalTitleGap: spacing.sm,
+        minLeadingWidth: 24,
+        minTileHeight: 40,
+        minVerticalPadding: spacing.xs,
         shape: rectangularShape,
+        visualDensity: VisualDensity.compact,
+      ),
+      dataTableTheme: DataTableThemeData(
+        dataRowMinHeight: 40,
+        dataRowMaxHeight: 44,
+        headingRowHeight: 40,
+        horizontalMargin: spacing.md,
+        columnSpacing: spacing.xl,
       ),
       snackBarTheme: const SnackBarThemeData(
         shape: rectangularShape,

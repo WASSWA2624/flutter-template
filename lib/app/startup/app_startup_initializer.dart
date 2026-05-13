@@ -71,30 +71,26 @@ final class AppStartupResult {
     String? initialLocation,
   }) {
     return ProviderScope(
-      overrides: [
-        appConfigProvider.overrideWithValue(config),
-        sharedPreferencesProvider.overrideWithValue(preferences),
-        secureStorageProvider.overrideWithValue(secureStorage),
-        initialSessionStateProvider.overrideWithValue(state.sessionReadiness),
-        appStartupStateProvider.overrideWithValue(state),
-        if (initialLocation != null)
-          appInitialLocationProvider.overrideWithValue(initialLocation),
-      ],
+      overrides: providerOverrides(initialLocation: initialLocation).cast(),
       child: child,
     );
   }
 
   ProviderContainer createProviderContainer({String? initialLocation}) {
     return ProviderContainer(
-      overrides: [
-        appConfigProvider.overrideWithValue(config),
-        sharedPreferencesProvider.overrideWithValue(preferences),
-        secureStorageProvider.overrideWithValue(secureStorage),
-        initialSessionStateProvider.overrideWithValue(state.sessionReadiness),
-        appStartupStateProvider.overrideWithValue(state),
-        if (initialLocation != null)
-          appInitialLocationProvider.overrideWithValue(initialLocation),
-      ],
+      overrides: providerOverrides(initialLocation: initialLocation).cast(),
     );
+  }
+
+  List<Object?> providerOverrides({String? initialLocation}) {
+    return [
+      appConfigProvider.overrideWithValue(config),
+      sharedPreferencesProvider.overrideWithValue(preferences),
+      secureStorageProvider.overrideWithValue(secureStorage),
+      initialSessionStateProvider.overrideWithValue(state.sessionReadiness),
+      appStartupStateProvider.overrideWithValue(state),
+      if (initialLocation != null)
+        appInitialLocationProvider.overrideWithValue(initialLocation),
+    ];
   }
 }

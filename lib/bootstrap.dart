@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/app.dart';
 import 'package:flutter_template/app/router/url_strategy.dart';
 import 'package:flutter_template/app/startup/app_startup_initializer.dart';
@@ -16,14 +17,17 @@ Future<void> bootstrap({
   configureAppUrlStrategy();
   final String initialLocation = _platformInitialLocation();
 
-  runApp(const StartupLoadingApp());
+  runApp(ProviderScope(key: UniqueKey(), child: const StartupLoadingApp()));
 
   try {
     final startupResult = await startupInitializer.initialize(config: config);
 
     runApp(
-      startupResult.buildProviderScope(
-        initialLocation: initialLocation,
+      ProviderScope(
+        key: UniqueKey(),
+        overrides: startupResult
+            .providerOverrides(initialLocation: initialLocation)
+            .cast(),
         child: const TemplateApp(),
       ),
     );
@@ -31,12 +35,15 @@ Future<void> bootstrap({
     AppLogger.error('Startup failed.', error, stackTrace);
 
     runApp(
-      StartupErrorApp(
-        onRetry: () {
-          unawaited(
-            bootstrap(config: config, startupInitializer: startupInitializer),
-          );
-        },
+      ProviderScope(
+        key: UniqueKey(),
+        child: StartupErrorApp(
+          onRetry: () {
+            unawaited(
+              bootstrap(config: config, startupInitializer: startupInitializer),
+            );
+          },
+        ),
       ),
     );
   }

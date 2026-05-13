@@ -332,7 +332,7 @@ class _MobileShellDrawer extends StatelessWidget {
               height: _drawerHeaderHeight,
               child: Padding(
                 padding: EdgeInsets.only(
-                  left: theme.spacing.lg,
+                  left: theme.spacing.md,
                   right: theme.spacing.xs,
                 ),
                 child: Row(
@@ -466,7 +466,7 @@ class _ShellMenuItemState extends State<_ShellMenuItem> {
         vertical: theme.spacing.xs,
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: widget.showLabel ? theme.spacing.md : theme.spacing.none,
+        horizontal: widget.showLabel ? theme.spacing.sm : theme.spacing.none,
       ),
       decoration: BoxDecoration(
         color: widget.selected
@@ -494,7 +494,7 @@ class _ShellMenuItemState extends State<_ShellMenuItem> {
             size: theme.appTokens.listIconSize,
           ),
           if (widget.showLabel) ...<Widget>[
-            SizedBox(width: theme.spacing.md),
+            SizedBox(width: theme.spacing.sm),
             Expanded(
               child: Text(
                 widget.destination.label,
@@ -574,19 +574,19 @@ class _SidebarResizeHandle extends StatelessWidget {
   }
 }
 
-const double _headerHeight = 56;
-const double _drawerHeaderHeight = 56;
-const double _headerLogoSize = 32;
-const double _defaultSidebarWidth = 240;
-const double _minSidebarWidth = 184;
-const double _maxSidebarWidth = 320;
-const double _collapsedSidebarWidth = 64;
-const double _resizeHandleWidth = 8;
+const double _headerHeight = 48;
+const double _drawerHeaderHeight = 48;
+const double _headerLogoSize = 28;
+const double _defaultSidebarWidth = 224;
+const double _minSidebarWidth = 168;
+const double _maxSidebarWidth = 288;
+const double _collapsedSidebarWidth = 56;
+const double _resizeHandleWidth = 6;
 const double _dividerWidth = 1;
-const double _statusDotSize = 8;
-const double _avatarRadius = 16;
-const double _avatarIconSize = 20;
-const double _selectedIndicatorWidth = 3;
-const double _menuItemHeight = 44;
+const double _statusDotSize = 7;
+const double _avatarRadius = 14;
+const double _avatarIconSize = 18;
+const double _selectedIndicatorWidth = 2;
+const double _menuItemHeight = 38;
 const Duration _menuAnimationDuration = Duration(milliseconds: 120);
 const Duration _sidebarAnimationDuration = Duration(milliseconds: 180);

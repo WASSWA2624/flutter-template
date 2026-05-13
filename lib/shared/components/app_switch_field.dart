@@ -59,6 +59,8 @@ class AppSwitchField extends StatelessWidget {
               title: Text(title),
               subtitle: subtitle == null ? null : Text(subtitle!),
               secondary: secondary,
+              dense: true,
+              visualDensity: VisualDensity.compact,
               contentPadding: contentPadding ?? EdgeInsets.zero,
             ),
             if (field.errorText != null) ...<Widget>[

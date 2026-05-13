@@ -153,7 +153,7 @@ class _SelectLoadingIcon extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.all(theme.spacing.md),
+      padding: EdgeInsets.all(theme.spacing.sm),
       child: SizedBox.square(
         dimension: theme.appTokens.listIconSize,
         child: const CircularProgressIndicator(strokeWidth: 2),

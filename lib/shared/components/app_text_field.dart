@@ -164,7 +164,7 @@ class _AppTextFieldState extends State<AppTextField> {
 
     if (widget.isLoading) {
       return Padding(
-        padding: EdgeInsets.all(theme.spacing.md),
+        padding: EdgeInsets.all(theme.spacing.sm),
         child: SizedBox.square(
           dimension: theme.appTokens.listIconSize,
           child: const CircularProgressIndicator(strokeWidth: 2),

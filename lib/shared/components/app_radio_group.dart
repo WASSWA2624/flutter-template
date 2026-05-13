@@ -84,6 +84,8 @@ class AppRadioGroup<T> extends StatelessWidget {
                       : Text(option.description!),
                   secondary: option.secondary,
                   selected: field.value == option.value,
+                  dense: true,
+                  visualDensity: VisualDensity.compact,
                   contentPadding: contentPadding ?? EdgeInsets.zero,
                   controlAffinity: ListTileControlAffinity.leading,
                 ),

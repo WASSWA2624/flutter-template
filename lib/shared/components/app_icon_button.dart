@@ -40,7 +40,7 @@ class AppIconButton extends StatelessWidget {
         onPressed: canPress ? onPressed : null,
         autofocus: autofocus,
         color: color,
-        iconSize: size,
+        iconSize: size ?? theme.appTokens.listIconSize,
         icon: isLoading
             ? SizedBox.square(
                 dimension: theme.appTokens.listIconSize,
