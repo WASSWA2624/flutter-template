@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/router/app_routes.dart';
 import 'package:flutter_template/l10n/app_strings.dart';
+import 'package:flutter_template/shared/layout/responsive_page.dart';
+import 'package:flutter_template/shared/layout/responsive_spacing.dart';
 import 'package:go_router/go_router.dart';
 
 class SessionRestoringPage extends StatelessWidget {
@@ -83,40 +85,30 @@ class _RouteStatusPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text(AppStrings.appTitle)),
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 560),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Icon(
-                    icon,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(title, style: textTheme.headlineSmall),
-                  const SizedBox(height: 12),
-                  Text(body, style: textTheme.bodyLarge),
-                  if (detail != null && detail!.isNotEmpty) ...<Widget>[
-                    const SizedBox(height: 12),
-                    Text(detail!, style: textTheme.bodyMedium),
-                  ],
-                  const SizedBox(height: 24),
-                  FilledButton(
-                    onPressed: () {
-                      context.go(AppRoutes.home.location());
-                    },
-                    child: Text(actionLabel),
-                  ),
-                ],
-              ),
+      body: ResponsivePage(
+        maxWidth: PageMaxWidth.authForm,
+        centerVertically: true,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(icon, size: 40, color: Theme.of(context).colorScheme.primary),
+            const SizedBox(height: AppSpacing.md),
+            Text(title, style: textTheme.headlineSmall),
+            const SizedBox(height: AppSpacing.sm),
+            Text(body, style: textTheme.bodyLarge),
+            if (detail != null && detail!.isNotEmpty) ...<Widget>[
+              const SizedBox(height: AppSpacing.sm),
+              Text(detail!, style: textTheme.bodyMedium),
+            ],
+            const SizedBox(height: AppSpacing.lg),
+            FilledButton(
+              onPressed: () {
+                context.go(AppRoutes.home.location());
+              },
+              child: Text(actionLabel),
             ),
-          ),
+          ],
         ),
       ),
     );

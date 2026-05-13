@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/shared/layout/app_breakpoints.dart';
 
 final class ResponsiveShellDestination {
   const ResponsiveShellDestination({
@@ -22,9 +23,6 @@ class ResponsiveShellScaffold extends StatelessWidget {
     super.key,
   });
 
-  static const double mobileBreakpoint = 600;
-  static const double desktopBreakpoint = 840;
-
   final String title;
   final List<ResponsiveShellDestination> destinations;
   final int selectedIndex;
@@ -35,10 +33,12 @@ class ResponsiveShellScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final bool usesBottomNavigation =
-            constraints.maxWidth < mobileBreakpoint;
+        final AppBreakpoint breakpoint = AppBreakpoints.fromConstraints(
+          constraints,
+        );
+        final bool hasMultipleDestinations = destinations.length > 1;
 
-        if (usesBottomNavigation) {
+        if (breakpoint.isMobile && hasMultipleDestinations) {
           return Scaffold(
             appBar: AppBar(title: Text(title)),
             body: child,
@@ -58,8 +58,15 @@ class ResponsiveShellScaffold extends StatelessWidget {
           );
         }
 
+        if (breakpoint.isMobile) {
+          return Scaffold(
+            appBar: AppBar(title: Text(title)),
+            body: child,
+          );
+        }
+
         final bool extendsNavigationRail =
-            constraints.maxWidth >= desktopBreakpoint;
+            breakpoint.supportsExtendedNavigationRail;
 
         return Scaffold(
           appBar: AppBar(title: Text(title)),

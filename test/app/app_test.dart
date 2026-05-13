@@ -26,6 +26,22 @@ void main() {
     }
   });
 
+  testWidgets('renders the home screen at 320px width', (
+    WidgetTester tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(320, 640);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+
+    await tester.pumpWidget(const ProviderScope(child: TemplateApp()));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.readyTitle), findsOneWidget);
+    expect(find.byType(NavigationBar), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('uses startup theme and locale providers', (
     WidgetTester tester,
   ) async {
