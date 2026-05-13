@@ -9,16 +9,16 @@ import 'package:flutter_template/core/config/app_config.dart';
 import 'package:flutter_template/core/config/app_config_provider.dart';
 import 'package:flutter_template/core/logging/app_logger.dart';
 import 'package:flutter_template/core/security/session_manager.dart';
+import 'package:flutter_template/core/storage/secure/app_secure_storage.dart';
 import 'package:flutter_template/core/storage/storage_providers.dart';
 import 'package:flutter_template/core/storage/storage_readiness.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final class AppStartupInitializer {
-  const AppStartupInitializer({
-    SessionManager sessionManager = const SessionManager(),
-  }) : _sessionManager = sessionManager;
+  const AppStartupInitializer({SessionManager? sessionManager})
+    : _sessionManager = sessionManager;
 
-  final SessionManager _sessionManager;
+  final SessionManager? _sessionManager;
 
   Future<AppStartupResult> initialize({AppConfig? config}) async {
     final appConfig = config ?? AppConfig.fromEnvironment();
@@ -28,8 +28,12 @@ final class AppStartupInitializer {
 
     final preferences = await SharedPreferences.getInstance();
     const secureStorage = FlutterSecureStorage();
+    const appSecureStorage = FlutterAppSecureStorage(secureStorage);
     const storageReadiness = StorageReadiness.ready();
-    final sessionReadiness = await _sessionManager.restore();
+    final sessionReadiness =
+        await (_sessionManager ??
+                const SessionManager(secureStorage: appSecureStorage))
+            .restore();
     final startupState = AppStartupState(
       themeMode: AppPreferencesRestorer.restoreThemeMode(preferences),
       locale: AppPreferencesRestorer.restoreLocale(preferences),

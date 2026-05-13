@@ -27,7 +27,7 @@ final class AppThemeModeController extends Notifier<ThemeMode> {
 
     try {
       final saved = await ref
-          .read(sharedPreferencesProvider)
+          .read(appPreferencesStoreProvider)
           .setString(
             AppPreferenceKeys.themeMode,
             AppPreferencesRestorer.themeModePreferenceValue(themeMode),

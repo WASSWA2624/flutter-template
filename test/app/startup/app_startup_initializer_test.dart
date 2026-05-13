@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_template/app/startup/app_preferences_restorer.dart';
 import 'package:flutter_template/app/startup/app_startup_initializer.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
@@ -10,6 +11,7 @@ void main() {
   group('AppStartupInitializer', () {
     setUp(() {
       SharedPreferences.setMockInitialValues(<String, Object>{});
+      FlutterSecureStorage.setMockInitialValues(<String, String>{});
     });
 
     test('initializes dependencies and startup state', () async {

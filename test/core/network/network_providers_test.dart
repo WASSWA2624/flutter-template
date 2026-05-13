@@ -1,13 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_template/core/config/app_config.dart';
 import 'package:flutter_template/core/config/app_config_provider.dart';
 import 'package:flutter_template/core/network/api_client.dart';
 import 'package:flutter_template/core/network/network_providers.dart';
+import 'package:flutter_template/core/storage/storage_providers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('network providers', () {
+    setUp(() {
+      FlutterSecureStorage.setMockInitialValues(<String, String>{});
+    });
+
     test('build Dio from an overridden app configuration', () {
       final config = AppConfig.fromValues(
         environmentName: 'development',
@@ -15,7 +21,10 @@ void main() {
         apiTimeoutSeconds: 10,
       );
       final container = ProviderContainer(
-        overrides: [appConfigProvider.overrideWithValue(config)],
+        overrides: [
+          appConfigProvider.overrideWithValue(config),
+          secureStorageProvider.overrideWithValue(const FlutterSecureStorage()),
+        ],
       );
       addTearDown(container.dispose);
 
