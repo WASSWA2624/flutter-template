@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
+import 'package:flutter_template/core/errors/result.dart';
 import 'package:flutter_template/features/home/domain/entities/home_readiness_snapshot.dart';
 import 'package:flutter_template/features/home/presentation/controllers/home_controller.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
@@ -15,12 +16,21 @@ class HomePage extends ConsumerWidget {
     final readiness = ref.watch(homeControllerProvider);
 
     return readiness.when(
-      data: (HomeReadinessSnapshot snapshot) {
-        if (!snapshot.isReady) {
-          return const _HomeLoadingView();
-        }
+      data: (Result<HomeReadinessSnapshot> result) {
+        return result.when(
+          success: (snapshot) {
+            if (!snapshot.isReady) {
+              return const _HomeLoadingView();
+            }
 
-        return const _HomeReadyContent();
+            return const _HomeReadyContent();
+          },
+          failure: (_) => _HomeErrorView(
+            onRetry: () {
+              ref.read(homeControllerProvider.notifier).refresh();
+            },
+          ),
+        );
       },
       error: (_, _) => _HomeErrorView(
         onRetry: () {

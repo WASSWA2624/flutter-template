@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_template/core/errors/result.dart';
 import 'package:flutter_template/features/home/domain/entities/home_readiness_snapshot.dart';
 import 'package:flutter_template/features/home/domain/repositories/home_repository.dart';
 
@@ -10,7 +11,9 @@ final class HomeRepositoryImpl implements HomeRepository {
   const HomeRepositoryImpl();
 
   @override
-  Future<HomeReadinessSnapshot> loadReadiness() async {
-    return const HomeReadinessSnapshot.ready();
+  Future<Result<HomeReadinessSnapshot>> loadReadiness() async {
+    return const Result<HomeReadinessSnapshot>.success(
+      HomeReadinessSnapshot.ready(),
+    );
   }
 }
