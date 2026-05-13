@@ -4,6 +4,7 @@ import 'package:flutter_template/app/router/app_routes.dart';
 import 'package:flutter_template/app/router/route_guards.dart';
 import 'package:flutter_template/app/router/route_refresh_listenable.dart';
 import 'package:flutter_template/app/router/route_status_pages.dart';
+import 'package:flutter_template/core/network/app_connectivity_status.dart';
 import 'package:flutter_template/core/permissions/permission_providers.dart';
 import 'package:flutter_template/core/security/session_controller.dart';
 import 'package:flutter_template/features/home/presentation/pages/home_page.dart';
@@ -112,14 +113,14 @@ List<_ShellDestinationRoute> _localizedShellDestinations(
   ];
 }
 
-class _AppShell extends StatelessWidget {
+class _AppShell extends ConsumerWidget {
   const _AppShell({required this.location, required this.child});
 
   final Uri location;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations l10n = context.l10n;
     final List<_ShellDestinationRoute> shellDestinations =
         _localizedShellDestinations(l10n);
@@ -127,9 +128,23 @@ class _AppShell extends StatelessWidget {
       location.path,
       shellDestinations,
     );
+    final AppConnectivityStatus connectivityStatus = ref
+        .watch(appConnectivityStatusProvider)
+        .when(
+          data: (AppConnectivityStatus status) => status,
+          error: (_, _) => AppConnectivityStatus.online,
+          loading: () => AppConnectivityStatus.online,
+        );
 
     return ResponsiveShellScaffold(
       title: l10n.appTitle,
+      connectivityStatus: connectivityStatus,
+      onlineLabel: l10n.appStatusOnlineLabel,
+      offlineLabel: l10n.appStatusOfflineLabel,
+      openMenuTooltip: l10n.appOpenNavigationMenuTooltip,
+      closeDrawerTooltip: l10n.appCloseNavigationMenuTooltip,
+      toggleSidebarTooltip: l10n.appToggleSidebarTooltip,
+      accountTooltip: l10n.appAccountTooltip,
       destinations: <ResponsiveShellDestination>[
         for (final _ShellDestinationRoute destination in shellDestinations)
           destination.destination,

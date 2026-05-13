@@ -136,6 +136,42 @@ abstract class AppLocalizations {
   /// **'Go home'**
   String get commonGoHomeActionLabel;
 
+  /// Label shown in the app header when network connectivity is available.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get appStatusOnlineLabel;
+
+  /// Label shown in the app header when network connectivity is unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get appStatusOfflineLabel;
+
+  /// Tooltip for the mobile navigation drawer open button.
+  ///
+  /// In en, this message translates to:
+  /// **'Open navigation menu'**
+  String get appOpenNavigationMenuTooltip;
+
+  /// Tooltip for the mobile navigation drawer close button.
+  ///
+  /// In en, this message translates to:
+  /// **'Close navigation menu'**
+  String get appCloseNavigationMenuTooltip;
+
+  /// Tooltip for the desktop sidebar collapse and expand button.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle sidebar'**
+  String get appToggleSidebarTooltip;
+
+  /// Tooltip for the account avatar in the app header.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get appAccountTooltip;
+
   /// Navigation label for the home destination.
   ///
   /// In en, this message translates to:

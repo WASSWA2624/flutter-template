@@ -47,6 +47,7 @@ void main() {
       expect(scaffold.drawer, isNotNull);
       expect(find.byType(NavigationBar), findsNothing);
       expect(find.byType(NavigationRail), findsNothing);
+      expect(find.text('Online'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -74,18 +75,15 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('uses a compact navigation rail for tablet widths', (
+    testWidgets('uses a compact sidebar for tablet widths', (
       WidgetTester tester,
     ) async {
       await pumpShellAtSize(tester, const Size(600, 800));
 
-      final NavigationRail rail = tester.widget<NavigationRail>(
-        find.byType(NavigationRail),
-      );
-
       expect(find.byType(NavigationBar), findsNothing);
-      expect(rail.extended, isFalse);
-      expect(rail.labelType, NavigationRailLabelType.all);
+      expect(find.byType(NavigationRail), findsNothing);
+      expect(find.text('Home'), findsOneWidget);
+      expect(find.text('Settings'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -98,6 +96,36 @@ void main() {
       expect(find.byType(NavigationRail), findsNothing);
       expect(find.text('Template'), findsOneWidget);
       expect(find.text('Settings'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('collapses desktop sidebar labels from the header toggle', (
+      WidgetTester tester,
+    ) async {
+      await pumpShellAtSize(tester, const Size(1200, 900));
+
+      await tester.tap(find.byTooltip('Toggle sidebar'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Settings'), findsNothing);
+      expect(find.byIcon(Icons.settings_outlined), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('opens and closes the mobile drawer from header controls', (
+      WidgetTester tester,
+    ) async {
+      await pumpShellAtSize(tester, const Size(320, 640));
+
+      await tester.tap(find.byTooltip('Open navigation menu'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Settings'), findsOneWidget);
+
+      await tester.tap(find.byTooltip('Close navigation menu'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Settings'), findsNothing);
       expect(tester.takeException(), isNull);
     });
   });

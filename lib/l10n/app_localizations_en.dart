@@ -31,6 +31,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonGoHomeActionLabel => 'Go home';
 
   @override
+  String get appStatusOnlineLabel => 'Online';
+
+  @override
+  String get appStatusOfflineLabel => 'Offline';
+
+  @override
+  String get appOpenNavigationMenuTooltip => 'Open navigation menu';
+
+  @override
+  String get appCloseNavigationMenuTooltip => 'Close navigation menu';
+
+  @override
+  String get appToggleSidebarTooltip => 'Toggle sidebar';
+
+  @override
+  String get appAccountTooltip => 'Account';
+
+  @override
   String get navigationHomeLabel => 'Home';
 
   @override

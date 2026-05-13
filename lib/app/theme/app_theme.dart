@@ -18,12 +18,28 @@ abstract final class AppTheme {
       Brightness.light => AppStatusColors.light,
       Brightness.dark => AppStatusColors.dark,
     };
+    final TextTheme baseTextTheme = switch (brightness) {
+      Brightness.light => Typography.material2021(
+        colorScheme: colorScheme,
+      ).black,
+      Brightness.dark => Typography.material2021(
+        colorScheme: colorScheme,
+      ).white,
+    };
 
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: colorScheme.surface,
+      scaffoldBackgroundColor: colorScheme.surfaceContainerLowest,
+      canvasColor: colorScheme.surface,
+      hoverColor: colorScheme.surfaceContainerHighest,
+      splashColor: colorScheme.primary.withValues(alpha: 0.08),
+      highlightColor: colorScheme.primary.withValues(alpha: 0.06),
       visualDensity: VisualDensity.standard,
+      textTheme: baseTextTheme.apply(
+        bodyColor: colorScheme.onSurface,
+        displayColor: colorScheme.onSurface,
+      ),
       extensions: <ThemeExtension<dynamic>>[
         spacing,
         AppRadiusTokens.standard,
@@ -33,6 +49,7 @@ abstract final class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
+        surfaceTintColor: Colors.transparent,
         centerTitle: false,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -83,7 +100,8 @@ abstract final class AppTheme {
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
-          minimumSize: Size.square(appTokens.minInteractiveDimension),
+          minimumSize: const Size.square(40),
+          padding: EdgeInsets.all(spacing.sm),
           shape: rectangularShape,
         ),
       ),
@@ -115,7 +133,14 @@ abstract final class AppTheme {
       navigationRailTheme: const NavigationRailThemeData(
         indicatorShape: rectangularShape,
       ),
-      drawerTheme: const DrawerThemeData(shape: rectangularShape),
+      drawerTheme: DrawerThemeData(
+        backgroundColor: colorScheme.surface,
+        shape: rectangularShape,
+      ),
+      listTileTheme: const ListTileThemeData(
+        dense: true,
+        shape: rectangularShape,
+      ),
       snackBarTheme: const SnackBarThemeData(
         shape: rectangularShape,
         behavior: SnackBarBehavior.fixed,

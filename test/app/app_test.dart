@@ -23,7 +23,8 @@ void main() {
 
     final l10n = tester.element(find.byType(HomePage)).l10n;
 
-    expect(find.text(l10n.appTitle), findsOneWidget);
+    expect(find.text(l10n.appTitle), findsWidgets);
+    expect(find.text(l10n.appStatusOnlineLabel), findsOneWidget);
     expect(find.text(l10n.homeReadyTitle), findsOneWidget);
 
     for (final String platform in l10n.supportedStarterPlatforms) {

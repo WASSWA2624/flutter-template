@@ -28,6 +28,30 @@
   "@commonGoHomeActionLabel": {
     "description": "Label for actions that navigate back to the home route."
   },
+  "appStatusOnlineLabel": "Online",
+  "@appStatusOnlineLabel": {
+    "description": "Label shown in the app header when network connectivity is available."
+  },
+  "appStatusOfflineLabel": "Offline",
+  "@appStatusOfflineLabel": {
+    "description": "Label shown in the app header when network connectivity is unavailable."
+  },
+  "appOpenNavigationMenuTooltip": "Open navigation menu",
+  "@appOpenNavigationMenuTooltip": {
+    "description": "Tooltip for the mobile navigation drawer open button."
+  },
+  "appCloseNavigationMenuTooltip": "Close navigation menu",
+  "@appCloseNavigationMenuTooltip": {
+    "description": "Tooltip for the mobile navigation drawer close button."
+  },
+  "appToggleSidebarTooltip": "Toggle sidebar",
+  "@appToggleSidebarTooltip": {
+    "description": "Tooltip for the desktop sidebar collapse and expand button."
+  },
+  "appAccountTooltip": "Account",
+  "@appAccountTooltip": {
+    "description": "Tooltip for the account avatar in the app header."
+  },
   "navigationHomeLabel": "Home",
   "@navigationHomeLabel": {
     "description": "Navigation label for the home destination."

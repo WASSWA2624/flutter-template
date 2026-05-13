@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
+import 'package:flutter_template/core/network/app_connectivity_status.dart';
 import 'package:flutter_template/shared/components/components.dart';
 import 'package:flutter_template/shared/layout/app_breakpoints.dart';
 
@@ -15,13 +16,21 @@ final class ResponsiveShellDestination {
   final IconData selectedIcon;
 }
 
-class ResponsiveShellScaffold extends StatelessWidget {
+class ResponsiveShellScaffold extends StatefulWidget {
   const ResponsiveShellScaffold({
     required this.title,
     required this.destinations,
     required this.selectedIndex,
     required this.onDestinationSelected,
     required this.child,
+    this.connectivityStatus = AppConnectivityStatus.online,
+    this.showUserAvatar = true,
+    this.onlineLabel = 'Online',
+    this.offlineLabel = 'Offline',
+    this.openMenuTooltip = 'Open navigation menu',
+    this.closeDrawerTooltip = 'Close navigation menu',
+    this.toggleSidebarTooltip = 'Toggle sidebar',
+    this.accountTooltip = 'Account',
     super.key,
   });
 
@@ -29,7 +38,25 @@ class ResponsiveShellScaffold extends StatelessWidget {
   final List<ResponsiveShellDestination> destinations;
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
+  final AppConnectivityStatus connectivityStatus;
+  final bool showUserAvatar;
+  final String onlineLabel;
+  final String offlineLabel;
+  final String openMenuTooltip;
+  final String closeDrawerTooltip;
+  final String toggleSidebarTooltip;
+  final String accountTooltip;
   final Widget child;
+
+  @override
+  State<ResponsiveShellScaffold> createState() =>
+      _ResponsiveShellScaffoldState();
+}
+
+class _ResponsiveShellScaffoldState extends State<ResponsiveShellScaffold> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _sidebarCollapsed = false;
+  double _sidebarWidth = _defaultSidebarWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -38,74 +65,240 @@ class ResponsiveShellScaffold extends StatelessWidget {
         final AppBreakpoint breakpoint = AppBreakpoints.fromConstraints(
           constraints,
         );
-        final bool canNavigate = destinations.length > 1;
-        final int effectiveSelectedIndex = destinations.isEmpty
+        final bool isMobile = breakpoint.isMobile;
+        final bool canNavigate = widget.destinations.length > 1;
+        final int effectiveSelectedIndex = widget.destinations.isEmpty
             ? 0
-            : selectedIndex.clamp(0, destinations.length - 1);
-
-        if (breakpoint.isMobile) {
-          return Scaffold(
-            appBar: AppBar(title: _ShellTitle(title: title)),
-            drawer: canNavigate
-                ? _MobileShellDrawer(
-                    title: title,
-                    destinations: destinations,
-                    selectedIndex: effectiveSelectedIndex,
-                    onDestinationSelected: onDestinationSelected,
-                  )
-                : null,
-            body: child,
-          );
-        }
-
-        if (!breakpoint.supportsExtendedNavigationRail) {
-          return Scaffold(
-            body: Row(
-              children: <Widget>[
-                _CompactShellRail(
-                  destinations: destinations,
-                  selectedIndex: effectiveSelectedIndex,
-                  onDestinationSelected: onDestinationSelected,
-                ),
-                const VerticalDivider(width: _dividerWidth),
-                Expanded(child: child),
-              ],
-            ),
-          );
-        }
+            : widget.selectedIndex.clamp(0, widget.destinations.length - 1);
 
         return Scaffold(
-          body: Row(
-            children: <Widget>[
-              _DesktopShellSidebar(
-                title: title,
-                destinations: destinations,
-                selectedIndex: effectiveSelectedIndex,
-                onDestinationSelected: onDestinationSelected,
-              ),
-              const VerticalDivider(width: _dividerWidth),
-              Expanded(child: child),
-            ],
+          key: _scaffoldKey,
+          drawer: isMobile && canNavigate
+              ? _MobileShellDrawer(
+                  title: widget.title,
+                  destinations: widget.destinations,
+                  selectedIndex: effectiveSelectedIndex,
+                  closeTooltip: widget.closeDrawerTooltip,
+                  onDestinationSelected: _selectMobileDestination,
+                )
+              : null,
+          body: SafeArea(
+            bottom: false,
+            child: Column(
+              children: <Widget>[
+                _AppHeader(
+                  title: widget.title,
+                  connectivityStatus: widget.connectivityStatus,
+                  onlineLabel: widget.onlineLabel,
+                  offlineLabel: widget.offlineLabel,
+                  showUserAvatar: widget.showUserAvatar,
+                  accountTooltip: widget.accountTooltip,
+                  toggleTooltip: isMobile
+                      ? widget.openMenuTooltip
+                      : widget.toggleSidebarTooltip,
+                  onToggleNavigation: isMobile
+                      ? _openMobileDrawer
+                      : _toggleDesktopSidebar,
+                ),
+                Expanded(
+                  child: isMobile
+                      ? widget.child
+                      : Row(
+                          children: <Widget>[
+                            _DesktopShellSidebar(
+                              destinations: widget.destinations,
+                              selectedIndex: effectiveSelectedIndex,
+                              collapsed: _sidebarCollapsed,
+                              width: _sidebarCollapsed
+                                  ? _collapsedSidebarWidth
+                                  : _sidebarWidth,
+                              onDestinationSelected:
+                                  widget.onDestinationSelected,
+                            ),
+                            if (!_sidebarCollapsed)
+                              _SidebarResizeHandle(onDrag: _resizeSidebar),
+                            const VerticalDivider(width: _dividerWidth),
+                            Expanded(child: widget.child),
+                          ],
+                        ),
+                ),
+              ],
+            ),
           ),
         );
       },
     );
   }
+
+  void _openMobileDrawer() {
+    _scaffoldKey.currentState?.openDrawer();
+  }
+
+  void _toggleDesktopSidebar() {
+    setState(() {
+      _sidebarCollapsed = !_sidebarCollapsed;
+    });
+  }
+
+  void _resizeSidebar(double delta) {
+    setState(() {
+      _sidebarWidth = (_sidebarWidth + delta).clamp(
+        _minSidebarWidth,
+        _maxSidebarWidth,
+      );
+    });
+  }
+
+  void _selectMobileDestination(int index) {
+    Navigator.of(context).pop();
+    if (index != widget.selectedIndex) {
+      widget.onDestinationSelected(index);
+    }
+  }
 }
 
-class _ShellTitle extends StatelessWidget {
-  const _ShellTitle({required this.title});
+class _AppHeader extends StatelessWidget {
+  const _AppHeader({
+    required this.title,
+    required this.connectivityStatus,
+    required this.onlineLabel,
+    required this.offlineLabel,
+    required this.showUserAvatar,
+    required this.accountTooltip,
+    required this.toggleTooltip,
+    required this.onToggleNavigation,
+  });
 
   final String title;
+  final AppConnectivityStatus connectivityStatus;
+  final String onlineLabel;
+  final String offlineLabel;
+  final bool showUserAvatar;
+  final String accountTooltip;
+  final String toggleTooltip;
+  final VoidCallback onToggleNavigation;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        const AppLogo(size: _appBarLogoSize),
-        SizedBox(width: Theme.of(context).spacing.sm),
-        Expanded(child: Text(title, overflow: TextOverflow.ellipsis)),
-      ],
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: colorScheme.outlineVariant,
+            width: theme.appTokens.dividerThickness,
+          ),
+        ),
+      ),
+      child: SizedBox(
+        height: _headerHeight,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: theme.spacing.sm),
+          child: Row(
+            children: <Widget>[
+              IconButton(
+                tooltip: toggleTooltip,
+                icon: const Icon(Icons.menu),
+                onPressed: onToggleNavigation,
+              ),
+              SizedBox(width: theme.spacing.xs),
+              const AppLogo(size: _headerLogoSize),
+              SizedBox(width: theme.spacing.sm),
+              Expanded(
+                child: Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              _ConnectivityBadge(
+                status: connectivityStatus,
+                onlineLabel: onlineLabel,
+                offlineLabel: offlineLabel,
+              ),
+              if (showUserAvatar) ...<Widget>[
+                SizedBox(width: theme.spacing.sm),
+                Tooltip(message: accountTooltip, child: const _UserAvatar()),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ConnectivityBadge extends StatelessWidget {
+  const _ConnectivityBadge({
+    required this.status,
+    required this.onlineLabel,
+    required this.offlineLabel,
+  });
+
+  final AppConnectivityStatus status;
+  final String onlineLabel;
+  final String offlineLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isOnline = status.isOnline;
+    final Color foregroundColor = isOnline
+        ? theme.statusColors.success
+        : theme.statusColors.error;
+    final Color backgroundColor = isOnline
+        ? theme.statusColors.successContainer
+        : theme.statusColors.errorContainer;
+    final String label = isOnline ? onlineLabel : offlineLabel;
+
+    return Semantics(
+      label: label,
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: backgroundColor),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: theme.spacing.sm,
+            vertical: theme.spacing.xs,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(Icons.circle, size: _statusDotSize, color: foregroundColor),
+              SizedBox(width: theme.spacing.xs),
+              Text(
+                label,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: foregroundColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _UserAvatar extends StatelessWidget {
+  const _UserAvatar();
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return CircleAvatar(
+      radius: _avatarRadius,
+      backgroundColor: colorScheme.surfaceContainerHighest,
+      foregroundColor: colorScheme.onSurfaceVariant,
+      child: const Icon(Icons.person_outline, size: _avatarIconSize),
     );
   }
 }
@@ -115,26 +308,57 @@ class _MobileShellDrawer extends StatelessWidget {
     required this.title,
     required this.destinations,
     required this.selectedIndex,
+    required this.closeTooltip,
     required this.onDestinationSelected,
   });
 
   final String title;
   final List<ResponsiveShellDestination> destinations;
   final int selectedIndex;
+  final String closeTooltip;
   final ValueChanged<int> onDestinationSelected;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
 
     return Drawer(
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(theme.spacing.lg),
-              child: _ShellTitle(title: title),
+            SizedBox(
+              height: _drawerHeaderHeight,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: theme.spacing.lg,
+                  right: theme.spacing.xs,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    const AppLogo(size: _headerLogoSize),
+                    SizedBox(width: theme.spacing.sm),
+                    Expanded(
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      tooltip: closeTooltip,
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
             const Divider(height: _dividerWidth),
             Expanded(
@@ -145,11 +369,9 @@ class _MobileShellDrawer extends StatelessWidget {
                   return _ShellMenuItem(
                     destination: destinations[index],
                     selected: index == selectedIndex,
+                    showLabel: true,
                     onTap: () {
-                      Navigator.of(context).pop();
-                      if (index != selectedIndex) {
-                        onDestinationSelected(index);
-                      }
+                      onDestinationSelected(index);
                     },
                   );
                 },
@@ -162,52 +384,19 @@ class _MobileShellDrawer extends StatelessWidget {
   }
 }
 
-class _CompactShellRail extends StatelessWidget {
-  const _CompactShellRail({
-    required this.destinations,
-    required this.selectedIndex,
-    required this.onDestinationSelected,
-  });
-
-  final List<ResponsiveShellDestination> destinations;
-  final int selectedIndex;
-  final ValueChanged<int> onDestinationSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return NavigationRail(
-      selectedIndex: selectedIndex,
-      onDestinationSelected: onDestinationSelected,
-      labelType: NavigationRailLabelType.all,
-      leading: Padding(
-        padding: EdgeInsets.only(bottom: theme.spacing.lg),
-        child: const AppLogo(size: _railLogoSize),
-      ),
-      destinations: <NavigationRailDestination>[
-        for (final ResponsiveShellDestination destination in destinations)
-          NavigationRailDestination(
-            icon: Icon(destination.icon),
-            selectedIcon: Icon(destination.selectedIcon),
-            label: Text(destination.label),
-          ),
-      ],
-    );
-  }
-}
-
 class _DesktopShellSidebar extends StatelessWidget {
   const _DesktopShellSidebar({
-    required this.title,
     required this.destinations,
     required this.selectedIndex,
+    required this.collapsed,
+    required this.width,
     required this.onDestinationSelected,
   });
 
-  final String title;
   final List<ResponsiveShellDestination> destinations;
   final int selectedIndex;
+  final bool collapsed;
+  final double width;
   final ValueChanged<int> onDestinationSelected;
 
   @override
@@ -215,37 +404,138 @@ class _DesktopShellSidebar extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
 
-    return ColoredBox(
-      color: colorScheme.surface,
-      child: SizedBox(
-        width: _sidebarWidth,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(theme.spacing.lg),
-                child: _ShellTitle(title: title),
-              ),
-              const Divider(height: _dividerWidth),
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: theme.spacing.sm),
-                  itemCount: destinations.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _ShellMenuItem(
-                      destination: destinations[index],
-                      selected: index == selectedIndex,
-                      onTap: () {
-                        if (index != selectedIndex) {
-                          onDestinationSelected(index);
-                        }
-                      },
-                    );
-                  },
+    return AnimatedContainer(
+      duration: _sidebarAnimationDuration,
+      curve: Curves.easeOutCubic,
+      width: width,
+      color: colorScheme.surfaceContainerLowest,
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(vertical: theme.spacing.sm),
+        itemCount: destinations.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _ShellMenuItem(
+            destination: destinations[index],
+            selected: index == selectedIndex,
+            showLabel: !collapsed,
+            onTap: () {
+              if (index != selectedIndex) {
+                onDestinationSelected(index);
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ShellMenuItem extends StatefulWidget {
+  const _ShellMenuItem({
+    required this.destination,
+    required this.selected,
+    required this.showLabel,
+    required this.onTap,
+  });
+
+  final ResponsiveShellDestination destination;
+  final bool selected;
+  final bool showLabel;
+  final VoidCallback onTap;
+
+  @override
+  State<_ShellMenuItem> createState() => _ShellMenuItemState();
+}
+
+class _ShellMenuItemState extends State<_ShellMenuItem> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final Color selectedColor = colorScheme.secondaryContainer;
+    final Color hoverColor = colorScheme.surfaceContainerHighest;
+    final Color foregroundColor = widget.selected
+        ? colorScheme.onSecondaryContainer
+        : colorScheme.onSurfaceVariant;
+    final Widget content = AnimatedContainer(
+      duration: _menuAnimationDuration,
+      height: _menuItemHeight,
+      margin: EdgeInsets.symmetric(
+        horizontal: theme.spacing.sm,
+        vertical: theme.spacing.xs,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: widget.showLabel ? theme.spacing.md : theme.spacing.none,
+      ),
+      decoration: BoxDecoration(
+        color: widget.selected
+            ? selectedColor
+            : _hovered
+            ? hoverColor
+            : Colors.transparent,
+        border: Border(
+          left: BorderSide(
+            color: widget.selected ? colorScheme.primary : Colors.transparent,
+            width: _selectedIndicatorWidth,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: widget.showLabel
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            widget.selected
+                ? widget.destination.selectedIcon
+                : widget.destination.icon,
+            color: foregroundColor,
+            size: theme.appTokens.listIconSize,
+          ),
+          if (widget.showLabel) ...<Widget>[
+            SizedBox(width: theme.spacing.md),
+            Expanded(
+              child: Text(
+                widget.destination.label,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: foregroundColor,
+                  fontWeight: widget.selected ? FontWeight.w700 : null,
                 ),
               ),
-            ],
+            ),
+          ],
+        ],
+      ),
+    );
+
+    return Tooltip(
+      message: widget.showLabel ? '' : widget.destination.label,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) {
+          setState(() {
+            _hovered = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            _hovered = false;
+          });
+        },
+        child: Semantics(
+          button: true,
+          selected: widget.selected,
+          label: widget.destination.label,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: widget.onTap,
+              hoverColor: Colors.transparent,
+              splashColor: colorScheme.primary.withValues(alpha: 0.08),
+              child: content,
+            ),
           ),
         ),
       ),
@@ -253,40 +543,50 @@ class _DesktopShellSidebar extends StatelessWidget {
   }
 }
 
-class _ShellMenuItem extends StatelessWidget {
-  const _ShellMenuItem({
-    required this.destination,
-    required this.selected,
-    required this.onTap,
-  });
+class _SidebarResizeHandle extends StatelessWidget {
+  const _SidebarResizeHandle({required this.onDrag});
 
-  final ResponsiveShellDestination destination;
-  final bool selected;
-  final VoidCallback onTap;
+  final ValueChanged<double> onDrag;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
+    final Color color = Theme.of(context).colorScheme.outlineVariant;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: theme.spacing.sm),
-      child: ListTile(
-        selected: selected,
-        selectedTileColor: colorScheme.secondaryContainer,
-        selectedColor: colorScheme.onSecondaryContainer,
-        leading: Icon(selected ? destination.selectedIcon : destination.icon),
-        title: Text(destination.label, overflow: TextOverflow.ellipsis),
-        minLeadingWidth: theme.spacing.xl,
-        contentPadding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-        shape: const RoundedRectangleBorder(),
-        onTap: onTap,
+    return MouseRegion(
+      cursor: SystemMouseCursors.resizeColumn,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
+          onDrag(details.delta.dx);
+        },
+        child: SizedBox(
+          width: _resizeHandleWidth,
+          child: Center(
+            child: SizedBox(
+              width: _dividerWidth,
+              height: double.infinity,
+              child: ColoredBox(color: color),
+            ),
+          ),
+        ),
       ),
     );
   }
 }
 
-const double _appBarLogoSize = 32;
-const double _railLogoSize = 36;
-const double _sidebarWidth = 248;
+const double _headerHeight = 56;
+const double _drawerHeaderHeight = 56;
+const double _headerLogoSize = 32;
+const double _defaultSidebarWidth = 240;
+const double _minSidebarWidth = 184;
+const double _maxSidebarWidth = 320;
+const double _collapsedSidebarWidth = 64;
+const double _resizeHandleWidth = 8;
 const double _dividerWidth = 1;
+const double _statusDotSize = 8;
+const double _avatarRadius = 16;
+const double _avatarIconSize = 20;
+const double _selectedIndicatorWidth = 3;
+const double _menuItemHeight = 44;
+const Duration _menuAnimationDuration = Duration(milliseconds: 120);
+const Duration _sidebarAnimationDuration = Duration(milliseconds: 180);
