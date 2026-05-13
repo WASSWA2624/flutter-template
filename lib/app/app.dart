@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/router/app_router.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/app/theme/app_theme.dart';
 import 'package:flutter_template/app/theme/app_theme_mode_controller.dart';
-import 'package:flutter_template/l10n/app_strings.dart';
+import 'package:flutter_template/l10n/app_localizations.dart';
+import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:go_router/go_router.dart';
 
 class TemplateApp extends ConsumerWidget {
@@ -18,14 +18,14 @@ class TemplateApp extends ConsumerWidget {
     final GoRouter router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(
-      title: AppStrings.appTitle,
+      onGenerateTitle: (BuildContext context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
       locale: locale,
-      supportedLocales: AppStrings.supportedLocales,
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       routerConfig: router,
     );
   }

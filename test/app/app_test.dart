@@ -2,26 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/app.dart';
 import 'package:flutter_template/app/router/app_router.dart';
+import 'package:flutter_template/app/router/route_status_pages.dart';
 import 'package:flutter_template/app/startup/app_startup_state.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/core/security/session_readiness.dart';
 import 'package:flutter_template/core/storage/storage_readiness.dart';
 import 'package:flutter_template/features/home/presentation/pages/home_page.dart';
-import 'package:flutter_template/l10n/app_strings.dart';
+import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 void main() {
+  const Locale englishLocale = Locale('en');
+
   testWidgets('renders the minimal template shell', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const ProviderScope(child: TemplateApp()));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.appTitle), findsOneWidget);
-    expect(find.text(AppStrings.readyTitle), findsOneWidget);
+    final l10n = tester.element(find.byType(HomePage)).l10n;
 
-    for (final String platform in AppStrings.supportedPlatforms) {
+    expect(find.text(l10n.appTitle), findsOneWidget);
+    expect(find.text(l10n.homeReadyTitle), findsOneWidget);
+
+    for (final String platform in l10n.supportedStarterPlatforms) {
       expect(find.text(platform), findsOneWidget);
     }
   });
@@ -37,7 +42,9 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: TemplateApp()));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.readyTitle), findsOneWidget);
+    final l10n = tester.element(find.byType(HomePage)).l10n;
+
+    expect(find.text(l10n.homeReadyTitle), findsOneWidget);
     expect(find.byType(NavigationBar), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -51,7 +58,7 @@ void main() {
           appStartupStateProvider.overrideWithValue(
             const AppStartupState(
               themeMode: ThemeMode.dark,
-              locale: AppStrings.defaultLocale,
+              locale: englishLocale,
               storageReadiness: StorageReadiness.ready(),
               sessionReadiness: SessionReadiness.ready(),
             ),
@@ -65,7 +72,7 @@ void main() {
     final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
 
     expect(materialApp.themeMode, ThemeMode.dark);
-    expect(materialApp.locale, AppStrings.defaultLocale);
+    expect(materialApp.locale, englishLocale);
   });
 
   testWidgets('shows localized not-found UI for unknown routes', (
@@ -77,8 +84,10 @@ void main() {
     GoRouter.of(tester.element(find.byType(HomePage))).go('/missing-route');
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.notFoundTitle), findsOneWidget);
-    expect(find.text(AppStrings.notFoundBody), findsOneWidget);
+    final l10n = tester.element(find.byType(NotFoundPage)).l10n;
+
+    expect(find.text(l10n.routeNotFoundTitle), findsOneWidget);
+    expect(find.text(l10n.routeNotFoundBody), findsOneWidget);
     expect(find.text('/missing-route'), findsOneWidget);
   });
 
@@ -95,7 +104,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.notFoundTitle), findsOneWidget);
+    final l10n = tester.element(find.byType(NotFoundPage)).l10n;
+
+    expect(find.text(l10n.routeNotFoundTitle), findsOneWidget);
     expect(find.text('/missing-route'), findsOneWidget);
   });
 }

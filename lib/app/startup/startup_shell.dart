@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/theme/app_theme.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
-import 'package:flutter_template/l10n/app_strings.dart';
+import 'package:flutter_template/l10n/app_localizations.dart';
+import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:flutter_template/shared/layout/responsive_page.dart';
+
+typedef _StartupContentBuilder =
+    Widget Function(BuildContext context, AppLocalizations l10n);
 
 class StartupLoadingApp extends StatelessWidget {
   const StartupLoadingApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const _StartupShell(
-      title: AppStrings.startupLoadingTitle,
-      body: AppStrings.startupLoadingBody,
-      action: CircularProgressIndicator(),
+    return _StartupShell(
+      builder: (BuildContext context, AppLocalizations l10n) {
+        return _StartupScaffold(
+          title: l10n.startupLoadingTitle,
+          body: l10n.startupLoadingBody,
+          action: const CircularProgressIndicator(),
+        );
+      },
     );
   }
 }
@@ -25,40 +33,41 @@ class StartupErrorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _StartupShell(
-      title: AppStrings.startupErrorTitle,
-      body: AppStrings.startupErrorBody,
-      action: FilledButton(
-        onPressed: onRetry,
-        child: const Text(AppStrings.retryActionLabel),
-      ),
+      builder: (BuildContext context, AppLocalizations l10n) {
+        return _StartupScaffold(
+          title: l10n.startupErrorTitle,
+          body: l10n.startupErrorBody,
+          action: FilledButton(
+            onPressed: onRetry,
+            child: Text(l10n.commonRetryActionLabel),
+          ),
+        );
+      },
     );
   }
 }
 
 class _StartupShell extends StatelessWidget {
-  const _StartupShell({
-    required this.title,
-    required this.body,
-    required this.action,
-  });
+  const _StartupShell({required this.builder});
 
-  final String title;
-  final String body;
-  final Widget action;
+  final _StartupContentBuilder builder;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: AppStrings.appTitle,
+      onGenerateTitle: (BuildContext context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.light,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<void>(
           settings: settings,
-          builder: (_) =>
-              _StartupScaffold(title: title, body: body, action: action),
+          builder: (BuildContext context) {
+            return builder(context, context.l10n);
+          },
         );
       },
     );

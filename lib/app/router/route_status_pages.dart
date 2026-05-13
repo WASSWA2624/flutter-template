@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/router/app_routes.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
-import 'package:flutter_template/l10n/app_strings.dart';
+import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:flutter_template/shared/layout/responsive_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,11 +10,13 @@ class SessionRestoringPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _RouteStatusPage(
+    final l10n = context.l10n;
+
+    return _RouteStatusPage(
       icon: Icons.lock_clock_outlined,
-      title: AppStrings.sessionRestoringTitle,
-      body: AppStrings.sessionRestoringBody,
-      actionLabel: AppStrings.goHomeActionLabel,
+      title: l10n.routeSessionRestoringTitle,
+      body: l10n.routeSessionRestoringBody,
+      actionLabel: l10n.commonGoHomeActionLabel,
     );
   }
 }
@@ -24,11 +26,13 @@ class AuthRequiredPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _RouteStatusPage(
+    final l10n = context.l10n;
+
+    return _RouteStatusPage(
       icon: Icons.lock_outline,
-      title: AppStrings.authRequiredTitle,
-      body: AppStrings.authRequiredBody,
-      actionLabel: AppStrings.goHomeActionLabel,
+      title: l10n.routeAuthRequiredTitle,
+      body: l10n.routeAuthRequiredBody,
+      actionLabel: l10n.commonGoHomeActionLabel,
     );
   }
 }
@@ -38,11 +42,13 @@ class ForbiddenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _RouteStatusPage(
+    final l10n = context.l10n;
+
+    return _RouteStatusPage(
       icon: Icons.block_outlined,
-      title: AppStrings.forbiddenTitle,
-      body: AppStrings.forbiddenBody,
-      actionLabel: AppStrings.goHomeActionLabel,
+      title: l10n.routeForbiddenTitle,
+      body: l10n.routeForbiddenBody,
+      actionLabel: l10n.commonGoHomeActionLabel,
     );
   }
 }
@@ -54,12 +60,14 @@ class NotFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return _RouteStatusPage(
       icon: Icons.travel_explore_outlined,
-      title: AppStrings.notFoundTitle,
-      body: AppStrings.notFoundBody,
+      title: l10n.routeNotFoundTitle,
+      body: l10n.routeNotFoundBody,
       detail: location,
-      actionLabel: AppStrings.goHomeActionLabel,
+      actionLabel: l10n.commonGoHomeActionLabel,
     );
   }
 }
@@ -87,7 +95,7 @@ class _RouteStatusPage extends StatelessWidget {
     final AppSpacingTokens spacing = theme.spacing;
 
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.appTitle)),
+      appBar: AppBar(title: Text(context.l10n.appTitle)),
       body: ResponsivePage(
         maxWidth: PageMaxWidth.authForm,
         centerVertically: true,

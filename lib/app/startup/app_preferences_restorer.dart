@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/l10n/app_strings.dart';
+import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract final class AppPreferenceKeys {
@@ -34,7 +34,7 @@ abstract final class AppPreferencesRestorer {
       return null;
     }
 
-    for (final locale in AppStrings.supportedLocales) {
+    for (final Locale locale in AppLocalizations.supportedLocales) {
       if (_matchesLocale(locale, value)) {
         return locale;
       }

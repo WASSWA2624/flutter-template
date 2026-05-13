@@ -7,7 +7,8 @@ import 'package:flutter_template/app/router/route_status_pages.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/core/permissions/permission_providers.dart';
 import 'package:flutter_template/features/home/presentation/pages/home_page.dart';
-import 'package:flutter_template/l10n/app_strings.dart';
+import 'package:flutter_template/l10n/app_localizations.dart';
+import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:flutter_template/shared/layout/responsive_shell_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -82,17 +83,20 @@ final class _ShellDestinationRoute {
   final ResponsiveShellDestination destination;
 }
 
-const List<_ShellDestinationRoute> _shellDestinations =
-    <_ShellDestinationRoute>[
-      _ShellDestinationRoute(
-        route: AppRoutes.home,
-        destination: ResponsiveShellDestination(
-          label: AppStrings.homeRouteLabel,
-          icon: Icons.home_outlined,
-          selectedIcon: Icons.home,
-        ),
+List<_ShellDestinationRoute> _localizedShellDestinations(
+  AppLocalizations l10n,
+) {
+  return <_ShellDestinationRoute>[
+    _ShellDestinationRoute(
+      route: AppRoutes.home,
+      destination: ResponsiveShellDestination(
+        label: l10n.navigationHomeLabel,
+        icon: Icons.home_outlined,
+        selectedIcon: Icons.home,
       ),
-    ];
+    ),
+  ];
+}
 
 class _AppShell extends StatelessWidget {
   const _AppShell({required this.location, required this.child});
@@ -102,12 +106,18 @@ class _AppShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int selectedIndex = _selectedIndexForPath(location.path);
+    final AppLocalizations l10n = context.l10n;
+    final List<_ShellDestinationRoute> shellDestinations =
+        _localizedShellDestinations(l10n);
+    final int selectedIndex = _selectedIndexForPath(
+      location.path,
+      shellDestinations,
+    );
 
     return ResponsiveShellScaffold(
-      title: AppStrings.appTitle,
+      title: l10n.appTitle,
       destinations: <ResponsiveShellDestination>[
-        for (final _ShellDestinationRoute destination in _shellDestinations)
+        for (final _ShellDestinationRoute destination in shellDestinations)
           destination.destination,
       ],
       selectedIndex: selectedIndex,
@@ -116,14 +126,17 @@ class _AppShell extends StatelessWidget {
           return;
         }
 
-        context.go(_shellDestinations[index].route.location());
+        context.go(shellDestinations[index].route.location());
       },
       child: child,
     );
   }
 
-  int _selectedIndexForPath(String locationPath) {
-    final int index = _shellDestinations.indexWhere((
+  int _selectedIndexForPath(
+    String locationPath,
+    List<_ShellDestinationRoute> shellDestinations,
+  ) {
+    final int index = shellDestinations.indexWhere((
       _ShellDestinationRoute destination,
     ) {
       return destination.route.matchesPath(locationPath);
