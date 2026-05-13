@@ -1,125 +1,34 @@
-# State Management Strategy
+# State Management and Dependency Injection
 
-## Owning Scope
+## Scope
+Defines how app state, feature state, and dependencies are created, read, tested, and overridden.
 
-This file defines Riverpod usage, provider types, state rules, controller conventions, and dependency injection style.
+## Mandatory rules
+- Use Riverpod as the single state management and dependency injection solution.
+- Do not mix Riverpod with another global state management package in the starter.
+- Keep providers close to the layer they own.
+- Use generated providers where it improves safety and consistency.
+- Controllers own presentation state and user actions.
+- Repositories own data coordination, not UI state.
+- Providers must be override-friendly for tests.
+- Do not perform heavy initialization inside widget `build` methods.
+- Use `AsyncValue` or equivalent app wrappers for loading, error, and data states.
 
-Dependencies are listed in [`dependencies.md`](./dependencies.md). Feature architecture is defined in [`architecture.md`](./architecture.md).
-
-## Recommended Tool
-
-Use Riverpod for:
-
-- State management.
-- Dependency injection.
-- Async state.
-- Repository providers.
-- Service providers.
-- Test overrides.
-
-## Provider Types
-
-| Use Case | Recommended Provider |
+## Provider placement
+| Provider type | Location |
 |---|---|
-| Stateless dependency | `Provider` |
-| Async fetch | `FutureProvider` |
-| Stream data | `StreamProvider` |
-| Screen controller | `Notifier` |
-| Async screen controller | `AsyncNotifier` |
-| Code-generated provider | `@riverpod` |
+| App-level config/theme/locale | `lib/app/` or `lib/core/config/` |
+| Infrastructure clients | `lib/core/network`, `lib/core/storage`, `lib/core/sync` |
+| Feature controllers | `features/<feature>/presentation/controllers` |
+| Feature repositories | `features/<feature>/data/repositories` and domain contracts |
 
-## State Rules
+## Acceptance checklist
+- Features can be tested with provider overrides.
+- UI does not instantiate repositories, API clients, or databases directly.
+- Loading, empty, error, and success states are handled consistently.
 
-- Keep providers small.
-- Keep UI state close to the feature.
-- Do not create one global app state object.
-- Keep business logic out of widgets.
-- Use immutable state models.
-- Use `AsyncValue` for loading/error/data states.
-- Use provider overrides in tests.
-- Avoid reading providers from services unless intentionally designed.
-
-## Controller Example
-
-```dart
-@riverpod
-class LoginController extends _$LoginController {
-  @override
-  LoginState build() {
-    return const LoginState();
-  }
-
-  Future<void> submit() async {
-    if (!state.canSubmit) return;
-
-    state = state.copyWith(isSubmitting: true, error: null);
-
-    final signIn = ref.read(signInUseCaseProvider);
-    final result = await signIn(
-      email: state.email,
-      password: state.password,
-    );
-
-    state = result.when(
-      success: (_) => state.copyWith(isSubmitting: false),
-      failure: (failure) => state.copyWith(
-        isSubmitting: false,
-        error: failure,
-      ),
-    );
-  }
-}
-```
-
-## State Model Example
-
-```dart
-@freezed
-class LoginState with _$LoginState {
-  const factory LoginState({
-    @Default('') String email,
-    @Default('') String password,
-    @Default(false) bool isSubmitting,
-    AppFailure? error,
-  }) = _LoginState;
-
-  const LoginState._();
-
-  bool get canSubmit => email.isNotEmpty && password.isNotEmpty && !isSubmitting;
-}
-```
-
-## Dependency Injection Example
-
-```dart
-@riverpod
-Dio dio(DioRef ref) {
-  return ApiClientFactory.create(ref.read(appConfigProvider));
-}
-
-@riverpod
-AuthRepository authRepository(AuthRepositoryRef ref) {
-  return AuthRepositoryImpl(
-    remoteDataSource: ref.read(authRemoteDataSourceProvider),
-    localDataSource: ref.read(authLocalDataSourceProvider),
-  );
-}
-```
-
-## Rebuild Control
-
-- Watch only the state a widget needs.
-- Use `select` for small state slices.
-- Split large widgets into smaller widgets.
-- Keep global providers focused on shared app state only.
-- Avoid refreshing expensive providers unnecessarily.
-
-Performance rules are expanded in [`performance.md`](./performance.md).
-
-
-## Provider Lifecycle Rules
-
-- Use `autoDispose` for short-lived screen state when state should reset after leaving the screen.
-- Keep long-lived app state explicit, such as auth session, theme mode, and locale.
-- Cancel timers, subscriptions, and in-flight operations through provider lifecycle hooks.
-- Avoid provider families with unbounded keys unless their cache behavior is controlled.
+## Related rules
+- [`architecture.md`](./architecture.md)
+- [`startup_flow.md`](./startup_flow.md)
+- [`testing.md`](./testing.md)
+- [`error_handling.md`](./error_handling.md)

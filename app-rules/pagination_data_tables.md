@@ -1,80 +1,28 @@
-# Pagination and Data Table Strategy
+# Pagination, Lists, and Data Tables
 
-## Owning Scope
+## Scope
+Defines scalable data display for lists, table-like rows, grids, and paginated views.
 
-This file defines pagination behavior and data table conventions.
+## Mandatory rules
+- Use lazy builders for long lists.
+- Use pagination, infinite loading, or server-side queries for large datasets.
+- Do not load large tables into memory unnecessarily.
+- Keep row tap/click behavior clear and accessible.
+- Use responsive alternatives for dense tables on small screens.
+- Keep column labels clear and localized.
+- Use stable item keys when rows can update or reorder.
 
-Search and filtering are defined in [`search_filtering.md`](./search_filtering.md).
+## Implementation standard
+- On mobile, dense tables may become list rows/cards with the same data meaning.
+- On desktop, data-heavy screens may use wider containers and horizontal overflow only when necessary.
 
-## Pagination Rules
+## Acceptance checklist
+- Large datasets remain performant.
+- Rows are readable at small and large screen sizes.
+- Pagination state survives refresh where needed.
 
-Use pagination for large API responses and large local lists.
-
-Pagination state should include:
-
-```txt
-page or cursor
-page size
-has more
-is loading
-is refreshing
-current items
-last error
-```
-
-## Pagination Types
-
-| Type | Use Case |
-|---|---|
-| Page-based | Simple numbered pages |
-| Cursor-based | Feeds and changing datasets |
-| Offset-based | Simple backend lists, less ideal for changing data |
-| Infinite scroll | Activity feeds and mobile lists |
-| Manual load more | Good when user control is preferred |
-
-## Pagination Behavior Rules
-
-- Avoid loading large datasets all at once.
-- Show loading indicators for next page loads.
-- Preserve already loaded items during next page loading.
-- Handle refresh separately from load-more.
-- Handle duplicate records when using cursor-based APIs.
-- Keep page size configurable where useful.
-
-## Data Table Rules
-
-Data tables should support:
-
-- Horizontal scrolling or responsive column reduction.
-- Sorting where needed.
-- Filtering where needed.
-- Pagination.
-- Empty state.
-- Loading state.
-- Row actions.
-- Keyboard and mouse interaction.
-
-## Desktop Table Behavior
-
-Desktop data tables should not become unreadable on narrow windows.
-
-Options:
-
-```txt
-hide lower-priority columns
-switch to card/list layout
-allow horizontal scroll
-use details page for secondary fields
-```
-
-## Mobile Table Behavior
-
-On mobile, prefer cards or compact rows over dense desktop tables.
-
-
-## Table Accessibility Rules
-
-- Use readable headers.
-- Preserve keyboard access for sorting, row actions, and pagination controls.
-- Announce empty and loading states clearly.
-- Avoid dense tables on small screens when a card layout is easier to read.
+## Related rules
+- [`responsive_adaptive_design.md`](./responsive_adaptive_design.md)
+- [`search_filtering.md`](./search_filtering.md)
+- [`performance.md`](./performance.md)
+- [`accessibility.md`](./accessibility.md)

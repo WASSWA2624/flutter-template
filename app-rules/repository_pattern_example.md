@@ -1,85 +1,50 @@
-# Example Repository Pattern
+# Repository Pattern Example
 
-## Owning Scope
+## Scope
+Shows the expected boundary between domain contracts, data implementation, and data sources.
 
-This file gives a concrete repository contract and implementation example.
-
-Architecture rules are defined in [`architecture.md`](./architecture.md). Offline strategies are defined in [`offline_sync.md`](./offline_sync.md). Network rules are defined in [`network_api.md`](./network_api.md).
-
-## Repository Contract
-
-The contract belongs in the domain layer.
-
+## Domain contract
 ```dart
-abstract interface class UserRepository {
-  Stream<List<AppUser>> watchUsers();
-  Future<AppResult<void>> refreshUsers();
+abstract class ProfileRepository {
+  Future<Result<Profile>> getCurrentProfile();
 }
 ```
 
-The domain layer should not know whether users come from an API, database, cache, or test fake.
-
-## Repository Implementation
-
-The implementation belongs in the data layer.
-
+## Data implementation
 ```dart
-class UserRepositoryImpl implements UserRepository {
-  const UserRepositoryImpl({
-    required UserRemoteDataSource remoteDataSource,
-    required UserLocalDataSource localDataSource,
-    required NetworkInfo networkInfo,
+class ProfileRepositoryImpl implements ProfileRepository {
+  const ProfileRepositoryImpl({
+    required ProfileRemoteDataSource remoteDataSource,
+    required ProfileLocalDataSource localDataSource,
   })  : _remoteDataSource = remoteDataSource,
-        _localDataSource = localDataSource,
-        _networkInfo = networkInfo;
+        _localDataSource = localDataSource;
 
-  final UserRemoteDataSource _remoteDataSource;
-  final UserLocalDataSource _localDataSource;
-  final NetworkInfo _networkInfo;
+  final ProfileRemoteDataSource _remoteDataSource;
+  final ProfileLocalDataSource _localDataSource;
 
   @override
-  Stream<List<AppUser>> watchUsers() {
-    return _localDataSource.watchUsers().map(
-          (dtos) => dtos.map((dto) => dto.toEntity()).toList(),
-        );
-  }
-
-  @override
-  Future<AppResult<void>> refreshUsers() async {
-    final isOnline = await _networkInfo.isOnline();
-
-    if (!isOnline) {
-      return const AppResult.failure(NetworkFailure.offline());
+  Future<Result<Profile>> getCurrentProfile() async {
+    try {
+      final dto = await _remoteDataSource.getCurrentProfile();
+      final profile = dto.toEntity();
+      await _localDataSource.cacheProfile(profile);
+      return Result.success(profile);
+    } catch (error, stackTrace) {
+      return Result.failure(mapToFailure(error, stackTrace));
     }
-
-    final result = await _remoteDataSource.fetchUsers();
-
-    return result.when(
-      success: (dtos) async {
-        await _localDataSource.upsertUsers(dtos);
-        return const AppResult.success(null);
-      },
-      failure: AppResult.failure,
-    );
   }
 }
 ```
 
-## Repository Rules
+## Rules
+- Widgets depend on controllers, not repository implementations.
+- Domain depends on repository contracts, not remote/local data sources.
+- Data implementations map external data into domain entities.
+- Failures are mapped before reaching presentation code.
+- Repository implementations must not navigate or show UI messages.
 
-- Keep repository contracts in domain.
-- Keep repository implementations in data.
-- Return app-level results or failures, not raw exceptions.
-- Map DTOs to entities before exposing them to domain/application layers.
-- Keep offline strategy inside repository or use case, not UI.
-- Do not show snackbars or dialogs from repositories.
-- Do not navigate from repositories.
-
-## Testing Rule
-
-Repository implementations should be tested with fake remote/local data sources.
-
-
-## Repository Ownership Rule
-
-A repository coordinates data sources for one domain concept. It should not contain widget logic, localized messages, or route decisions.
+## Related rules
+- [`architecture.md`](./architecture.md)
+- [`data_modeling.md`](./data_modeling.md)
+- [`network_api.md`](./network_api.md)
+- [`error_handling.md`](./error_handling.md)

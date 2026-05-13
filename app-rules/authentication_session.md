@@ -1,131 +1,35 @@
 # Authentication and Session Strategy
 
-## Owning Scope
+## Scope
+Defines sign-in, registration readiness, session restoration, secure token storage, logout, and protected routes.
 
-This file defines the auth feature, session lifecycle, token storage expectations, token refresh behavior, logout, and frontend authorization behavior.
+## Mandatory rules
+- Keep authentication logic inside the auth feature and core session services.
+- Store sensitive session tokens only in secure storage where supported.
+- Do not store tokens in `shared_preferences`, plain files, logs, screenshots, or analytics.
+- Restore session state during startup before protected route checks finish.
+- Refresh tokens before expiry when the backend supports refresh tokens.
+- Use a refresh lock to avoid multiple simultaneous refresh calls.
+- If refresh fails, clear the session and redirect to login.
+- Logout must clear sensitive local session data.
+- UI route protection must be backed by backend authorization.
 
-Generic security rules are defined in [`security.md`](./security.md). Protected route behavior is defined in [`navigation.md`](./navigation.md).
+## Session states
+| State | Meaning |
+|---|---|
+| unknown | startup restoration is running |
+| unauthenticated | no valid session |
+| authenticated | valid session and user profile available |
+| expired | session failed refresh or was rejected |
+| forbidden | authenticated user lacks permission for route/action |
 
-## Auth Scope
+## Acceptance checklist
+- Authenticated routes cannot be entered without a valid session.
+- Session restoration does not flash protected content to unauthenticated users.
+- Token values never appear in logs or UI.
 
-Authentication belongs in the `auth` feature.
-
-The auth feature handles:
-
-- Sign in.
-- Sign out.
-- Register.
-- Forgot password.
-- Session restoration.
-- Token refresh.
-- Secure token storage.
-- User profile restoration.
-- Protected route state.
-- Permission and role checks.
-
-## Session States
-
-```dart
-enum AuthStatus {
-  unknown,
-  unauthenticated,
-  authenticated,
-  expired,
-}
-```
-
-Use `unknown` during app startup while stored session data is being checked.
-
-## Session Flow
-
-```txt
-App starts
-↓
-Secure storage is initialized
-↓
-Stored session is read
-↓
-Session expiry is checked
-↓
-Refresh token is used if needed
-↓
-User is loaded if session is valid
-↓
-Router opens correct route
-```
-
-## Token Storage
-
-Sensitive values:
-
-```txt
-access token
-refresh token
-session id
-private auth metadata
-```
-
-Store sensitive values using secure storage.
-
-Non-sensitive values:
-
-```txt
-theme mode
-locale
-last opened tab
-non-sensitive feature flags
-```
-
-Store non-sensitive values using preferences.
-
-Storage boundaries are defined in [`storage_strategy.md`](./storage_strategy.md).
-
-## Web Auth Recommendation
-
-For web applications, prefer secure server-managed HTTP-only cookies where possible.
-
-Avoid storing long-lived tokens in browser local storage.
-
-If token storage in the browser is unavoidable, keep tokens short-lived and protect the app with strong backend security controls.
-
-## Token Refresh Rules
-
-- Refresh tokens before they expire.
-- Do not refresh on every request.
-- Use a refresh lock to prevent multiple simultaneous refresh calls.
-- If refresh fails, clear session and redirect to login.
-- Do not expose token values in logs.
-- Do not store tokens in plain files.
-
-## Logout Rules
-
-On logout:
-
-```txt
-Cancel pending authenticated requests
-Clear secure storage
-Clear auth providers
-Clear sensitive cached user data
-Reset route state
-Redirect to login
-```
-
-## Authorization Rules
-
-Frontend authorization is only a user experience layer.
-
-The backend must enforce real authorization.
-
-Frontend rules:
-
-- Hide UI actions the user cannot access.
-- Protect routes with role/permission checks.
-- Show a localized forbidden page when needed.
-- Never rely only on hidden UI for security.
-
-Permission modeling is owned by [`permissions.md`](./permissions.md).
-
-
-## Session Ownership Boundary
-
-The auth feature owns authentication state and token lifecycle. It should not own generic storage package decisions, logging policy, or backend authorization rules. Those are referenced from [`storage_strategy.md`](./storage_strategy.md), [`security.md`](./security.md), and [`permissions.md`](./permissions.md).
+## Related rules
+- [`navigation.md`](./navigation.md)
+- [`permissions.md`](./permissions.md)
+- [`security.md`](./security.md)
+- [`storage_strategy.md`](./storage_strategy.md)

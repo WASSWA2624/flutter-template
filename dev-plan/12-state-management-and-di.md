@@ -1,113 +1,31 @@
-# 12 - State management and dependency injection
+# 12 - State management and DI
 
 ## Goal
-
-Use Riverpod for state management, dependency injection, async state, service providers, repository providers, and test overrides.
+Wire Riverpod providers for app services, controllers, repositories, and test overrides.
 
 ## Applies app rules
-
 - [`state_management.md`](../app-rules/state_management.md)
-- [`dependencies.md`](../app-rules/dependencies.md)
 - [`architecture.md`](../app-rules/architecture.md)
-- [`performance.md`](../app-rules/performance.md)
 - [`testing.md`](../app-rules/testing.md)
-- [`code_generation.md`](../app-rules/code_generation.md)
+- [`startup_flow.md`](../app-rules/startup_flow.md)
 
-## Provider strategy
+## Implementation tasks
+1. Create app-level providers for config, router, theme, locale, and startup state.
+2. Create infrastructure providers for network/storage placeholders.
+3. Create example feature controller providers.
+4. Ensure providers can be overridden in tests.
+5. Use `AsyncValue` or shared wrappers for async state.
 
-| Use case | Provider type |
-|---|---|
-| Stateless dependency | `Provider` |
-| Async fetch | `FutureProvider` |
-| Stream data | `StreamProvider` |
-| Screen controller | `Notifier` |
-| Async screen controller | `AsyncNotifier` |
-| Generated provider | `@riverpod` |
-
-## Files to create
-
-```txt
-lib/app/app_providers.dart
-lib/core/network/network_providers.dart
-lib/core/storage/storage_providers.dart
-lib/core/theme/theme_providers.dart
-lib/core/localization/locale_provider.dart
-lib/features/*/presentation/controllers/
-lib/features/*/presentation/state/
-```
-
-## Global app providers
-
-Keep global app state limited to truly global concerns:
-
-- app config
-- logger
-- router
-- theme mode
-- locale
-- auth/session state
-- preferences service
-- secure storage service
-- API client factory
-- database connection
-
-Do not create one huge global app state object.
-
-## Feature controller pattern
-
-Use immutable state models and small controllers:
-
-```dart
-@riverpod
-class LoginController extends _$LoginController {
-  @override
-  LoginState build() => const LoginState();
-
-  Future<void> submit() async {
-    if (!state.canSubmit) return;
-    state = state.copyWith(isSubmitting: true, error: null);
-
-    final signIn = ref.read(signInUseCaseProvider);
-    final result = await signIn(
-      email: state.email,
-      password: state.password,
-    );
-
-    state = result.when(
-      success: (_) => state.copyWith(isSubmitting: false),
-      failure: (failure) => state.copyWith(
-        isSubmitting: false,
-        error: failure,
-      ),
-    );
-  }
-}
-```
-
-## State rules
-
-- Keep providers small.
-- Keep UI state close to the feature.
-- Use immutable state objects.
-- Use `AsyncValue` for loading/error/data states where appropriate.
-- Use provider overrides in tests.
-- Avoid reading providers from services unless intentionally designed.
-- Use `autoDispose` for short-lived screen state.
-- Keep long-lived state explicit.
-
-## Rebuild control
-
-- Watch only the state a widget needs.
-- Use `select` for small state slices.
-- Split large widgets into smaller widgets.
-- Avoid refreshing expensive providers unnecessarily.
-- Cancel timers, streams, and in-flight requests through provider lifecycle hooks.
+## Expected output
+- Provider structure.
+- Controller example.
+- Provider override examples in tests.
 
 ## Acceptance criteria
+- No competing state management package is added.
+- UI does not instantiate services directly.
+- Async states are handled consistently.
 
-- Riverpod is used for DI and state.
-- Global providers are focused and limited.
-- Feature controllers own screen actions and UI state.
-- Widgets stay mostly declarative.
-- Providers are easy to override in tests.
-- Code generation runs without conflicts.
+## Coding-agent notes
+- Do not skip rule references.
+- Do not add product-specific behavior unless the step explicitly asks for it.

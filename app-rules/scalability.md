@@ -1,73 +1,34 @@
 # Scalability Strategy
 
-## Owning Scope
+## Scope
+Defines how the template remains maintainable as more features, platforms, and teams are added.
 
-This file defines how the app should scale from small to large projects and which anti-patterns to avoid.
+## Mandatory rules
+- Keep features independent and feature-first.
+- Keep cross-cutting services in `core` only when multiple features use them.
+- Keep shared UI generic and business-free.
+- Keep public feature exports intentional.
+- Avoid global mutable state.
+- Use clear contracts between layers.
+- Document architecture decisions that affect future development.
+- Avoid copying whole screens to support new layouts.
 
-Architecture rules are defined in [`architecture.md`](./architecture.md). Feature workflow is defined in [`feature_workflow.md`](./feature_workflow.md).
-
-## Scaling From Small to Large Apps
-
-Start simple, but keep boundaries clean.
-
-Small app:
-
-```txt
-Few features
-Simple repositories
-Small local storage needs
-Basic auth
-```
-
-Large app:
-
-```txt
-Many features
-Multiple data sources
-Offline sync
-Permissions
-Feature flags
-More tests
-More documentation
-```
-
-The same architecture should support both.
-
-## Scaling Rules
-
-- Keep features independent.
-- Keep `core` generic.
-- Extract shared behavior only after repeated use.
-- Split large features into subfeatures when needed.
-- Use package or monorepo structure only when feature count and team size justify it.
-- Add ADRs for major architecture changes.
-- Keep dependencies replaceable through wrappers.
-
-## Avoid These Problems
-
-| Problem | Result |
+## Scaling patterns
+| Problem | Required pattern |
 |---|---|
-| One giant global state | Hard rebuild control and hard tests |
-| One giant services folder | Unclear ownership |
-| API calls in widgets | Hard to test and hard to reuse |
-| DTOs used everywhere | API shape leaks into app |
-| Feature logic in `core` | `core` becomes a dumping ground |
-| Hard-coded text/styles/routes | Inconsistent UI and harder maintenance |
-| No route guards | Security and navigation bugs |
-| No offline boundary | Cache and sync logic spreads everywhere |
+| many features | feature-first modules |
+| many screens | route groups and shell routes |
+| many data records | pagination, streams, local indexes |
+| many UI variants | theme tokens and component composition |
+| many developers | rules, linting, tests, PR checklist |
 
-## Monorepo Threshold
+## Acceptance checklist
+- Adding a new feature does not require modifying unrelated features.
+- Shared components do not become product-specific dumping grounds.
+- Architecture boundaries remain enforceable by review and tests.
 
-Consider a package/monorepo structure when:
-
-- Multiple apps share the same core package.
-- The team needs independent package ownership.
-- Features are large enough to become reusable packages.
-- CI times need package-level optimization.
-
-Do not split into packages too early. Package boundaries add overhead.
-
-
-## Package Boundary Rule
-
-Do not split into packages too early. Move code into packages only when ownership, reuse, release management, or build performance clearly benefits from the split.
+## Related rules
+- [`architecture.md`](./architecture.md)
+- [`project_structure.md`](./project_structure.md)
+- [`feature_workflow.md`](./feature_workflow.md)
+- [`performance.md`](./performance.md)

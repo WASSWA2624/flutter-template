@@ -1,89 +1,32 @@
 # Validation Strategy
 
-## Owning Scope
+## Scope
+Defines validation ownership for user input, API data, domain values, and local persistence.
 
-This file defines where validation belongs, how server validation errors map to fields, and validation rules.
+## Mandatory rules
+- Validate user input before submission.
+- Validate or safely map backend responses before converting them to domain entities.
+- Keep user-facing validation messages localized.
+- Keep reusable validation functions in shared/core validation utilities.
+- Keep business-specific validation in the feature domain or controller layer.
+- Do not rely on frontend validation only; backend validation remains required for real products.
+- Preserve invalid raw external data only where needed for diagnostics, never as trusted domain state.
 
-Form UX is defined in [`forms.md`](./forms.md). Business value objects are defined in [`data_modeling.md`](./data_modeling.md).
-
-## Validator Location
-
-| Validation Type | Location |
+## Validation ownership
+| Validation type | Owner |
 |---|---|
-| Required field UI feedback | Presentation/form field |
-| Simple format check | Presentation or shared validator |
-| Business rule | Domain value object or use case |
-| API contract validation | Backend and data mapping |
-| Authoritative validation | Backend |
+| Required field | form/controller/shared validator |
+| Format | shared validator/value object |
+| Business rule | domain/use case |
+| Server constraint | backend + frontend mapping |
+| API response shape | DTO/parser/mapper |
 
-## Validation Layers
+## Acceptance checklist
+- Validation is tested for important fields and value objects.
+- Server validation errors display cleanly.
+- Invalid states are not silently accepted into domain models.
 
-Client validation improves UX. Backend validation protects the system.
-
-Both are required.
-
-```txt
-UI validation
-↓
-Domain validation
-↓
-Backend validation
-```
-
-## Server Error Mapping
-
-Server validation errors should be converted into field errors when possible.
-
-Example server response:
-
-```json
-{
-  "errors": {
-    "email": "Email is already used",
-    "password": "Password is too weak"
-  }
-}
-```
-
-Map this to:
-
-```txt
-email field error
-password field error
-```
-
-Do not show all field-specific validation failures as one generic snackbar.
-
-## Shared Validators
-
-Shared validators belong in:
-
-```txt
-core/utils/validators.dart
-```
-
-Business-critical validators should be modeled as domain value objects when they carry meaning.
-
-## Validation Rules
-
-- Keep validation messages localized.
-- Keep business validation out of widgets.
-- Keep remote validation debounced.
-- Avoid validating on every keystroke for expensive checks.
-- Do not trust client validation only.
-- Do not expose backend internal field names directly to users.
-- Normalize values before validation when needed.
-
-Example normalization:
-
-```dart
-final normalizedEmail = email.trim().toLowerCase();
-```
-
-
-## Validation Message Rules
-
-- Validation messages must be localized.
-- Field validation should be specific and helpful.
-- Domain validation should be reusable and independent from widgets.
-- Backend validation errors should be mapped to app-level failures before reaching the UI.
+## Related rules
+- [`forms.md`](./forms.md)
+- [`data_modeling.md`](./data_modeling.md)
+- [`error_handling.md`](./error_handling.md)

@@ -1,84 +1,40 @@
 # Database Strategy
 
-## Owning Scope
+## Scope
+Defines how the template uses local structured storage through Drift.
 
-This file defines local database expectations, Drift usage, table organization, migrations, and local persistence rules.
+## Mandatory rules
+- Use Drift for local structured records, offline cache, drafts, and sync queue tables.
+- Keep database access inside local data sources.
+- Do not query Drift from widgets or controllers directly.
+- Use explicit migrations for schema changes.
+- Test migrations when schema versions change.
+- Add indexes for frequently queried fields.
+- Use pagination or streams for large result sets.
+- Avoid destructive migrations unless the product explicitly requires them and the behavior is documented.
 
-Storage type selection is defined in [`storage_strategy.md`](./storage_strategy.md). Offline sync behavior is defined in [`offline_sync.md`](./offline_sync.md).
-
-## Recommended Database
-
-Use Drift for typed SQLite access in offline-capable apps.
-
-Drift should be used for:
-
-- Structured local records.
-- Offline-first read models.
-- Sync queue records.
-- Cached API responses that need querying.
-- Local drafts.
-
-## Database Folder
-
+## Folder standard
 ```txt
 core/storage/database/
-  app_database.dart
-  database_connection.dart
-  database_migrations.dart
-  tables/
+├── app_database.dart
+├── migrations/
+├── tables/
+└── type_converters/
 ```
 
-Feature-specific tables may be grouped by feature when the app grows.
+## Migration rules
+- Increment schema versions intentionally.
+- Keep migration code deterministic.
+- Document schema changes in the related feature or ADR.
+- Back up important data before destructive changes where the product supports it.
 
-```txt
-core/storage/database/tables/
-  auth_tables.dart
-  profile_tables.dart
-  sync_tables.dart
-```
+## Acceptance checklist
+- Local data can be read offline through repositories.
+- Database code is not imported by presentation widgets.
+- Migration tests exist for non-trivial schema changes.
 
-## Drift Rules
-
-- Keep table definitions clear and documented.
-- Keep database access inside local data sources.
-- Do not query the database from widgets.
-- Use streams for offline-first UI updates.
-- Keep migrations explicit.
-- Test migrations when schema changes.
-
-## Migration Rules
-
-- Never delete production tables casually.
-- Write migrations for schema changes.
-- Keep migration versions documented.
-- Test upgrade paths from old versions.
-- Back up important local data before destructive migrations if possible.
-
-## Local Data Source Pattern
-
-```dart
-abstract interface class UserLocalDataSource {
-  Stream<List<UserDto>> watchUsers();
-  Future<void> upsertUsers(List<UserDto> users);
-  Future<void> clearUsers();
-}
-```
-
-The repository decides how local and remote data are combined. The local data source only handles local persistence.
-
-## Database Performance Rules
-
-- Add indexes for frequently queried columns.
-- Avoid loading large tables into memory.
-- Use pagination for large local lists.
-- Keep write batches efficient.
-- Avoid blocking UI during heavy local operations.
-- Clean expired cache records periodically.
-
-
-## Schema Ownership Rules
-
-- Each feature owns the tables that represent its domain data.
-- Shared infrastructure owns cross-feature tables such as sync queue metadata.
-- Migrations must be deterministic and tested.
-- Do not delete user data during migrations unless the product explicitly requires it and the behavior is documented.
+## Related rules
+- [`storage_strategy.md`](./storage_strategy.md)
+- [`offline_sync.md`](./offline_sync.md)
+- [`data_modeling.md`](./data_modeling.md)
+- [`testing.md`](./testing.md)

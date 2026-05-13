@@ -1,50 +1,28 @@
-# Multi-Platform Input Strategy
+# Multi-Platform Input
 
-## Owning Scope
+## Scope
+Defines touch, mouse, keyboard, focus, hover, and shortcut behavior across platforms.
 
-This file defines input method expectations for touch, keyboard, mouse, pointer, and text input.
+## Mandatory rules
+- Support touch-first interaction on mobile and pointer/keyboard interaction on web and desktop.
+- Keep visible focus states for keyboard navigation.
+- Use hover states where they improve desktop/web clarity.
+- Do not make actions available only through hover.
+- Use platform-appropriate text input keyboard types and actions.
+- Keep form submission accessible from keyboard where practical.
+- Respect safe areas and keyboard insets on mobile.
 
-Platform-specific behavior is defined in [`platform_guidelines.md`](./platform_guidelines.md). Accessibility rules are defined in [`accessibility.md`](./accessibility.md).
+## Implementation standard
+- Shared components should handle focus, hover, enabled/disabled, and pressed states consistently.
+- Shortcut keys may be added at the shell level for app-specific workflows, but must not conflict with browser/system shortcuts.
 
-## Input Types
+## Acceptance checklist
+- Forms work with keyboard only.
+- Menus, dialogs, and dropdowns can be dismissed predictably.
+- Touch targets are practical on mobile.
 
-The app should support:
-
-- Touch input.
-- Mouse input.
-- Keyboard input.
-- Trackpad input.
-- Text input.
-- Screen reader interaction.
-
-## Keyboard Rules
-
-- Support tab navigation on desktop and web.
-- Keep focus order logical.
-- Use `TextInputAction` for form fields.
-- Support Enter submit where appropriate.
-- Support Escape close for dialogs where appropriate.
-- Avoid trapping focus accidentally.
-
-## Pointer Rules
-
-- Show hover states for interactive desktop/web elements.
-- Use pointer-friendly menus on desktop.
-- Keep tap targets large enough for touch.
-- Do not require hover for critical actions.
-- Support scroll wheel behavior on desktop.
-
-## Text Input Rules
-
-- Use correct keyboard types.
-- Use autofill hints where useful.
-- Avoid blocking text scaling.
-- Handle mobile keyboard overlap.
-- Validate and normalize input carefully.
-
-Validation rules are owned by [`validation.md`](./validation.md).
-
-
-## Shortcut Rules
-
-Desktop and web screens may support keyboard shortcuts for common actions. Shortcuts must be discoverable, should not conflict with browser/system shortcuts, and must not be the only way to complete an action.
+## Related rules
+- [`accessibility.md`](./accessibility.md)
+- [`reusable_components.md`](./reusable_components.md)
+- [`responsive_adaptive_design.md`](./responsive_adaptive_design.md)
+- [`platform_guidelines.md`](./platform_guidelines.md)

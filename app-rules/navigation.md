@@ -1,125 +1,40 @@
-# Navigation Strategy
+# Navigation and Routing
 
-## Owning Scope
+## Scope
+Defines routing, navigation guards, deep links, and route naming.
 
-This file defines route paths, route names, GoRouter usage, route protection, redirect logic, and navigation rules.
+## Mandatory rules
+- Use `go_router` as the single navigation package.
+- Keep route definitions centralized under `lib/app/router`.
+- Use named routes or typed route helpers; do not scatter raw route strings through pages.
+- Protect routes through route guards based on session and permissions.
+- Keep web URLs readable and stable.
+- Support deep-link entry where the app needs it.
+- Navigation decisions must not live inside repositories or data sources.
+- Unknown routes must show a localized not-found page.
 
-Authentication session state is defined in [`authentication_session.md`](./authentication_session.md). Permissions are defined in [`permissions.md`](./permissions.md).
-
-## Recommended Tool
-
-Use `go_router`.
-
-It supports:
-
-- Declarative routing.
-- Named routes.
-- URL-based navigation.
-- Deep links.
-- Redirects.
-- Route guards.
-- Nested navigation.
-- Web browser history.
-- Shell routes.
-
-## Routing Folder
-
+## Route structure standard
 ```txt
-core/routing/
-  app_router.dart
-  route_paths.dart
-  route_names.dart
-  route_guards.dart
-  route_error_page.dart
-  route_transitions.dart
+lib/app/router/
+├── app_router.dart
+├── app_routes.dart
+├── route_guards.dart
+└── route_refresh_listenable.dart
 ```
 
-## Route Names and Paths
+## Shell rules
+- Use a shell route for apps with persistent navigation.
+- Use responsive navigation patterns from `responsive_adaptive_design.md`.
+- Do not duplicate pages for mobile and desktop routes unless interaction requirements differ.
 
-```dart
-class RouteNames {
-  const RouteNames._();
+## Acceptance checklist
+- Auth redirect behavior is deterministic.
+- Browser refresh on web restores the expected route state when possible.
+- Protected routes cannot be entered without a valid session.
+- Route names are documented and reused consistently.
 
-  static const login = 'login';
-  static const dashboard = 'dashboard';
-  static const settings = 'settings';
-}
-```
-
-```dart
-class RoutePaths {
-  const RoutePaths._();
-
-  static const login = '/login';
-  static const dashboard = '/dashboard';
-  static const settings = '/settings';
-}
-```
-
-## Route Types
-
-| Route Type | Example | Rule |
-|---|---|---|
-| Public | `/login` | Anyone can access |
-| Guest-only | `/register` | Only unauthenticated users |
-| Protected | `/dashboard` | Requires authentication |
-| Permission-based | `/admin` | Requires permission or role |
-| Unknown | `/invalid-path` | Show route error page |
-
-## Auth Redirect Logic
-
-```txt
-Unknown session
-↓
-Show startup/loading route
-
-Unauthenticated user on protected route
-↓
-Redirect to login
-
-Authenticated user on login/register
-↓
-Redirect to dashboard
-
-Authenticated user without permission
-↓
-Redirect to forbidden page
-```
-
-## Navigation Rules
-
-- Do not use raw route strings inside pages.
-- Use route names or typed routes.
-- Keep route guard logic centralized.
-- Support browser back/forward navigation on web.
-- Support deep links where product needs them.
-- Handle unknown routes gracefully.
-- Do not store sensitive data in URLs.
-- Do not put large objects in route parameters.
-
-## URL Parameter Rules
-
-Use URL parameters only for values safe to expose.
-
-Good:
-
-```txt
-/users/123
-/orders/987
-```
-
-Avoid:
-
-```txt
-/reset-password?token=long-secret-token
-```
-
-Sensitive values should be handled through secure backend flows, not visible routes.
-
-
-## URL and Parameter Rules
-
-- Use path parameters for stable identifiers.
-- Use query parameters for filters, tabs, and lightweight state that can be bookmarked.
-- Do not put tokens, passwords, private notes, or large serialized objects in URLs.
-- Validate route parameters before loading protected data.
+## Related rules
+- [`authentication_session.md`](./authentication_session.md)
+- [`permissions.md`](./permissions.md)
+- [`responsive_adaptive_design.md`](./responsive_adaptive_design.md)
+- [`localization_i18n.md`](./localization_i18n.md)

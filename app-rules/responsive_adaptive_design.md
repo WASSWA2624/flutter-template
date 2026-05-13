@@ -1,262 +1,53 @@
-# Responsive and Adaptive Design Strategy
+# Responsive and Adaptive Design
 
-## Owning Scope
-
-This file defines breakpoints, screen categories, responsive layout utilities, content widths, gutters, orientation rules, and adaptive navigation.
-
-Component styling is defined in [`reusable_components.md`](./reusable_components.md). Theme tokens are defined in [`theming.md`](./theming.md).
-
-## Main Rule
-
-Do not design for only mobile.
-
-Design for available space, input method, and platform behavior.
-
-Responsive design answers:
-
-```txt
-How should the UI fit this screen size?
-```
-
-Adaptive design answers:
-
-```txt
-What interaction pattern works best for this device?
-```
-
-A strong Flutter starter should support both.
-
-## Source of Truth
-
-Responsive definitions live in `core/responsive/`. The canonical files are `app_breakpoints.dart`, `app_screen_size.dart`, `adaptive_layout_policy.dart`, and `responsive_utils.dart`.
+## Scope
+Defines how the app must behave across mobile, tablet, web, and desktop screen sizes.
 
 ## Breakpoints
 
-Use logical pixels.
+| Token | Width range | Target layout |
+|---|---:|---|
+| `xs` | `< 360` | extra-small mobile, one column, compact spacing |
+| `sm` | `360-599` | mobile, one column |
+| `md` | `600-839` | large mobile / small tablet, one or two columns |
+| `lg` | `840-1199` | tablet / small desktop, adaptive navigation |
+| `xl` | `1200-1599` | desktop, centered readable content |
+| `xxl` | `>= 1600` | large desktop, max-width layouts, avoid over-stretching |
 
-```dart
-class AppBreakpoints {
-  static const double smallMobile = 360;
-  static const double mediumMobile = 430;
-  static const double tablet = 768;
-  static const double smallDesktop = 1024;
-  static const double largeDesktop = 1440;
-  static const double extraLargeDesktop = 1920;
-}
-```
 
-## Device Categories
+## Mandatory rules
+- Use responsive layout decisions from `LayoutBuilder`, `MediaQuery.sizeOf(context)`, or centralized responsive utilities.
+- Do not create separate duplicate screens for each size unless the interaction model truly changes.
+- Use one-column-to-many-column scaling.
+- Use readable max widths on large screens instead of stretching forms and text across the whole page.
+- Avoid fixed pixel widths except for intentional min/max constraints.
+- Avoid orientation lock unless a product-specific requirement demands it.
+- Make scroll behavior explicit for small screens and content-heavy pages.
+- Keep touch targets practical for mobile and pointer targets comfortable for desktop/web.
 
-| Width | Category | Example Layout Behavior |
-|---:|---|---|
-| `< 360` | Small mobile | Single column, compact spacing |
-| `360 - 429` | Medium mobile | Single column, standard mobile spacing |
-| `430 - 767` | Large mobile | Single column, larger controls where useful |
-| `768 - 1023` | Tablet | Two-column layouts where useful, navigation rail |
-| `1024 - 1439` | Small desktop | Sidebar navigation, wider content |
-| `1440 - 1919` | Large desktop | Sidebar, centered content, dashboards can expand |
-| `1920+` | Extremely large desktop | Max-width content, avoid endless stretching |
-
-## Responsive Utility
-
-```dart
-enum AppScreenSize {
-  smallMobile,
-  mediumMobile,
-  largeMobile,
-  tablet,
-  smallDesktop,
-  largeDesktop,
-  extraLargeDesktop,
-}
-```
-
-```dart
-class ResponsiveUtils {
-  const ResponsiveUtils._();
-
-  static AppScreenSize screenSize(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-
-    if (width < AppBreakpoints.smallMobile) {
-      return AppScreenSize.smallMobile;
-    }
-    if (width < AppBreakpoints.mediumMobile) {
-      return AppScreenSize.mediumMobile;
-    }
-    if (width < AppBreakpoints.tablet) {
-      return AppScreenSize.largeMobile;
-    }
-    if (width < AppBreakpoints.smallDesktop) {
-      return AppScreenSize.tablet;
-    }
-    if (width < AppBreakpoints.largeDesktop) {
-      return AppScreenSize.smallDesktop;
-    }
-    if (width < AppBreakpoints.extraLargeDesktop) {
-      return AppScreenSize.largeDesktop;
-    }
-    return AppScreenSize.extraLargeDesktop;
-  }
-}
-```
-
-## Responsive Layout Component
-
-Create one standard `ResponsiveLayout` component.
-
-```dart
-class ResponsiveLayout extends StatelessWidget {
-  const ResponsiveLayout({
-    super.key,
-    required this.mobile,
-    this.tablet,
-    this.desktop,
-    this.largeDesktop,
-  });
-
-  final Widget mobile;
-  final Widget? tablet;
-  final Widget? desktop;
-  final Widget? largeDesktop;
-
-  @override
-  Widget build(BuildContext context) {
-    final size = ResponsiveUtils.screenSize(context);
-
-    return switch (size) {
-      AppScreenSize.smallMobile ||
-      AppScreenSize.mediumMobile ||
-      AppScreenSize.largeMobile => mobile,
-      AppScreenSize.tablet => tablet ?? mobile,
-      AppScreenSize.smallDesktop => desktop ?? tablet ?? mobile,
-      AppScreenSize.largeDesktop ||
-      AppScreenSize.extraLargeDesktop => largeDesktop ?? desktop ?? tablet ?? mobile,
-    };
-  }
-}
-```
-
-## Adaptive Navigation
-
-| Screen Type | Navigation Pattern |
-|---|---|
-| Small mobile | Bottom navigation or drawer |
-| Medium mobile | Bottom navigation |
-| Large mobile | Bottom navigation or drawer |
-| Tablet | Navigation rail |
-| Small desktop | Sidebar navigation |
-| Large desktop | Sidebar navigation with wider content |
-| Extremely large desktop | Sidebar with max-width content zones |
-
-Create one `AdaptiveNavigation` component. The rest of the app should not manually decide navigation style on every page.
-
-## Page Layout Standard
-
-All pages should be wrapped with `AppPage`.
-
-`AppPage` should handle:
-
-- Safe areas.
-- Page padding.
-- Max content width.
-- Scroll behavior.
-- Loading state.
-- Error state.
-- Empty state.
-- Page title.
-- Optional actions.
-- Responsive gutters.
-
-Example:
-
-```dart
-AppPage(
-  title: l10n.settings,
-  maxWidth: AppContentWidth.form,
-  child: SettingsForm(),
-)
-```
-
-## Recommended Content Widths
-
-| Content Type | Recommended Width |
+## Layout width standards
+| Content type | Recommended max width |
 |---|---:|
-| Login form | `360px - 440px` |
-| General form | `420px - 560px` |
-| Reading content | `720px - 960px` |
-| Settings page | `720px - 1040px` |
-| Dashboard | `1200px - 1600px` |
-| Data table | Flexible, with horizontal handling |
-| Extremely large desktop content | Usually max `1600px` unless dashboard needs more |
+| Authentication forms | `420-520` |
+| General forms | `560-720` |
+| Reading/detail pages | `840-1040` |
+| Dashboards | `1200-1440` |
+| Data-heavy pages | `1440` with horizontal handling when needed |
 
-## Responsive Gutters
+## Adaptive navigation
+- Mobile: bottom navigation or drawer where appropriate.
+- Tablet: navigation rail or drawer depending on feature count.
+- Desktop/web: side navigation or shell layout when the app has multiple sections.
 
-| Screen Type | Horizontal Padding |
-|---|---:|
-| Small mobile | `12px` |
-| Medium mobile | `16px` |
-| Large mobile | `20px` |
-| Tablet | `24px` |
-| Desktop | `32px` |
-| Large desktop | `40px` |
-| Extremely large desktop | `48px` |
+## Acceptance checklist
+- Core screens are usable at `320px` width.
+- Layouts remain readable at `>=1600px` width.
+- No important content is clipped at supported breakpoints.
+- Forms, lists, dialogs, and navigation adapt without duplicate logic.
 
-## Orientation Rules
-
-The app must handle:
-
-- Portrait phone.
-- Landscape phone.
-- Portrait tablet.
-- Landscape tablet.
-- Desktop resizing.
-- Browser resizing.
-
-Rules:
-
-- Do not assume mobile is always portrait.
-- Do not assume desktop windows are always large.
-- Do not use fixed heights for scrollable pages.
-- Use `SafeArea` where needed.
-- Use adaptive layouts instead of only scaling widgets.
-- Test key screens at every breakpoint.
-
-## Desktop and Web Interaction Rules
-
-Desktop and web users expect:
-
-- Keyboard navigation.
-- Hover states.
-- Focus states.
-- Larger content areas.
-- Scrollbars when appropriate.
-- Deep links on web.
-- Browser back/forward behavior.
-- Resizable layouts.
-- Mouse-friendly menus.
-
-Mobile users expect:
-
-- Large tap targets.
-- Bottom sheets.
-- Touch-friendly spacing.
-- Mobile keyboard support.
-- Safe area handling.
-
-
-## Required Responsive Test Matrix
-
-Every important page should be checked at these widths before release:
-
-| Width | Purpose |
-|---:|---|
-| `320` | Very small mobile safety check |
-| `360` | Small mobile |
-| `430` | Large mobile |
-| `768` | Tablet entry point |
-| `1024` | Small desktop and landscape tablet |
-| `1440` | Large desktop |
-| `1920` | Extremely large desktop |
-
-Also test portrait and landscape where the platform supports orientation changes.
+## Related rules
+- [`reusable_components.md`](./reusable_components.md)
+- [`theming.md`](./theming.md)
+- [`platform_guidelines.md`](./platform_guidelines.md)
+- [`multi_platform_input.md`](./multi_platform_input.md)
+- [`accessibility.md`](./accessibility.md)

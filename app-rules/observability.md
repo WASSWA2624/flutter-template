@@ -1,73 +1,31 @@
 # Observability Strategy
 
-## Owning Scope
+## Scope
+Defines logging, diagnostics, analytics readiness, and privacy constraints.
 
-This file defines logging, crash reporting, and analytics boundaries.
+## Mandatory rules
+- Keep logs structured enough to diagnose issues.
+- Do not log secrets, tokens, passwords, sensitive payloads, or private user data.
+- Use environment-based log levels.
+- Disable verbose logs in production builds.
+- Capture startup, auth, API, sync, and storage failures with safe context.
+- Keep analytics optional and app-specific; do not force a vendor into the base template.
+- Add breadcrumbs or context only when they do not expose sensitive information.
 
-Security logging rules are defined in [`security.md`](./security.md). Environment controls are defined in [`environment_configuration.md`](./environment_configuration.md).
+## Log levels
+| Level | Use |
+|---|---|
+| debug | development-only details |
+| info | normal lifecycle events |
+| warning | recoverable unexpected state |
+| error | failed operation requiring attention |
 
-## Logging
+## Acceptance checklist
+- Production logs are safe.
+- Failure diagnostics help developers reproduce issues without exposing private data.
+- Logging can be disabled or adjusted per environment.
 
-Logging should help developers understand app behavior without exposing private data.
-
-Log:
-
-- Startup events.
-- Environment name.
-- Non-sensitive network failure summaries.
-- Sync status changes.
-- Feature flag evaluation when useful.
-- Important state transitions.
-
-Do not log:
-
-- Tokens.
-- Passwords.
-- Private personal data.
-- Authorization headers.
-- Full sensitive request/response bodies.
-
-## Crash Reporting
-
-Crash reporting should be product-specific and wrapped behind an app service.
-
-```dart
-abstract interface class CrashReporter {
-  Future<void> recordError(Object error, StackTrace stackTrace);
-  Future<void> setUserId(String? userId);
-}
-```
-
-Rules:
-
-- Enable crash reporting only where approved.
-- Avoid sending sensitive values.
-- Clear user identifiers on logout.
-- Keep implementation replaceable.
-
-## Analytics
-
-Analytics should be optional and privacy-aware.
-
-```dart
-abstract interface class AnalyticsService {
-  Future<void> trackEvent(String name, Map<String, Object?> properties);
-}
-```
-
-Rules:
-
-- Do not track sensitive values.
-- Use stable event names.
-- Keep analytics calls out of low-level widgets when possible.
-- Respect user consent and product policy.
-- Keep provider-specific SDKs behind an abstraction.
-
-## Observability Rule
-
-Observability should improve debugging and product understanding without weakening privacy or security.
-
-
-## Privacy Boundary
-
-Observability must never collect more user data than the product needs. Analytics and crash reports should avoid raw personal data, secrets, tokens, and full request payloads.
+## Related rules
+- [`security.md`](./security.md)
+- [`error_handling.md`](./error_handling.md)
+- [`environment_configuration.md`](./environment_configuration.md)

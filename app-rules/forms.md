@@ -1,100 +1,31 @@
-# Form Strategy
+# Forms Strategy
 
-## Owning Scope
+## Scope
+Defines form layout, validation, field components, submission states, and error display.
 
-This file defines form composition and form UX rules.
+## Mandatory rules
+- Use shared form components for text, select, date, radio, checkbox, and switch inputs.
+- Keep form validation rules out of raw widgets when they are reused or business-relevant.
+- Display field-level errors beside the field where possible.
+- Display form-level errors for server or cross-field failures.
+- Localize all labels, hints, helper text, and validation messages.
+- Prevent duplicate submissions while a submit action is running.
+- Preserve form input on recoverable errors.
+- Use appropriate keyboard types and input formatters.
+- Avoid giant ungrouped forms; group related fields into clear sections.
 
-Reusable form components are defined in [`reusable_components.md`](./reusable_components.md). Validation placement is defined in [`validation.md`](./validation.md).
+## Validation timing
+- Required fields may validate on blur or submit.
+- Format errors may validate after the user has interacted with the field.
+- Server validation errors must map back to fields when possible.
 
-## Form Principles
+## Acceptance checklist
+- Every form has loading, success, validation error, and server error behavior.
+- Required fields are obvious.
+- Forms are usable on mobile and desktop.
 
-Forms should be:
-
-- Consistent.
-- Accessible.
-- Localized.
-- Responsive.
-- Easy to validate.
-- Safe from double-submit.
-- Clear about required fields.
-- Clear about submission state.
-
-## Form Composition
-
-Use reusable field components from the shared component system.
-
-A feature form should usually contain:
-
-```txt
-FeatureForm widget
-FeatureController
-FeatureState
-Field validators
-Submit action
-Localized messages
-```
-
-Example structure:
-
-```txt
-features/profile/presentation/widgets/profile_form.dart
-features/profile/presentation/controllers/profile_controller.dart
-features/profile/presentation/state/profile_state.dart
-```
-
-## Form Layout Rules
-
-- Use one column on mobile.
-- Use grouped sections for long forms.
-- Use two-column layouts only when labels and fields remain readable.
-- Keep primary actions easy to reach.
-- Avoid fixed heights for form pages.
-- Use max-width for desktop forms.
-
-Responsive layout values are defined in [`responsive_adaptive_design.md`](./responsive_adaptive_design.md).
-
-## Form UX Rules
-
-- Show required field indicators consistently.
-- Validate on submit at minimum.
-- Use live validation only when it improves clarity.
-- Keep submit buttons disabled when submission is clearly impossible.
-- Show a loading state during submit.
-- Prevent double submit.
-- Keep server validation errors close to the affected field.
-- Keep global submission errors near the form action area.
-- Support keyboard submission where appropriate.
-
-## Field State Rules
-
-A field should be able to represent:
-
-```txt
-normal
-focused
-disabled
-read-only
-error
-success when useful
-loading when remote validation is used
-```
-
-## Form Accessibility
-
-Every form should support:
-
-- Keyboard navigation.
-- Screen reader labels.
-- Error announcements where possible.
-- Clear focus order.
-- Large enough tap targets.
-
-Accessibility details are owned by [`accessibility.md`](./accessibility.md).
-
-
-## Submission Rules
-
-- Disable submit while an async submission is running.
-- Prevent double submission.
-- Preserve user input after validation failure.
-- Map server validation errors back to the relevant fields when possible.
+## Related rules
+- [`validation.md`](./validation.md)
+- [`reusable_components.md`](./reusable_components.md)
+- [`localization_i18n.md`](./localization_i18n.md)
+- [`accessibility.md`](./accessibility.md)

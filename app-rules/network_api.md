@@ -1,79 +1,47 @@
 # Network and API Strategy
 
-## Owning Scope
+## Scope
+Defines HTTP access, API clients, interceptors, error mapping, and backend-agnostic contracts.
 
-This file defines the API client, Dio wrapper, interceptors, app result usage for network calls, network error mapping, and API rules.
+## Mandatory rules
+- Use repository contracts in the domain layer instead of calling HTTP from UI.
+- Use `dio` for HTTP clients and interceptors.
+- Keep API DTOs in the data layer.
+- Map API errors into app failures before they reach the UI.
+- Apply request timeouts.
+- Do not log tokens, passwords, or sensitive payloads.
+- Handle unauthorized responses through the session manager.
+- Keep backend URLs and timeouts environment-driven.
+- Support cancellation where long requests can become stale.
 
-Auth refresh rules are defined in [`authentication_session.md`](./authentication_session.md). App-wide result and error display rules are defined in [`error_handling.md`](./error_handling.md).
-
-## API Client
-
-Use one `ApiClient` wrapper around Dio.
-
+## Client standard
 ```txt
-core/network/api_client.dart
+core/network/
+├── api_client.dart
+├── api_endpoints.dart
+├── api_interceptors.dart
+├── api_result.dart
+└── network_failure_mapper.dart
 ```
 
-The app should not use Dio directly in feature repositories unless the repository receives it through a data source abstraction.
-
-## API Client Responsibilities
-
-- Base URL configuration.
-- Timeouts.
-- Common headers.
-- Auth headers.
-- Locale headers.
-- Request cancellation.
-- Error mapping.
-- Response parsing.
-- Sanitized logging.
-- Token refresh coordination.
-- Retry logic where safe.
-
-## Recommended Interceptors
-
-| Interceptor | Purpose |
+## Error mapping
+| Backend condition | App result |
 |---|---|
-| Auth interceptor | Adds access token |
-| Refresh interceptor | Handles expired token cases |
-| Locale interceptor | Adds locale header if backend supports it |
-| Logging interceptor | Logs safe request info in non-production |
-| Error interceptor | Converts low-level errors |
-| Retry interceptor | Retries safe transient failures only |
+| timeout | localized retryable network failure |
+| no reachable internet | localized offline/network failure |
+| `401` | session refresh or logout flow |
+| `403` | forbidden failure |
+| `404` | not found failure |
+| validation error | field/server validation failure |
+| unexpected response | generic safe failure |
 
-## Result Handling
+## Acceptance checklist
+- API logic is testable without rendering widgets.
+- The UI receives typed results or failures, not raw `DioException` objects.
+- Token refresh is centralized.
 
-Use the app-wide `AppResult<T>` from [`error_handling.md`](./error_handling.md) instead of throwing raw exceptions through repositories, use cases, or controllers. Network-specific code may have private helper types internally, but public app-facing APIs should return `AppResult<T>` or typed domain values.
-
-## Network Error Mapping
-
-| Low-Level Error | App Failure |
-|---|---|
-| Timeout | `NetworkFailure.timeout` |
-| No connection | `NetworkFailure.offline` |
-| 401 | `AuthFailure.unauthenticated` |
-| 403 | `AuthFailure.forbidden` |
-| 404 | `NetworkFailure.notFound` |
-| 422 | `ValidationFailure` |
-| 500 | `NetworkFailure.server` |
-| Unknown | `AppFailure.unknown` |
-
-## API Rules
-
-- Always configure timeouts.
-- Do not let raw Dio exceptions reach the UI.
-- Do not parse JSON in widgets.
-- Do not expose DTOs to UI unless intentionally designed.
-- Use cancellation for search and rapidly changing requests.
-- Use pagination for large datasets.
-- Use idempotency keys for offline sync writes where supported.
-
-Search conventions are defined in [`search_filtering.md`](./search_filtering.md). Pagination conventions are defined in [`pagination_data_tables.md`](./pagination_data_tables.md).
-
-
-## Request Lifecycle Rules
-
-- Configure connect, send, and receive timeouts.
-- Cancel stale search or autocomplete requests.
-- Retry only safe idempotent requests unless the backend supports idempotency keys.
-- Keep upload/download progress state out of generic API helpers unless it is part of the API contract.
+## Related rules
+- [`authentication_session.md`](./authentication_session.md)
+- [`error_handling.md`](./error_handling.md)
+- [`security.md`](./security.md)
+- [`offline_sync.md`](./offline_sync.md)

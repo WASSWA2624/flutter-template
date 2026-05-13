@@ -1,87 +1,33 @@
-# Scope and Foundation Goals
+# Project Scope
 
-## Purpose
+## Scope
+Defines what this Flutter template must include and what it must deliberately leave to app-specific projects.
 
-This foundation defines a reusable Flutter starter architecture for building scalable, responsive, secure, maintainable, offline-capable, multi-platform applications.
+## Mandatory rules
+- Build a reusable Flutter foundation, not a finished product-specific app.
+- Support Android, iOS, Web, Linux desktop, and other desktop targets where the Flutter project enables them.
+- Support extra-small mobile screens through large desktop screens, excluding smartwatch-sized layouts.
+- Keep the template backend-agnostic. Include API contracts and integration readiness, but do not hard-code a product backend.
+- Provide a minimal complete startup app: bootstrapping, routing, theming, localization readiness, state management, networking readiness, storage readiness, reusable components, tests, and documentation.
+- Prefer Flutter built-in widgets and official platform patterns before creating custom abstractions.
+- Avoid unnecessary dependencies, duplicate components, duplicate folders, and duplicate rules.
 
-This file is the single source of truth for supported platforms, supported screen categories, and the foundation-level goals.
+## Implementation standard
+- Every feature added to the template must be generally useful for most apps.
+- Every product-specific feature must live outside the starter or be added only by a later app-specific plan.
+- The template must have a single look-and-feel system based on theme tokens and shared components.
+- The dev plan must be executable chronologically from `01` to the final validation step.
 
-## Supported Platforms
+## Acceptance checklist
+- The template can run after setup without requiring a real backend.
+- No rule contradicts another rule in `app-rules/`.
+- The dev plan references the exact rule files that govern each step.
+- A coding agent can follow the plan and produce the same architecture, behavior, and UI conventions.
 
-| Platform | Required Support |
-|---|---:|
-| Android | Yes |
-| iOS | Yes |
-| Web | Yes |
-| Windows | Yes |
-
-The structure should remain easy to extend later to macOS and Linux when a project requires them.
-
-## Supported Window and Device Types
-
-| Device / Window Type | Required Support |
-|---|---:|
-| Small mobile screens | Yes |
-| Medium mobile screens | Yes |
-| Large mobile screens | Yes |
-| Tablets | Yes |
-| Small desktops | Yes |
-| Large desktops | Yes |
-| Extremely large desktops | Yes |
-| Portrait orientation | Yes |
-| Landscape orientation | Yes |
-| Browser resizing | Yes |
-| Desktop window resizing | Yes |
-
-Breakpoint values are owned by [`responsive_adaptive_design.md`](./responsive_adaptive_design.md).
-
-## Foundation Outcomes
-
-The starter codebase should enforce:
-
-- Clean architecture.
-- Consistent file organization.
-- Responsive and adaptive layouts.
-- Uniform reusable components.
-- Strong localization rules.
-- Secure authentication.
-- Protected navigation.
-- Offline-capable data handling.
-- Reliable state management.
-- Scalable dependency injection.
-- Testable business logic.
-- Maintainable coding standards.
-- Good performance across platforms.
-- Clear documentation.
-
-## Non-Negotiable Rules
-
-| Rule | Owning File |
-|---|---|
-| No hard-coded user-facing text | [`localization_i18n.md`](./localization_i18n.md) |
-| No hard-coded route strings in screens | [`navigation.md`](./navigation.md) |
-| No feature-specific logic in `core` | [`architecture.md`](./architecture.md) |
-| No direct API/database calls from widgets | [`architecture.md`](./architecture.md) |
-| No sensitive values in plain preferences | [`security.md`](./security.md) |
-| No repeated UI styling inside feature pages | [`theming.md`](./theming.md) |
-| No duplicate definitions across docs | Root `README.md` |
-
-## Reusable Foundation Standard
-
-A project using this foundation should feel consistent even when different developers build different features.
-
-That means:
-
-- Same naming style.
-- Same folder shape.
-- Same UI component behavior.
-- Same error behavior.
-- Same localization behavior.
-- Same state management approach.
-- Same security boundaries.
-- Same testing expectations.
-
-
-## Package-Level Rule
-
-This app rules package is a convention source of truth. Each rule should have one owning file. When another file needs the same idea, it should link to the owning file instead of duplicating the full definition.
+## Related rules
+- [`project_structure.md`](./project_structure.md)
+- [`architecture.md`](./architecture.md)
+- [`dependencies.md`](./dependencies.md)
+- [`responsive_adaptive_design.md`](./responsive_adaptive_design.md)
+- [`reusable_components.md`](./reusable_components.md)
+- [`checklists.md`](./checklists.md)

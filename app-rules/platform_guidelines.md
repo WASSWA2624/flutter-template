@@ -1,72 +1,33 @@
-# Platform-Specific Guidelines
+# Platform Guidelines
 
-## Owning Scope
+## Scope
+Defines platform behavior for Android, iOS, Web, Linux desktop, and other desktop targets when enabled.
 
-This file defines platform expectations for Android, iOS, web, and Windows.
+## Mandatory rules
+- Keep the starter compatible with Android, iOS, Web, and Linux desktop.
+- Avoid packages or APIs that break supported platforms unless guarded and documented.
+- Use platform checks only at infrastructure boundaries, not throughout feature UI.
+- Keep web URLs and browser refresh behavior in mind when defining routes.
+- Keep desktop pointer, keyboard, window size, and hover behavior in mind.
+- Keep mobile touch, safe areas, keyboard overlays, and orientation behavior in mind.
+- Avoid smartwatch-specific requirements.
 
-Responsive behavior is owned by [`responsive_adaptive_design.md`](./responsive_adaptive_design.md). Multi-platform input behavior is owned by [`multi_platform_input.md`](./multi_platform_input.md).
+## Platform notes
+| Platform | Required consideration |
+|---|---|
+| Android | back behavior, permissions, adaptive icons, small screens |
+| iOS | safe areas, app lifecycle, permissions, platform review expectations |
+| Web | URLs, refresh, storage limitations, keyboard/pointer interaction |
+| Linux desktop | resizable windows, keyboard navigation, pointer/hover states |
+| Windows/macOS | supported when enabled; follow same desktop rules |
 
-## Android
+## Acceptance checklist
+- App builds for enabled platforms.
+- Platform-specific behavior is isolated and documented.
+- UI remains usable with touch, mouse, and keyboard.
 
-Android apps should support:
-
-- Back button behavior.
-- Safe areas and system bars.
-- Runtime permissions only when needed.
-- Correct keyboard behavior.
-- Adaptive icons.
-- Release signing.
-- Android-specific deep link setup when required.
-
-## iOS
-
-iOS apps should support:
-
-- Safe area handling.
-- Cupertino expectations where appropriate.
-- App privacy descriptions for permissions.
-- Correct keyboard avoidance.
-- iOS deep links when required.
-- Release signing and provisioning.
-- App Store metadata requirements.
-
-## Web
-
-Web apps should support:
-
-- Browser back and forward buttons.
-- Deep links.
-- Refresh-safe routes.
-- Responsive browser resizing.
-- Keyboard and mouse interactions.
-- Sensible loading state for first load.
-- Avoiding long-lived tokens in browser local storage when possible.
-- Hosting configuration for route fallback.
-
-## Windows
-
-Windows apps should support:
-
-- Resizable windows.
-- Minimum window size where appropriate.
-- Keyboard shortcuts where useful.
-- Mouse hover states.
-- Scrollbars where helpful.
-- Desktop-friendly navigation.
-- Local file paths through platform-safe APIs.
-
-## Platform Rule
-
-Never assume that a platform means one screen size.
-
-Examples:
-
-- A web app can run on a small phone browser.
-- A desktop app can be resized to a narrow window.
-- A tablet can be portrait or landscape.
-- A phone can be used in landscape.
-
-
-## Cross-Platform Rule
-
-A platform-specific implementation must be hidden behind an app interface when the rest of the app needs to call it. Feature code should not branch on platform unless the behavior is directly part of that feature's user experience.
+## Related rules
+- [`responsive_adaptive_design.md`](./responsive_adaptive_design.md)
+- [`multi_platform_input.md`](./multi_platform_input.md)
+- [`permissions.md`](./permissions.md)
+- [`ci_cd_quality_gates.md`](./ci_cd_quality_gates.md)

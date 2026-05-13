@@ -1,106 +1,35 @@
-# App Startup Flow
+# Startup Flow
 
-## Owning Scope
+## Scope
+Defines how the app initializes configuration, storage, session, localization, theme, and the first route.
 
-This file defines the startup and bootstrap sequence.
+## Mandatory rules
+- Keep `main.dart` small.
+- Perform setup through `bootstrap.dart` and startup services.
+- Initialize Flutter bindings before platform or storage services.
+- Load environment configuration before creating API clients.
+- Restore theme and locale preferences before rendering the main app where practical.
+- Restore session state before allowing protected-route decisions.
+- Show a predictable startup/loading state when initialization is not complete.
+- Do not run network calls in widget `build` methods.
 
-Environment values are defined in [`environment_configuration.md`](./environment_configuration.md). Session restoration is defined in [`authentication_session.md`](./authentication_session.md).
+## Startup order
+1. Initialize bindings.
+2. Load environment configuration.
+3. Initialize logging.
+4. Initialize local storage/database adapters.
+5. Initialize secure storage and session manager.
+6. Restore theme and locale preferences.
+7. Create root `ProviderScope` overrides.
+8. Start `App` with router guards.
 
-## Startup Sequence
+## Acceptance checklist
+- Cold start, warm start, and session-expired start all behave predictably.
+- Startup errors are shown with a localized recovery path.
+- `main.dart` remains readable and does not contain feature logic.
 
-```txt
-main.dart
-↓
-app_bootstrap.dart
-↓
-Ensure Flutter binding
-↓
-Load environment/config
-↓
-Initialize logging
-↓
-Initialize preferences
-↓
-Initialize secure storage
-↓
-Initialize database
-↓
-Restore theme and locale
-↓
-Restore auth session
-↓
-Configure router
-↓
-Run app inside ProviderScope
-```
-
-## `main.dart`
-
-```dart
-import 'app/app_bootstrap.dart';
-import 'app/app_environment.dart';
-
-Future<void> main() async {
-  await bootstrap(AppEnvironment.development);
-}
-```
-
-## `app_bootstrap.dart`
-
-```dart
-Future<void> bootstrap(AppEnvironment environment) async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  final config = AppConfigFactory.create(environment);
-  final bootstrapResult = await AppStartup.initialize(config);
-
-  runApp(
-    ProviderScope(
-      overrides: bootstrapResult.providerOverrides,
-      child: App(config: config),
-    ),
-  );
-}
-```
-
-## Startup Result
-
-Use a simple startup result object to pass initialized services into Riverpod overrides.
-
-```dart
-class AppStartupResult {
-  const AppStartupResult({
-    required this.providerOverrides,
-  });
-
-  final List<Override> providerOverrides;
-}
-```
-
-## Startup Page
-
-Use a startup or splash route while session restoration runs.
-
-The app should not briefly show the login page before discovering the user is already authenticated.
-
-## Startup Failure Rules
-
-- Keep startup logic out of widgets.
-- Keep initialization order explicit.
-- Log startup failures safely.
-- Do not expose internal error details to users.
-- Show a localized startup error page if critical initialization fails.
-- Keep startup services injectable for tests.
-- Avoid long synchronous work on the UI thread.
-
-
-## Startup Failure Handling
-
-Startup failures should be handled through a dedicated startup error screen.
-
-Rules:
-
-- Log sanitized technical details internally.
-- Show localized user-safe messages.
-- Allow retry when the failure may be temporary.
-- Do not continue into the app with partially initialized security, storage, or routing services.
+## Related rules
+- [`environment_configuration.md`](./environment_configuration.md)
+- [`state_management.md`](./state_management.md)
+- [`authentication_session.md`](./authentication_session.md)
+- [`error_handling.md`](./error_handling.md)

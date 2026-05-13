@@ -1,107 +1,34 @@
 # Checklists and Final Standard
 
-## Owning Scope
+## Scope
+Defines final review checklists for the reusable Flutter template.
 
-This file collects starter, app creation, and final standard checklists. It references owning files instead of redefining their full rules.
+## Starter readiness checklist
+- Project structure follows `project_structure.md`.
+- Architecture boundaries follow `architecture.md`.
+- Dependencies follow `dependencies.md`.
+- Theme supports light, dark, and system mode.
+- Localization is configured with English as the initial locale.
+- Responsive utilities and breakpoints are implemented.
+- Shared components are minimal and consistent.
+- Routing uses `go_router` and route guards are ready.
+- State management uses Riverpod only.
+- API, storage, offline, and auth contracts are ready without hard-coded product backend logic.
+- Tests and CI commands are documented.
 
-## Recommended Starter Checklist
+## Per-feature checklist
+- Feature folder follows the standard structure.
+- User-facing strings are localized.
+- UI uses theme tokens and shared components.
+- Loading, empty, error, and success states are handled.
+- Forms validate and preserve recoverable input.
+- Data models are mapped explicitly.
+- Tests cover controller and critical UI behavior.
 
-Before using this foundation for a real app, verify:
+## Final standard
+A developer or coding agent following the rules and dev plan must produce the same architecture, conventions, responsive behavior, theming behavior, and reusable component patterns.
 
-```txt
-Clean architecture in place
-Feature-first folder structure in place
-Environment config in place
-Startup flow in place
-Theme system in place
-Responsive layout system in place
-Reusable component system in place
-Localization setup in place
-Auth module in place
-Secure storage wrapper in place
-Route guards in place
-API client wrapper in place
-Local database setup in place
-Offline/cache strategy in place
-Error handling system in place
-State management providers in place
-Testing structure in place
-Documentation structure in place
-Lint rules in place
-CI checks in place
-```
-
-## App Creation Checklist
-
-When creating a new app from this foundation:
-
-```txt
-Set app name
-Set app ID/package name
-Configure platforms
-Configure environments
-Configure launcher icons
-Configure splash screen
-Set API base URLs
-Set theme colors
-Set supported locales
-Add auth provider details
-Add app-specific feature modules
-Add test setup
-Run analyzer
-Run tests
-Build all target platforms
-```
-
-## Final Standard
-
-The reusable Flutter foundation should follow this standard:
-
-```txt
-Feature-first architecture
-Clean separation of concerns
-Riverpod for state management and dependency injection
-GoRouter for navigation
-Material 3 theme system
-ARB localization
-No hard-coded user-facing text
-Reusable app components
-Responsive layout utilities
-Secure authentication layer
-Offline-capable repositories
-Local database support
-Consistent naming conventions
-Strong testing structure
-Minimal and reliable dependencies
-```
-
-## Fast Review Links
-
-| Need | File |
-|---|---|
-| Architecture review | [`architecture.md`](./architecture.md) |
-| Folder review | [`project_structure.md`](./project_structure.md) |
-| UI consistency review | [`theming.md`](./theming.md), [`reusable_components.md`](./reusable_components.md) |
-| Responsive review | [`responsive_adaptive_design.md`](./responsive_adaptive_design.md) |
-| Security review | [`authentication_session.md`](./authentication_session.md), [`security.md`](./security.md) |
-| Offline review | [`offline_sync.md`](./offline_sync.md), [`database_strategy.md`](./database_strategy.md) |
-| Quality review | [`testing.md`](./testing.md), [`ci_cd_quality_gates.md`](./ci_cd_quality_gates.md) |
-
-## Final Rule
-
-When a convention is already defined in another file, link to that file instead of copying the same definition again.
-
-
-## Maintenance Checklist
-
-Review this rules package periodically:
-
-```txt
-Check Flutter stable changes
-Check major dependency changes
-Run link validation
-Check for duplicated conventions
-Check for stale platform assumptions
-Update CI commands if tooling changes
-Confirm security and storage guidance still matches the product risk level
-```
+## Related rules
+- [`scope.md`](./scope.md)
+- [`validation_report.md`](./validation_report.md)
+- [`documentation_standards.md`](./documentation_standards.md)

@@ -1,79 +1,32 @@
 # Accessibility Strategy
 
-## Owning Scope
+## Scope
+Defines baseline accessibility requirements for screens, components, forms, navigation, and feedback states.
 
-This file defines accessibility requirements, minimum rules, example patterns, and accessibility testing.
-
-Reusable component capabilities are defined in [`reusable_components.md`](./reusable_components.md).
-
-## Accessibility Requirements
-
-The app should be usable with:
-
-- Touch.
-- Mouse.
-- Keyboard.
-- Screen readers.
-- High contrast themes where possible.
-- Scaled text.
-- Different device sizes.
-
-## Minimum Rules
-
-- Use semantic labels for icon-only buttons.
-- Keep tap targets at least `48px` where practical.
+## Mandatory rules
+- Add semantic labels for icon-only buttons and meaningful images.
+- Keep tap/click targets at least `48px` where practical.
 - Support keyboard navigation on web and desktop.
 - Keep visible focus states.
 - Do not rely only on color to communicate meaning.
 - Keep text readable when font scaling is enabled.
 - Use localized accessibility labels.
-- Test important flows with keyboard only.
+- Associate form errors with their fields where possible.
+- Avoid excessive motion and provide simple transitions by default.
 
-Component size tokens are defined in [`theming.md`](./theming.md).
+## Implementation standard
+- Dialogs should trap focus where the platform expects it and return focus after closing.
+- State views should announce meaningful loading, empty, and error messages.
+- Use icons plus text for important statuses.
 
-## Example
+## Acceptance checklist
+- Keyboard tab order is logical.
+- Important actions have semantic labels.
+- Color contrast is readable in light and dark themes.
+- Text scaling does not hide important controls.
 
-Bad:
-
-```dart
-IconButton(
-  icon: const Icon(Icons.close),
-  onPressed: close,
-)
-```
-
-Good:
-
-```dart
-IconButton(
-  icon: const Icon(Icons.close),
-  tooltip: context.l10n.close,
-  onPressed: close,
-)
-```
-
-## Accessibility Testing
-
-Test:
-
-- Screen reader labels on key actions.
-- Keyboard tab order.
-- Form error discoverability.
-- Color contrast.
-- Text scaling.
-- Focus visibility.
-- Dialog focus trapping.
-- Navigation drawer/sidebar keyboard access.
-
-## Accessibility Ownership
-
-Accessibility is not only a QA task. Each shared component must support accessibility by default so feature teams do not rebuild accessibility rules manually.
-
-
-## Additional Accessibility Rules
-
-- Respect text scaling where layouts allow it.
-- Provide visible focus states for keyboard users.
-- Avoid color-only meaning; pair colors with text or icons.
-- Avoid excessive motion and provide simpler transitions where possible.
-- Ensure error messages are associated with their fields.
+## Related rules
+- [`theming.md`](./theming.md)
+- [`forms.md`](./forms.md)
+- [`localization_i18n.md`](./localization_i18n.md)
+- [`multi_platform_input.md`](./multi_platform_input.md)
