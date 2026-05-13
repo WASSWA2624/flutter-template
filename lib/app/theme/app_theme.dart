@@ -14,7 +14,7 @@ abstract final class AppTheme {
     const RoundedRectangleBorder rectangularShape = RoundedRectangleBorder();
     const AppSpacingTokens spacing = AppSpacingTokens.standard;
     const AppDesignTokens appTokens = AppDesignTokens.standard;
-    const Size minimumControlSize = Size(40, 40);
+    const Size minimumControlSize = Size(36, 36);
     final EdgeInsets buttonPadding = EdgeInsets.symmetric(
       horizontal: spacing.lg,
       vertical: spacing.sm,
@@ -106,7 +106,7 @@ abstract final class AppTheme {
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
-          minimumSize: const Size.square(36),
+          minimumSize: const Size.square(34),
           padding: EdgeInsets.all(spacing.xs),
           shape: rectangularShape,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -123,12 +123,12 @@ abstract final class AppTheme {
           minHeight: appTokens.minInteractiveDimension,
         ),
         prefixIconConstraints: const BoxConstraints(
-          minWidth: 36,
-          minHeight: 36,
+          minWidth: 34,
+          minHeight: 34,
         ),
         suffixIconConstraints: const BoxConstraints(
-          minWidth: 36,
-          minHeight: 36,
+          minWidth: 34,
+          minHeight: 34,
         ),
         border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
         enabledBorder: const OutlineInputBorder(
@@ -155,7 +155,7 @@ abstract final class AppTheme {
       ),
       drawerTheme: DrawerThemeData(
         backgroundColor: colorScheme.surface,
-        width: 288,
+        width: 280,
         shape: rectangularShape,
       ),
       listTileTheme: ListTileThemeData(

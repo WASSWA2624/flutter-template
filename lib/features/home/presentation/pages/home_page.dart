@@ -51,8 +51,8 @@ class _HomeReadyContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AppLogo(size: theme.appTokens.minInteractiveDimension),
-          SizedBox(height: spacing.lg),
+          AppLogo(size: theme.appTokens.statusIconSize),
+          SizedBox(height: spacing.md),
           Text(l10n.appTitle, style: textTheme.headlineMedium),
           SizedBox(height: spacing.sm),
           Text(l10n.homeReadyTitle, style: textTheme.titleLarge),
@@ -63,9 +63,9 @@ class _HomeReadyContent extends StatelessWidget {
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          SizedBox(height: spacing.xxl),
+          SizedBox(height: spacing.xl),
           _StarterFeatureGrid(features: _starterFeatures(l10n)),
-          SizedBox(height: spacing.lg),
+          SizedBox(height: spacing.md),
           const _SupportedPlatformList(),
         ],
       ),
@@ -136,12 +136,16 @@ class _StarterFeatureItem extends StatelessWidget {
         border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Padding(
-        padding: EdgeInsets.all(theme.spacing.lg),
+        padding: EdgeInsets.all(theme.spacing.md),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(feature.icon, color: colorScheme.primary),
-            SizedBox(width: theme.spacing.md),
+            Icon(
+              feature.icon,
+              color: colorScheme.primary,
+              size: theme.appTokens.listIconSize,
+            ),
+            SizedBox(width: theme.spacing.sm),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

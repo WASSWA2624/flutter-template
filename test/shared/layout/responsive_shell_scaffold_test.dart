@@ -29,6 +29,7 @@ void main() {
       MaterialApp(
         home: ResponsiveShellScaffold(
           title: 'Template',
+          compactTitle: 'App',
           destinations: destinations,
           selectedIndex: 0,
           onDestinationSelected: (_) {},
@@ -47,7 +48,19 @@ void main() {
       expect(scaffold.drawer, isNotNull);
       expect(find.byType(NavigationBar), findsNothing);
       expect(find.byType(NavigationRail), findsNothing);
-      expect(find.text('Online'), findsOneWidget);
+      expect(find.text('Online'), findsNothing);
+      expect(find.byType(CircleAvatar), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('shows the compact title on medium mobile widths', (
+      WidgetTester tester,
+    ) async {
+      await pumpShellAtSize(tester, const Size(390, 844));
+
+      expect(find.text('App'), findsOneWidget);
+      expect(find.text('Template'), findsNothing);
+      expect(find.text('Online'), findsNothing);
       expect(tester.takeException(), isNull);
     });
 

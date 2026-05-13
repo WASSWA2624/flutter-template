@@ -25,6 +25,7 @@ class ResponsiveShellScaffold extends StatefulWidget {
     required this.child,
     this.connectivityStatus = AppConnectivityStatus.online,
     this.showUserAvatar = true,
+    this.compactTitle,
     this.onlineLabel = 'Online',
     this.offlineLabel = 'Offline',
     this.openMenuTooltip = 'Open navigation menu',
@@ -40,6 +41,7 @@ class ResponsiveShellScaffold extends StatefulWidget {
   final ValueChanged<int> onDestinationSelected;
   final AppConnectivityStatus connectivityStatus;
   final bool showUserAvatar;
+  final String? compactTitle;
   final String onlineLabel;
   final String offlineLabel;
   final String openMenuTooltip;
@@ -88,6 +90,8 @@ class _ResponsiveShellScaffoldState extends State<ResponsiveShellScaffold> {
               children: <Widget>[
                 _AppHeader(
                   title: widget.title,
+                  compactTitle: widget.compactTitle,
+                  breakpoint: breakpoint,
                   connectivityStatus: widget.connectivityStatus,
                   onlineLabel: widget.onlineLabel,
                   offlineLabel: widget.offlineLabel,
@@ -160,6 +164,7 @@ class _ResponsiveShellScaffoldState extends State<ResponsiveShellScaffold> {
 class _AppHeader extends StatelessWidget {
   const _AppHeader({
     required this.title,
+    required this.breakpoint,
     required this.connectivityStatus,
     required this.onlineLabel,
     required this.offlineLabel,
@@ -167,9 +172,12 @@ class _AppHeader extends StatelessWidget {
     required this.accountTooltip,
     required this.toggleTooltip,
     required this.onToggleNavigation,
+    this.compactTitle,
   });
 
   final String title;
+  final String? compactTitle;
+  final AppBreakpoint breakpoint;
   final AppConnectivityStatus connectivityStatus;
   final String onlineLabel;
   final String offlineLabel;
@@ -182,6 +190,10 @@ class _AppHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final bool isMobile = breakpoint.isMobile;
+    final bool hideTitle = breakpoint == AppBreakpoint.xs;
+    final String effectiveTitle = isMobile ? compactTitle ?? title : title;
+    final double logoSize = isMobile ? _mobileHeaderLogoSize : _headerLogoSize;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -205,26 +217,37 @@ class _AppHeader extends StatelessWidget {
                 onPressed: onToggleNavigation,
               ),
               SizedBox(width: theme.spacing.xs),
-              const AppLogo(size: _headerLogoSize),
-              SizedBox(width: theme.spacing.sm),
+              AppLogo(size: logoSize),
+              if (!hideTitle) SizedBox(width: theme.spacing.sm),
               Expanded(
-                child: Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w700,
-                  ),
+                child: hideTitle
+                    ? const SizedBox.shrink()
+                    : Text(
+                        effectiveTitle,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+              ),
+              if (!isMobile)
+                _ConnectivityBadge(
+                  status: connectivityStatus,
+                  onlineLabel: onlineLabel,
+                  offlineLabel: offlineLabel,
                 ),
-              ),
-              _ConnectivityBadge(
-                status: connectivityStatus,
-                onlineLabel: onlineLabel,
-                offlineLabel: offlineLabel,
-              ),
               if (showUserAvatar) ...<Widget>[
                 SizedBox(width: theme.spacing.sm),
-                Tooltip(message: accountTooltip, child: const _UserAvatar()),
+                Tooltip(
+                  message: accountTooltip,
+                  child: _UserAvatar(
+                    status: connectivityStatus,
+                    showStatusDot: isMobile,
+                    onlineLabel: onlineLabel,
+                    offlineLabel: offlineLabel,
+                  ),
+                ),
               ],
             ],
           ),
@@ -287,18 +310,67 @@ class _ConnectivityBadge extends StatelessWidget {
 }
 
 class _UserAvatar extends StatelessWidget {
-  const _UserAvatar();
+  const _UserAvatar({
+    required this.status,
+    required this.showStatusDot,
+    required this.onlineLabel,
+    required this.offlineLabel,
+  });
+
+  final AppConnectivityStatus status;
+  final bool showStatusDot;
+  final String onlineLabel;
+  final String offlineLabel;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
-
-    return CircleAvatar(
+    final Widget avatar = CircleAvatar(
       radius: _avatarRadius,
       backgroundColor: colorScheme.surfaceContainerHighest,
       foregroundColor: colorScheme.onSurfaceVariant,
       child: const Icon(Icons.person_outline, size: _avatarIconSize),
+    );
+
+    if (!showStatusDot) {
+      return avatar;
+    }
+
+    final bool isOnline = status.isOnline;
+    final Color dotColor = isOnline
+        ? theme.statusColors.success
+        : colorScheme.outline;
+    final String statusLabel = isOnline ? onlineLabel : offlineLabel;
+
+    return Semantics(
+      label: statusLabel,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          avatar,
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: colorScheme.surface,
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(1),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: dotColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const SizedBox.square(dimension: _avatarStatusDotSize),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -337,7 +409,7 @@ class _MobileShellDrawer extends StatelessWidget {
                 ),
                 child: Row(
                   children: <Widget>[
-                    const AppLogo(size: _headerLogoSize),
+                    const AppLogo(size: _drawerLogoSize),
                     SizedBox(width: theme.spacing.sm),
                     Expanded(
                       child: Text(
@@ -574,19 +646,22 @@ class _SidebarResizeHandle extends StatelessWidget {
   }
 }
 
-const double _headerHeight = 48;
-const double _drawerHeaderHeight = 48;
-const double _headerLogoSize = 28;
-const double _defaultSidebarWidth = 224;
-const double _minSidebarWidth = 168;
-const double _maxSidebarWidth = 288;
-const double _collapsedSidebarWidth = 56;
+const double _headerHeight = 44;
+const double _drawerHeaderHeight = 44;
+const double _headerLogoSize = 24;
+const double _mobileHeaderLogoSize = 22;
+const double _drawerLogoSize = 24;
+const double _defaultSidebarWidth = 208;
+const double _minSidebarWidth = 160;
+const double _maxSidebarWidth = 272;
+const double _collapsedSidebarWidth = 52;
 const double _resizeHandleWidth = 6;
 const double _dividerWidth = 1;
 const double _statusDotSize = 7;
-const double _avatarRadius = 14;
-const double _avatarIconSize = 18;
+const double _avatarRadius = 13;
+const double _avatarIconSize = 17;
+const double _avatarStatusDotSize = 7;
 const double _selectedIndicatorWidth = 2;
-const double _menuItemHeight = 38;
+const double _menuItemHeight = 36;
 const Duration _menuAnimationDuration = Duration(milliseconds: 120);
 const Duration _sidebarAnimationDuration = Duration(milliseconds: 180);

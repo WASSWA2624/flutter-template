@@ -55,16 +55,16 @@ class AppStateView extends StatelessWidget {
         crossAxisAlignment: crossAxisAlignment,
         children: <Widget>[
           _StateVisual(variant: variant, icon: icon),
-          SizedBox(height: spacing.md),
-          Text(title, style: textTheme.headlineSmall, textAlign: textAlign),
           SizedBox(height: spacing.sm),
-          Text(body, style: textTheme.bodyLarge, textAlign: textAlign),
+          Text(title, style: textTheme.titleLarge, textAlign: textAlign),
+          SizedBox(height: spacing.sm),
+          Text(body, style: textTheme.bodyMedium, textAlign: textAlign),
           if (detail != null && detail!.isNotEmpty) ...<Widget>[
             SizedBox(height: spacing.sm),
             Text(detail!, style: textTheme.bodyMedium, textAlign: textAlign),
           ],
           if (action != null) ...<Widget>[
-            SizedBox(height: spacing.lg),
+            SizedBox(height: spacing.md),
             action!,
           ],
         ],

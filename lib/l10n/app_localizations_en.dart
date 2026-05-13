@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Flutter Template';
 
   @override
+  String get appShortTitle => 'Template';
+
+  @override
   String get startupLoadingTitle => 'Starting app';
 
   @override
@@ -21,8 +24,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startupErrorTitle => 'The app could not start';
 
   @override
-  String get startupErrorBody =>
-      'Restart the app or try again. Diagnostic details were logged safely.';
+  String get startupErrorBody => 'Restart the app or try again.';
 
   @override
   String get commonRetryActionLabel => 'Try again';
@@ -55,48 +57,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navigationSettingsLabel => 'Settings';
 
   @override
-  String get homeReadyTitle => 'Project setup complete';
+  String get homeReadyTitle => 'Ready to build';
 
   @override
   String get homeReadyBody =>
-      'A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.';
+      'A compact starter shell with routing, settings, localization, and shared app services.';
 
   @override
-  String get homeStarterFeaturesLabel => 'Starter foundation';
+  String get homeStarterFeaturesLabel => 'Starter features';
 
   @override
   String get homeFeatureResponsiveTitle => 'Responsive layout';
 
   @override
   String get homeFeatureResponsiveBody =>
-      'Mobile, tablet, desktop, and web layouts share one adaptive shell.';
+      'One adaptive shell for mobile, tablet, desktop, and web.';
 
   @override
   String get homeFeatureNavigationTitle => 'Navigation';
 
   @override
   String get homeFeatureNavigationBody =>
-      'Routes and menu destinations are centralized for simple expansion.';
+      'Routes and menu items are centralized.';
 
   @override
   String get homeFeatureLocalizationTitle => 'Localization';
 
   @override
   String get homeFeatureLocalizationBody =>
-      'English is active now, with generated localization ready for more languages.';
+      'English is active. More locales can be added later.';
 
   @override
   String get homeFeatureSettingsTitle => 'Settings';
 
   @override
   String get homeFeatureSettingsBody =>
-      'Theme and language preferences are wired through persistent app state.';
+      'Theme and language preferences are persisted.';
 
   @override
   String get homeLoadingTitle => 'Preparing home';
 
   @override
-  String get homeLoadingBody => 'Loading the starter readiness state.';
+  String get homeLoadingBody => 'Loading readiness.';
 
   @override
   String get homeLoadErrorTitle => 'Home could not load';
@@ -105,7 +107,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeLoadErrorBody => 'Try the request again.';
 
   @override
-  String get homeSupportedPlatformsLabel => 'Supported starter targets';
+  String get homeSupportedPlatformsLabel => 'Supported targets';
 
   @override
   String get homeSupportedPlatformAndroid => 'Android';
@@ -129,15 +131,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTitle => 'Settings';
 
   @override
-  String get settingsBody =>
-      'Choose the starter preferences that should apply across the app.';
+  String get settingsBody => 'Set starter app preferences.';
 
   @override
   String get settingsLanguageSectionTitle => 'Language';
 
   @override
   String get settingsLanguageSectionBody =>
-      'The template currently ships with English and can add more generated locales later.';
+      'English is included. Add more locales later.';
 
   @override
   String get settingsLanguageFieldLabel => 'App language';
@@ -149,8 +150,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeSectionTitle => 'Theme';
 
   @override
-  String get settingsThemeSectionBody =>
-      'Use the system appearance or choose a fixed light or dark theme.';
+  String get settingsThemeSectionBody => 'Use system, light, or dark mode.';
 
   @override
   String get settingsThemeModeFieldLabel => 'App theme';
@@ -159,8 +159,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeModeSystem => 'System';
 
   @override
-  String get settingsThemeModeSystemDescription =>
-      'Follow the platform appearance setting.';
+  String get settingsThemeModeSystemDescription => 'Follow the device setting.';
 
   @override
   String get settingsThemeModeLight => 'Light';
@@ -181,29 +180,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get routeSessionRestoringTitle => 'Checking session';
 
   @override
-  String get routeSessionRestoringBody =>
-      'Session restoration must finish before this page can open.';
+  String get routeSessionRestoringBody => 'Finish session restore first.';
 
   @override
   String get routeAuthRequiredTitle => 'Sign-in required';
 
   @override
-  String get routeAuthRequiredBody =>
-      'A valid session is required before this page can open.';
+  String get routeAuthRequiredBody => 'Sign in to open this page.';
 
   @override
   String get routeForbiddenTitle => 'Access denied';
 
   @override
-  String get routeForbiddenBody =>
-      'Your current session does not have permission to open this page.';
+  String get routeForbiddenBody => 'You do not have access to this page.';
 
   @override
   String get routeNotFoundTitle => 'Page not found';
 
   @override
-  String get routeNotFoundBody =>
-      'The requested route does not exist or is no longer available.';
+  String get routeNotFoundBody => 'This route is not available.';
 
   @override
   String get validationRequired => 'This field is required.';
@@ -212,8 +207,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorNetworkTitle => 'Connection problem';
 
   @override
-  String get errorNetworkMessage =>
-      'The request could not finish. Check your connection and try again.';
+  String get errorNetworkMessage => 'Check your connection and try again.';
 
   @override
   String get errorTimeoutTitle => 'Request timed out';
@@ -231,8 +225,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorCancelledTitle => 'Request cancelled';
 
   @override
-  String get errorCancelledMessage =>
-      'The request was cancelled before it finished.';
+  String get errorCancelledMessage => 'The request was cancelled.';
 
   @override
   String get errorUnauthorizedTitle => 'Sign-in required';
@@ -244,29 +237,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorForbiddenTitle => 'Access denied';
 
   @override
-  String get errorForbiddenMessage =>
-      'You do not have permission to complete this action.';
+  String get errorForbiddenMessage => 'You do not have permission.';
 
   @override
   String get errorNotFoundTitle => 'Not found';
 
   @override
-  String get errorNotFoundMessage =>
-      'The requested item does not exist or is no longer available.';
+  String get errorNotFoundMessage => 'The item is not available.';
 
   @override
   String get errorValidationTitle => 'Check the details';
 
   @override
-  String get errorValidationMessage =>
-      'Some details need attention before you can continue.';
+  String get errorValidationMessage => 'Check the highlighted details.';
 
   @override
   String get errorUnexpectedResponseTitle => 'Unexpected response';
 
   @override
-  String get errorUnexpectedResponseMessage =>
-      'The response could not be processed. Try again later.';
+  String get errorUnexpectedResponseMessage => 'Try again later.';
 
   @override
   String get errorStorageTitle => 'Storage unavailable';

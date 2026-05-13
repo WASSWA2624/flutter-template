@@ -28,7 +28,7 @@ class SettingsPage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _SettingsHeader(title: l10n.settingsTitle, body: l10n.settingsBody),
-          SizedBox(height: spacing.xxl),
+          SizedBox(height: spacing.xl),
           _SettingsSection(
             title: l10n.settingsLanguageSectionTitle,
             body: l10n.settingsLanguageSectionBody,
@@ -50,7 +50,7 @@ class SettingsPage extends ConsumerWidget {
               },
             ),
           ),
-          SizedBox(height: spacing.xl),
+          SizedBox(height: spacing.lg),
           _SettingsSection(
             title: l10n.settingsThemeSectionTitle,
             body: l10n.settingsThemeSectionBody,
@@ -141,8 +141,8 @@ class _SettingsHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        AppLogo(size: theme.appTokens.minInteractiveDimension),
-        SizedBox(height: theme.spacing.lg),
+        AppLogo(size: theme.appTokens.statusIconSize),
+        SizedBox(height: theme.spacing.md),
         Text(title, style: theme.textTheme.headlineSmall),
         SizedBox(height: theme.spacing.sm),
         Text(body, style: theme.textTheme.bodyLarge),
@@ -170,11 +170,11 @@ class _SettingsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Divider(height: theme.spacing.none),
-        SizedBox(height: theme.spacing.lg),
+        SizedBox(height: theme.spacing.md),
         Text(title, style: theme.textTheme.titleMedium),
         SizedBox(height: theme.spacing.xs),
         Text(body, style: theme.textTheme.bodyMedium),
-        SizedBox(height: theme.spacing.lg),
+        SizedBox(height: theme.spacing.md),
         child,
       ],
     );

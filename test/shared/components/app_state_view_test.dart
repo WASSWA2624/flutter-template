@@ -79,10 +79,7 @@ void main() {
     );
 
     expect(find.text('Access denied'), findsOneWidget);
-    expect(
-      find.text('You do not have permission to complete this action.'),
-      findsOneWidget,
-    );
+    expect(find.text('You do not have permission.'), findsOneWidget);
     expect(find.text('Try again'), findsNothing);
   });
 

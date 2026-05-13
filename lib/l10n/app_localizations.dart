@@ -100,6 +100,12 @@ abstract class AppLocalizations {
   /// **'Flutter Template'**
   String get appTitle;
 
+  /// Short application title shown in compact headers.
+  ///
+  /// In en, this message translates to:
+  /// **'Template'**
+  String get appShortTitle;
+
   /// Title shown while startup dependencies initialize.
   ///
   /// In en, this message translates to:
@@ -121,7 +127,7 @@ abstract class AppLocalizations {
   /// Safe user-facing startup error message.
   ///
   /// In en, this message translates to:
-  /// **'Restart the app or try again. Diagnostic details were logged safely.'**
+  /// **'Restart the app or try again.'**
   String get startupErrorBody;
 
   /// Label for actions that retry a failed operation.
@@ -187,19 +193,19 @@ abstract class AppLocalizations {
   /// Home page title for the starter template readiness state.
   ///
   /// In en, this message translates to:
-  /// **'Project setup complete'**
+  /// **'Ready to build'**
   String get homeReadyTitle;
 
   /// Home page body for the starter template readiness state.
   ///
   /// In en, this message translates to:
-  /// **'A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.'**
+  /// **'A compact starter shell with routing, settings, localization, and shared app services.'**
   String get homeReadyBody;
 
   /// Heading for the starter template feature summary.
   ///
   /// In en, this message translates to:
-  /// **'Starter foundation'**
+  /// **'Starter features'**
   String get homeStarterFeaturesLabel;
 
   /// Feature summary title for responsive layout support.
@@ -211,7 +217,7 @@ abstract class AppLocalizations {
   /// Feature summary body for responsive layout support.
   ///
   /// In en, this message translates to:
-  /// **'Mobile, tablet, desktop, and web layouts share one adaptive shell.'**
+  /// **'One adaptive shell for mobile, tablet, desktop, and web.'**
   String get homeFeatureResponsiveBody;
 
   /// Feature summary title for navigation support.
@@ -223,7 +229,7 @@ abstract class AppLocalizations {
   /// Feature summary body for navigation support.
   ///
   /// In en, this message translates to:
-  /// **'Routes and menu destinations are centralized for simple expansion.'**
+  /// **'Routes and menu items are centralized.'**
   String get homeFeatureNavigationBody;
 
   /// Feature summary title for localization support.
@@ -235,7 +241,7 @@ abstract class AppLocalizations {
   /// Feature summary body for localization support.
   ///
   /// In en, this message translates to:
-  /// **'English is active now, with generated localization ready for more languages.'**
+  /// **'English is active. More locales can be added later.'**
   String get homeFeatureLocalizationBody;
 
   /// Feature summary title for settings support.
@@ -247,7 +253,7 @@ abstract class AppLocalizations {
   /// Feature summary body for settings support.
   ///
   /// In en, this message translates to:
-  /// **'Theme and language preferences are wired through persistent app state.'**
+  /// **'Theme and language preferences are persisted.'**
   String get homeFeatureSettingsBody;
 
   /// Title shown while the home feature controller loads readiness state.
@@ -259,7 +265,7 @@ abstract class AppLocalizations {
   /// Body shown while the home feature controller loads readiness state.
   ///
   /// In en, this message translates to:
-  /// **'Loading the starter readiness state.'**
+  /// **'Loading readiness.'**
   String get homeLoadingBody;
 
   /// Title shown when the home feature controller fails.
@@ -277,7 +283,7 @@ abstract class AppLocalizations {
   /// Heading for the list of starter target platforms.
   ///
   /// In en, this message translates to:
-  /// **'Supported starter targets'**
+  /// **'Supported targets'**
   String get homeSupportedPlatformsLabel;
 
   /// Starter target platform label for Android.
@@ -325,7 +331,7 @@ abstract class AppLocalizations {
   /// Settings page intro body.
   ///
   /// In en, this message translates to:
-  /// **'Choose the starter preferences that should apply across the app.'**
+  /// **'Set starter app preferences.'**
   String get settingsBody;
 
   /// Settings section title for language preferences.
@@ -337,7 +343,7 @@ abstract class AppLocalizations {
   /// Settings section body for language preferences.
   ///
   /// In en, this message translates to:
-  /// **'The template currently ships with English and can add more generated locales later.'**
+  /// **'English is included. Add more locales later.'**
   String get settingsLanguageSectionBody;
 
   /// Label for the language selection field.
@@ -361,7 +367,7 @@ abstract class AppLocalizations {
   /// Settings section body for theme preferences.
   ///
   /// In en, this message translates to:
-  /// **'Use the system appearance or choose a fixed light or dark theme.'**
+  /// **'Use system, light, or dark mode.'**
   String get settingsThemeSectionBody;
 
   /// Label for the theme mode selection control.
@@ -379,7 +385,7 @@ abstract class AppLocalizations {
   /// Theme option description for following the system setting.
   ///
   /// In en, this message translates to:
-  /// **'Follow the platform appearance setting.'**
+  /// **'Follow the device setting.'**
   String get settingsThemeModeSystemDescription;
 
   /// Theme option label for light mode.
@@ -421,7 +427,7 @@ abstract class AppLocalizations {
   /// Body shown while session restoration blocks a guarded route.
   ///
   /// In en, this message translates to:
-  /// **'Session restoration must finish before this page can open.'**
+  /// **'Finish session restore first.'**
   String get routeSessionRestoringBody;
 
   /// Title shown when a route requires authentication.
@@ -433,7 +439,7 @@ abstract class AppLocalizations {
   /// Body shown when a route requires authentication.
   ///
   /// In en, this message translates to:
-  /// **'A valid session is required before this page can open.'**
+  /// **'Sign in to open this page.'**
   String get routeAuthRequiredBody;
 
   /// Title shown when a session lacks route permission.
@@ -445,7 +451,7 @@ abstract class AppLocalizations {
   /// Body shown when a session lacks route permission.
   ///
   /// In en, this message translates to:
-  /// **'Your current session does not have permission to open this page.'**
+  /// **'You do not have access to this page.'**
   String get routeForbiddenBody;
 
   /// Title shown when a route cannot be matched.
@@ -457,7 +463,7 @@ abstract class AppLocalizations {
   /// Body shown when a route cannot be matched.
   ///
   /// In en, this message translates to:
-  /// **'The requested route does not exist or is no longer available.'**
+  /// **'This route is not available.'**
   String get routeNotFoundBody;
 
   /// Generic required-field validation message for forms.
@@ -475,7 +481,7 @@ abstract class AppLocalizations {
   /// Safe user-facing message for a generic network failure.
   ///
   /// In en, this message translates to:
-  /// **'The request could not finish. Check your connection and try again.'**
+  /// **'Check your connection and try again.'**
   String get errorNetworkMessage;
 
   /// Title for a timeout failure.
@@ -511,7 +517,7 @@ abstract class AppLocalizations {
   /// Safe user-facing message for a cancelled request failure.
   ///
   /// In en, this message translates to:
-  /// **'The request was cancelled before it finished.'**
+  /// **'The request was cancelled.'**
   String get errorCancelledMessage;
 
   /// Title for an unauthorized failure.
@@ -535,7 +541,7 @@ abstract class AppLocalizations {
   /// Safe user-facing message for a forbidden failure.
   ///
   /// In en, this message translates to:
-  /// **'You do not have permission to complete this action.'**
+  /// **'You do not have permission.'**
   String get errorForbiddenMessage;
 
   /// Title for a not-found failure.
@@ -547,7 +553,7 @@ abstract class AppLocalizations {
   /// Safe user-facing message for a not-found failure.
   ///
   /// In en, this message translates to:
-  /// **'The requested item does not exist or is no longer available.'**
+  /// **'The item is not available.'**
   String get errorNotFoundMessage;
 
   /// Title for a validation failure.
@@ -559,7 +565,7 @@ abstract class AppLocalizations {
   /// Safe user-facing message for a validation failure.
   ///
   /// In en, this message translates to:
-  /// **'Some details need attention before you can continue.'**
+  /// **'Check the highlighted details.'**
   String get errorValidationMessage;
 
   /// Title for an unexpected API response failure.
@@ -571,7 +577,7 @@ abstract class AppLocalizations {
   /// Safe user-facing message for an unexpected API response failure.
   ///
   /// In en, this message translates to:
-  /// **'The response could not be processed. Try again later.'**
+  /// **'Try again later.'**
   String get errorUnexpectedResponseMessage;
 
   /// Title for a local storage failure.

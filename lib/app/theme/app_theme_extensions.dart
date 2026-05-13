@@ -17,11 +17,11 @@ final class AppSpacingTokens extends ThemeExtension<AppSpacingTokens> {
   static const AppSpacingTokens standard = AppSpacingTokens(
     none: 0,
     xs: 4,
-    sm: 6,
-    md: 10,
-    lg: 14,
-    xl: 20,
-    xxl: 28,
+    sm: 5,
+    md: 8,
+    lg: 12,
+    xl: 18,
+    xxl: 24,
   );
 
   final double none;
@@ -294,15 +294,15 @@ final class AppDesignTokens extends ThemeExtension<AppDesignTokens> {
   });
 
   static const AppDesignTokens standard = AppDesignTokens(
-    pagePaddingMobile: 12,
-    pagePaddingTablet: 16,
-    pagePaddingDesktop: 24,
-    formGapCompact: 8,
-    formGapRegular: 12,
-    formGapSpacious: 16,
-    minInteractiveDimension: 40,
-    listIconSize: 18,
-    statusIconSize: 32,
+    pagePaddingMobile: 10,
+    pagePaddingTablet: 14,
+    pagePaddingDesktop: 20,
+    formGapCompact: 6,
+    formGapRegular: 10,
+    formGapSpacious: 14,
+    minInteractiveDimension: 38,
+    listIconSize: 17,
+    statusIconSize: 30,
     dividerThickness: 1,
   );
 

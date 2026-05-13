@@ -4,6 +4,10 @@
   "@appTitle": {
     "description": "Application title shown in app bars and platform task lists."
   },
+  "appShortTitle": "Template",
+  "@appShortTitle": {
+    "description": "Short application title shown in compact headers."
+  },
   "startupLoadingTitle": "Starting app",
   "@startupLoadingTitle": {
     "description": "Title shown while startup dependencies initialize."
@@ -16,7 +20,7 @@
   "@startupErrorTitle": {
     "description": "Title shown when startup initialization fails."
   },
-  "startupErrorBody": "Restart the app or try again. Diagnostic details were logged safely.",
+  "startupErrorBody": "Restart the app or try again.",
   "@startupErrorBody": {
     "description": "Safe user-facing startup error message."
   },
@@ -60,15 +64,15 @@
   "@navigationSettingsLabel": {
     "description": "Navigation label for the settings destination."
   },
-  "homeReadyTitle": "Project setup complete",
+  "homeReadyTitle": "Ready to build",
   "@homeReadyTitle": {
     "description": "Home page title for the starter template readiness state."
   },
-  "homeReadyBody": "A minimal app shell is ready for shared architecture, routing, localization, state, networking, storage, and feature work.",
+  "homeReadyBody": "A compact starter shell with routing, settings, localization, and shared app services.",
   "@homeReadyBody": {
     "description": "Home page body for the starter template readiness state."
   },
-  "homeStarterFeaturesLabel": "Starter foundation",
+  "homeStarterFeaturesLabel": "Starter features",
   "@homeStarterFeaturesLabel": {
     "description": "Heading for the starter template feature summary."
   },
@@ -76,7 +80,7 @@
   "@homeFeatureResponsiveTitle": {
     "description": "Feature summary title for responsive layout support."
   },
-  "homeFeatureResponsiveBody": "Mobile, tablet, desktop, and web layouts share one adaptive shell.",
+  "homeFeatureResponsiveBody": "One adaptive shell for mobile, tablet, desktop, and web.",
   "@homeFeatureResponsiveBody": {
     "description": "Feature summary body for responsive layout support."
   },
@@ -84,7 +88,7 @@
   "@homeFeatureNavigationTitle": {
     "description": "Feature summary title for navigation support."
   },
-  "homeFeatureNavigationBody": "Routes and menu destinations are centralized for simple expansion.",
+  "homeFeatureNavigationBody": "Routes and menu items are centralized.",
   "@homeFeatureNavigationBody": {
     "description": "Feature summary body for navigation support."
   },
@@ -92,7 +96,7 @@
   "@homeFeatureLocalizationTitle": {
     "description": "Feature summary title for localization support."
   },
-  "homeFeatureLocalizationBody": "English is active now, with generated localization ready for more languages.",
+  "homeFeatureLocalizationBody": "English is active. More locales can be added later.",
   "@homeFeatureLocalizationBody": {
     "description": "Feature summary body for localization support."
   },
@@ -100,7 +104,7 @@
   "@homeFeatureSettingsTitle": {
     "description": "Feature summary title for settings support."
   },
-  "homeFeatureSettingsBody": "Theme and language preferences are wired through persistent app state.",
+  "homeFeatureSettingsBody": "Theme and language preferences are persisted.",
   "@homeFeatureSettingsBody": {
     "description": "Feature summary body for settings support."
   },
@@ -108,7 +112,7 @@
   "@homeLoadingTitle": {
     "description": "Title shown while the home feature controller loads readiness state."
   },
-  "homeLoadingBody": "Loading the starter readiness state.",
+  "homeLoadingBody": "Loading readiness.",
   "@homeLoadingBody": {
     "description": "Body shown while the home feature controller loads readiness state."
   },
@@ -120,7 +124,7 @@
   "@homeLoadErrorBody": {
     "description": "Body shown when the home feature controller fails."
   },
-  "homeSupportedPlatformsLabel": "Supported starter targets",
+  "homeSupportedPlatformsLabel": "Supported targets",
   "@homeSupportedPlatformsLabel": {
     "description": "Heading for the list of starter target platforms."
   },
@@ -152,7 +156,7 @@
   "@settingsTitle": {
     "description": "Settings page title."
   },
-  "settingsBody": "Choose the starter preferences that should apply across the app.",
+  "settingsBody": "Set starter app preferences.",
   "@settingsBody": {
     "description": "Settings page intro body."
   },
@@ -160,7 +164,7 @@
   "@settingsLanguageSectionTitle": {
     "description": "Settings section title for language preferences."
   },
-  "settingsLanguageSectionBody": "The template currently ships with English and can add more generated locales later.",
+  "settingsLanguageSectionBody": "English is included. Add more locales later.",
   "@settingsLanguageSectionBody": {
     "description": "Settings section body for language preferences."
   },
@@ -176,7 +180,7 @@
   "@settingsThemeSectionTitle": {
     "description": "Settings section title for theme preferences."
   },
-  "settingsThemeSectionBody": "Use the system appearance or choose a fixed light or dark theme.",
+  "settingsThemeSectionBody": "Use system, light, or dark mode.",
   "@settingsThemeSectionBody": {
     "description": "Settings section body for theme preferences."
   },
@@ -188,7 +192,7 @@
   "@settingsThemeModeSystem": {
     "description": "Theme option label for following the system setting."
   },
-  "settingsThemeModeSystemDescription": "Follow the platform appearance setting.",
+  "settingsThemeModeSystemDescription": "Follow the device setting.",
   "@settingsThemeModeSystemDescription": {
     "description": "Theme option description for following the system setting."
   },
@@ -216,7 +220,7 @@
   "@routeSessionRestoringTitle": {
     "description": "Title shown while session restoration blocks a guarded route."
   },
-  "routeSessionRestoringBody": "Session restoration must finish before this page can open.",
+  "routeSessionRestoringBody": "Finish session restore first.",
   "@routeSessionRestoringBody": {
     "description": "Body shown while session restoration blocks a guarded route."
   },
@@ -224,7 +228,7 @@
   "@routeAuthRequiredTitle": {
     "description": "Title shown when a route requires authentication."
   },
-  "routeAuthRequiredBody": "A valid session is required before this page can open.",
+  "routeAuthRequiredBody": "Sign in to open this page.",
   "@routeAuthRequiredBody": {
     "description": "Body shown when a route requires authentication."
   },
@@ -232,7 +236,7 @@
   "@routeForbiddenTitle": {
     "description": "Title shown when a session lacks route permission."
   },
-  "routeForbiddenBody": "Your current session does not have permission to open this page.",
+  "routeForbiddenBody": "You do not have access to this page.",
   "@routeForbiddenBody": {
     "description": "Body shown when a session lacks route permission."
   },
@@ -240,7 +244,7 @@
   "@routeNotFoundTitle": {
     "description": "Title shown when a route cannot be matched."
   },
-  "routeNotFoundBody": "The requested route does not exist or is no longer available.",
+  "routeNotFoundBody": "This route is not available.",
   "@routeNotFoundBody": {
     "description": "Body shown when a route cannot be matched."
   },
@@ -252,7 +256,7 @@
   "@errorNetworkTitle": {
     "description": "Title for a generic network failure."
   },
-  "errorNetworkMessage": "The request could not finish. Check your connection and try again.",
+  "errorNetworkMessage": "Check your connection and try again.",
   "@errorNetworkMessage": {
     "description": "Safe user-facing message for a generic network failure."
   },
@@ -276,7 +280,7 @@
   "@errorCancelledTitle": {
     "description": "Title for a cancelled request failure."
   },
-  "errorCancelledMessage": "The request was cancelled before it finished.",
+  "errorCancelledMessage": "The request was cancelled.",
   "@errorCancelledMessage": {
     "description": "Safe user-facing message for a cancelled request failure."
   },
@@ -292,7 +296,7 @@
   "@errorForbiddenTitle": {
     "description": "Title for a forbidden failure."
   },
-  "errorForbiddenMessage": "You do not have permission to complete this action.",
+  "errorForbiddenMessage": "You do not have permission.",
   "@errorForbiddenMessage": {
     "description": "Safe user-facing message for a forbidden failure."
   },
@@ -300,7 +304,7 @@
   "@errorNotFoundTitle": {
     "description": "Title for a not-found failure."
   },
-  "errorNotFoundMessage": "The requested item does not exist or is no longer available.",
+  "errorNotFoundMessage": "The item is not available.",
   "@errorNotFoundMessage": {
     "description": "Safe user-facing message for a not-found failure."
   },
@@ -308,7 +312,7 @@
   "@errorValidationTitle": {
     "description": "Title for a validation failure."
   },
-  "errorValidationMessage": "Some details need attention before you can continue.",
+  "errorValidationMessage": "Check the highlighted details.",
   "@errorValidationMessage": {
     "description": "Safe user-facing message for a validation failure."
   },
@@ -316,7 +320,7 @@
   "@errorUnexpectedResponseTitle": {
     "description": "Title for an unexpected API response failure."
   },
-  "errorUnexpectedResponseMessage": "The response could not be processed. Try again later.",
+  "errorUnexpectedResponseMessage": "Try again later.",
   "@errorUnexpectedResponseMessage": {
     "description": "Safe user-facing message for an unexpected API response failure."
   },
