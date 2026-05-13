@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/shared/components/app_icon_button.dart';
 
 class AppDateField extends StatefulWidget {
   const AppDateField({
@@ -91,10 +92,11 @@ class _AppDateFieldState extends State<AppDateField> {
             hintText: widget.hintText,
             helperText: widget.helperText,
             errorText: field.errorText,
-            suffixIcon: IconButton(
+            suffixIcon: AppIconButton(
+              semanticLabel: widget.pickerButtonLabel,
               tooltip: widget.pickerButtonLabel,
               onPressed: canChange ? () => _selectDate(context, field) : null,
-              icon: const Icon(Icons.calendar_today_outlined),
+              icon: Icons.calendar_today_outlined,
             ),
           ),
         );

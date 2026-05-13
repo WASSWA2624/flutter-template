@@ -81,6 +81,12 @@ abstract final class AppTheme {
           shape: rectangularShape,
         ),
       ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          minimumSize: Size.square(appTokens.minInteractiveDimension),
+          shape: rectangularShape,
+        ),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(
           horizontal: spacing.lg,

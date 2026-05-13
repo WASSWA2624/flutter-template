@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_template/shared/components/components.dart';
 import 'package:flutter_template/shared/data/data.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,6 +36,37 @@ void main() {
 
     expect(find.text('Mobile Alpha'), findsOneWidget);
     expect(find.text('Title'), findsNothing);
+  });
+
+  testWidgets('AppDataList mobile rows activate from the keyboard', (
+    WidgetTester tester,
+  ) async {
+    _RowItem? selectedItem;
+
+    await pumpComponent(
+      tester,
+      SizedBox(
+        height: 360,
+        child: AppDataList<_RowItem>(
+          items: items,
+          columns: _columns,
+          mobileItemBuilder: (BuildContext context, _RowItem item) {
+            return ListTile(title: Text('Mobile ${item.title}'));
+          },
+          onRowSelected: (_RowItem item) {
+            selectedItem = item;
+          },
+        ),
+      ),
+      size: const Size(500, 600),
+    );
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+    await tester.pump();
+    await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+    await tester.pump();
+
+    expect(selectedItem, items.first);
   });
 
   testWidgets('AppDataList uses table columns on wider screens', (

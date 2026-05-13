@@ -42,7 +42,9 @@ flutter build web
 
 Run platform-specific commands only on hosts with the required SDKs installed.
 Environment-specific public values are passed with `--dart-define`. See
-`docs/setup/environment.md` for required keys and production constraints.
+`docs/setup/environment.md` for required keys and production constraints. See
+`docs/setup/platform-behavior.md` for safe-area, keyboard, accessibility, and
+platform limitation notes.
 
 ## Tooling
 

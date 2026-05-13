@@ -12,3 +12,5 @@ Flutter template.
     preferences, secure storage, sync queue, and conflict boundaries.
 - `setup/` contains local development and platform setup notes.
   - `environment.md` documents required public runtime configuration values.
+  - `platform-behavior.md` documents safe areas, keyboard input,
+    accessibility, and platform limitations.

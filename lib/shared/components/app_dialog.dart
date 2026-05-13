@@ -38,7 +38,7 @@ class AppDialog extends StatelessWidget {
       );
     }
 
-    return dialog;
+    return FocusTraversalGroup(child: dialog);
   }
 }
 
@@ -46,12 +46,27 @@ Future<T?> showAppDialog<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   bool barrierDismissible = true,
+  TraversalEdgeBehavior traversalEdgeBehavior =
+      TraversalEdgeBehavior.closedLoop,
+  bool requestFocus = true,
   RouteSettings? routeSettings,
-}) {
-  return showDialog<T>(
+}) async {
+  final FocusNode? previousFocus = FocusManager.instance.primaryFocus;
+  final T? result = await showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
+    traversalEdgeBehavior: traversalEdgeBehavior,
+    requestFocus: requestFocus,
     routeSettings: routeSettings,
-    builder: builder,
+    builder: (BuildContext context) {
+      return FocusTraversalGroup(child: builder(context));
+    },
   );
+
+  if (previousFocus case final FocusNode node
+      when node.context != null && node.canRequestFocus) {
+    node.requestFocus();
+  }
+
+  return result;
 }

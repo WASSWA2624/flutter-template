@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/shared/components/app_icon_button.dart';
 import 'package:flutter_template/shared/data/data.dart';
@@ -212,16 +213,64 @@ class _MobileDataList<T> extends StatelessWidget {
           return row;
         }
 
-        return InkWell(
-          onTap: () {
-            onRowSelected!(item);
-          },
+        return _SelectableMobileDataRow<T>(
+          item: item,
+          onSelected: onRowSelected!,
           child: row,
         );
       },
       separatorBuilder: (BuildContext context, int index) {
         return const Divider(height: 1);
       },
+    );
+  }
+}
+
+class _SelectableMobileDataRow<T> extends StatelessWidget {
+  const _SelectableMobileDataRow({
+    required this.item,
+    required this.onSelected,
+    required this.child,
+  });
+
+  static const Map<ShortcutActivator, Intent> _shortcuts =
+      <ShortcutActivator, Intent>{
+        SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
+        SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
+      };
+
+  final T item;
+  final ValueChanged<T> onSelected;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Shortcuts(
+      shortcuts: _shortcuts,
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          ActivateIntent: CallbackAction<ActivateIntent>(
+            onInvoke: (_) {
+              onSelected(item);
+              return null;
+            },
+          ),
+        },
+        child: Semantics(
+          button: true,
+          enabled: true,
+          onTap: () {
+            onSelected(item);
+          },
+          child: InkWell(
+            mouseCursor: SystemMouseCursors.click,
+            onTap: () {
+              onSelected(item);
+            },
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }

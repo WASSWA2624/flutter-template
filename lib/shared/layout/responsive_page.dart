@@ -47,6 +47,7 @@ class ResponsivePage extends StatelessWidget {
     this.maxWidth = PageMaxWidth.reading,
     this.scrollable = true,
     this.safeArea = true,
+    this.avoidKeyboardInsets = true,
     this.centerVertically = false,
     this.padding,
     super.key,
@@ -56,6 +57,7 @@ class ResponsivePage extends StatelessWidget {
   final PageMaxWidth maxWidth;
   final bool scrollable;
   final bool safeArea;
+  final bool avoidKeyboardInsets;
   final bool centerVertically;
   final EdgeInsets? padding;
 
@@ -67,12 +69,18 @@ class ResponsivePage extends StatelessWidget {
         final AppBreakpoint breakpoint = AppBreakpoints.fromConstraints(
           constraints,
         );
-        final EdgeInsets resolvedPadding =
+        final double keyboardBottomInset = avoidKeyboardInsets
+            ? MediaQuery.viewInsetsOf(context).bottom
+            : theme.spacing.none;
+        final EdgeInsets basePadding =
             padding ??
             ResponsiveSpacing.pagePaddingFor(
               breakpoint,
               designTokens: theme.appTokens,
             );
+        final EdgeInsets resolvedPadding = basePadding.copyWith(
+          bottom: basePadding.bottom + keyboardBottomInset,
+        );
         final AlignmentGeometry alignment = centerVertically
             ? Alignment.center
             : Alignment.topCenter;
@@ -98,7 +106,10 @@ class ResponsivePage extends StatelessWidget {
         Widget page = Padding(padding: resolvedPadding, child: content);
 
         if (scrollable) {
-          page = SingleChildScrollView(child: page);
+          page = SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: page,
+          );
         }
 
         if (safeArea) {

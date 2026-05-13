@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
+import 'package:flutter_template/shared/components/app_icon_button.dart';
 
 class AppTextField extends StatefulWidget {
   const AppTextField({
@@ -179,7 +180,8 @@ class _AppTextFieldState extends State<AppTextField> {
         ? widget.showObscuredTextLabel!
         : widget.hideObscuredTextLabel!;
 
-    return IconButton(
+    return AppIconButton(
+      semanticLabel: label,
       tooltip: label,
       onPressed: canEdit
           ? () {
@@ -188,11 +190,9 @@ class _AppTextFieldState extends State<AppTextField> {
               });
             }
           : null,
-      icon: Icon(
-        _obscureText
-            ? Icons.visibility_outlined
-            : Icons.visibility_off_outlined,
-      ),
+      icon: _obscureText
+          ? Icons.visibility_outlined
+          : Icons.visibility_off_outlined,
     );
   }
 }
