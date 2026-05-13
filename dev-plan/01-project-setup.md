@@ -6,10 +6,10 @@ Create the base Flutter project and make it ready for consistent multi-platform 
 
 ## Applies app rules
 
-- `[scope.md](../app-rules/scope.md)`
-- `[project_structure.md](../app-rules/project_structure.md)`
-- `[platform_guidelines.md](../app-rules/platform_guidelines.md)`
-- `[documentation_standards.md](../app-rules/documentation_standards.md)`
+- [`scope.md`](../app-rules/scope.md)
+- [`project_structure.md`](../app-rules/project_structure.md)
+- [`platform_guidelines.md`](../app-rules/platform_guidelines.md)
+- [`documentation_standards.md`](../app-rules/documentation_standards.md)
 
 ## Implementation tasks
 
@@ -35,4 +35,3 @@ Create the base Flutter project and make it ready for consistent multi-platform 
 
 - Do not skip rule references.
 - Do not add product-specific behavior unless the step explicitly asks for it.
-
