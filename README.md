@@ -24,7 +24,9 @@ dart run build_runner build --delete-conflicting-outputs
 dart format --set-exit-if-changed .
 flutter analyze
 flutter test
-flutter run -d chrome
+flutter run -d chrome \
+  --dart-define=APP_ENV=development \
+  --dart-define=API_BASE_URL=http://localhost:8080
 ```
 
 Useful platform commands:
@@ -39,6 +41,8 @@ flutter build web
 ```
 
 Run platform-specific commands only on hosts with the required SDKs installed.
+Environment-specific public values are passed with `--dart-define`. See
+`docs/setup/environment.md` for required keys and production constraints.
 
 ## Tooling
 

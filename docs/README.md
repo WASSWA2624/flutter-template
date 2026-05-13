@@ -9,3 +9,4 @@ Flutter template.
   - `project-structure.md` documents the canonical repository layout.
 - `decisions/` records architecture decisions that affect future work.
 - `setup/` contains local development and platform setup notes.
+  - `environment.md` documents required public runtime configuration values.
