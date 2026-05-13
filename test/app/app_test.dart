@@ -51,6 +51,23 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('renders the home screen at medium mobile width', (
+    WidgetTester tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(390, 800);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+
+    await tester.pumpWidget(const ProviderScope(child: TemplateApp()));
+    await tester.pumpAndSettle();
+
+    final l10n = tester.element(find.byType(HomePage)).l10n;
+
+    expect(find.text(l10n.homeReadyTitle), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('navigates to settings and shows starter preferences', (
     WidgetTester tester,
   ) async {

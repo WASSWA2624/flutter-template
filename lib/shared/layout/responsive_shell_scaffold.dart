@@ -101,11 +101,10 @@ class _ShellTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         const AppLogo(size: _appBarLogoSize),
         SizedBox(width: Theme.of(context).spacing.sm),
-        Flexible(child: Text(title, overflow: TextOverflow.ellipsis)),
+        Expanded(child: Text(title, overflow: TextOverflow.ellipsis)),
       ],
     );
   }

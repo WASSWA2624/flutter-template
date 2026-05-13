@@ -93,7 +93,7 @@ class _StarterFeatureGrid extends StatelessWidget {
         SizedBox(height: spacing.md),
         ResponsiveBuilder(
           builder: (BuildContext context, AppBreakpoint breakpoint) {
-            final bool singleColumn = breakpoint == AppBreakpoint.xs;
+            final bool singleColumn = breakpoint.isMobile;
 
             return LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
