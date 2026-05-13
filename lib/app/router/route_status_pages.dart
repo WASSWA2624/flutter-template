@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/router/app_routes.dart';
-import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
-import 'package:flutter_template/shared/layout/responsive_page.dart';
+import 'package:flutter_template/shared/components/components.dart';
 import 'package:go_router/go_router.dart';
 
 class SessionRestoringPage extends StatelessWidget {
@@ -89,42 +88,17 @@ class _RouteStatusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TextTheme textTheme = theme.textTheme;
-    final AppDesignTokens appTokens = theme.appTokens;
-    final AppSpacingTokens spacing = theme.spacing;
-
-    return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.appTitle)),
-      body: ResponsivePage(
-        maxWidth: PageMaxWidth.authForm,
-        centerVertically: true,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Icon(
-              icon,
-              size: appTokens.statusIconSize,
-              color: theme.statusColors.info,
-            ),
-            SizedBox(height: spacing.md),
-            Text(title, style: textTheme.headlineSmall),
-            SizedBox(height: spacing.sm),
-            Text(body, style: textTheme.bodyLarge),
-            if (detail != null && detail!.isNotEmpty) ...<Widget>[
-              SizedBox(height: spacing.sm),
-              Text(detail!, style: textTheme.bodyMedium),
-            ],
-            SizedBox(height: spacing.lg),
-            FilledButton(
-              onPressed: () {
-                context.go(AppRoutes.home.location());
-              },
-              child: Text(actionLabel),
-            ),
-          ],
-        ),
+    return AppStateScaffold(
+      appBarTitle: context.l10n.appTitle,
+      icon: icon,
+      title: title,
+      body: body,
+      detail: detail,
+      action: AppButton.primary(
+        label: actionLabel,
+        onPressed: () {
+          context.go(AppRoutes.home.location());
+        },
       ),
     );
   }
