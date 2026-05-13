@@ -112,6 +112,15 @@ linux/
 - `l10n/` is reserved for localization resources and generated localization
   accessors.
 
+## Architecture
+
+The app uses feature-first clean architecture. Dependencies flow from
+presentation into domain contracts, while data implementations satisfy those
+contracts and use shared infrastructure from `core/`.
+
+Detailed layer rules, provider placement, and the starter feature skeleton are
+documented in `docs/architecture/app-architecture.md`.
+
 ## Current scope
 
 This setup step creates a minimal runnable app and the canonical folders from
