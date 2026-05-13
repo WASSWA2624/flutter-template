@@ -11,7 +11,7 @@ final class AppStartupState {
   });
 
   const AppStartupState.defaults()
-    : themeMode = ThemeMode.system,
+    : themeMode = ThemeMode.light,
       locale = null,
       storageReadiness = const StorageReadiness.notReady(),
       sessionReadiness = const SessionReadiness.notReady();

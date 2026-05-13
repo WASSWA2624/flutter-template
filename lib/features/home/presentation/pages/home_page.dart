@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/l10n/app_strings.dart';
 import 'package:flutter_template/shared/layout/responsive_page.dart';
-import 'package:flutter_template/shared/layout/responsive_spacing.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ThemeData theme = Theme.of(context);
+    final TextTheme textTheme = theme.textTheme;
+    final AppSpacingTokens spacing = theme.spacing;
 
     return ResponsivePage(
       maxWidth: PageMaxWidth.form,
@@ -18,9 +20,9 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(AppStrings.readyTitle, style: textTheme.headlineSmall),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: spacing.sm),
           Text(AppStrings.readyBody, style: textTheme.bodyLarge),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: spacing.lg),
           const _SupportedPlatformList(),
         ],
       ),
@@ -33,24 +35,27 @@ class _SupportedPlatformList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ThemeData theme = Theme.of(context);
+    final TextTheme textTheme = theme.textTheme;
+    final AppDesignTokens appTokens = theme.appTokens;
+    final AppSpacingTokens spacing = theme.spacing;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(AppStrings.supportedPlatformsLabel, style: textTheme.titleMedium),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: spacing.sm),
         for (final String platform in AppStrings.supportedPlatforms)
           Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+            padding: EdgeInsets.only(bottom: spacing.xs),
             child: Row(
               children: <Widget>[
                 Icon(
                   Icons.check_circle_outline,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 20,
+                  color: theme.statusColors.success,
+                  size: appTokens.listIconSize,
                 ),
-                const SizedBox(width: AppSpacing.xs),
+                SizedBox(width: spacing.xs),
                 Expanded(child: Text(platform, style: textTheme.bodyMedium)),
               ],
             ),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/router/app_router.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/app/theme/app_theme.dart';
+import 'package:flutter_template/app/theme/app_theme_mode_controller.dart';
 import 'package:flutter_template/l10n/app_strings.dart';
 import 'package:go_router/go_router.dart';
 

@@ -14,8 +14,17 @@ abstract final class AppPreferencesRestorer {
     return switch (value) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
-      'system' || null => ThemeMode.system,
-      _ => ThemeMode.system,
+      'system' => ThemeMode.system,
+      null => ThemeMode.light,
+      _ => ThemeMode.light,
+    };
+  }
+
+  static String themeModePreferenceValue(ThemeMode themeMode) {
+    return switch (themeMode) {
+      ThemeMode.light => 'light',
+      ThemeMode.dark => 'dark',
+      ThemeMode.system => 'system',
     };
   }
 

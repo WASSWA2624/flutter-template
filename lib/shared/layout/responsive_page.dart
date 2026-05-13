@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/shared/layout/app_breakpoints.dart';
 import 'package:flutter_template/shared/layout/responsive_spacing.dart';
 
@@ -62,11 +63,16 @@ class ResponsivePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+        final ThemeData theme = Theme.of(context);
         final AppBreakpoint breakpoint = AppBreakpoints.fromConstraints(
           constraints,
         );
         final EdgeInsets resolvedPadding =
-            padding ?? ResponsiveSpacing.pagePaddingFor(breakpoint);
+            padding ??
+            ResponsiveSpacing.pagePaddingFor(
+              breakpoint,
+              designTokens: theme.appTokens,
+            );
         final AlignmentGeometry alignment = centerVertically
             ? Alignment.center
             : Alignment.topCenter;
@@ -81,7 +87,7 @@ class ResponsivePage extends StatelessWidget {
           content = ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: math.max(
-                AppSpacing.none,
+                theme.spacing.none,
                 constraints.maxHeight - resolvedPadding.vertical,
               ),
             ),

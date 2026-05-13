@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/shared/layout/app_breakpoints.dart';
 
 final class ResponsiveShellDestination {
@@ -31,6 +32,8 @@ class ResponsiveShellScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final AppBreakpoint breakpoint = AppBreakpoints.fromConstraints(
@@ -89,7 +92,7 @@ class ResponsiveShellScaffold extends StatelessWidget {
                     ),
                 ],
               ),
-              const VerticalDivider(width: 1),
+              VerticalDivider(width: theme.appTokens.dividerThickness),
               Expanded(child: child),
             ],
           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/theme/app_theme.dart';
+import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/l10n/app_strings.dart';
 import 'package:flutter_template/shared/layout/responsive_page.dart';
-import 'package:flutter_template/shared/layout/responsive_spacing.dart';
 
 class StartupLoadingApp extends StatelessWidget {
   const StartupLoadingApp({super.key});
@@ -53,6 +53,7 @@ class _StartupShell extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.light,
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<void>(
           settings: settings,
@@ -77,6 +78,9 @@ class _StartupScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final AppSpacingTokens spacing = theme.spacing;
+
     return Scaffold(
       body: ResponsivePage(
         maxWidth: PageMaxWidth.authForm,
@@ -85,10 +89,10 @@ class _StartupScaffold extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(title, style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: AppSpacing.sm),
-            Text(body, style: Theme.of(context).textTheme.bodyLarge),
-            const SizedBox(height: AppSpacing.lg),
+            Text(title, style: theme.textTheme.headlineSmall),
+            SizedBox(height: spacing.sm),
+            Text(body, style: theme.textTheme.bodyLarge),
+            SizedBox(height: spacing.lg),
             action,
           ],
         ),
