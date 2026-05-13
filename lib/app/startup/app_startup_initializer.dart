@@ -8,6 +8,8 @@ import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/core/config/app_config.dart';
 import 'package:flutter_template/core/config/app_config_provider.dart';
 import 'package:flutter_template/core/logging/app_logger.dart';
+import 'package:flutter_template/core/security/secure_session_storage.dart';
+import 'package:flutter_template/core/security/session_controller.dart';
 import 'package:flutter_template/core/security/session_manager.dart';
 import 'package:flutter_template/core/storage/secure/app_secure_storage.dart';
 import 'package:flutter_template/core/storage/storage_providers.dart';
@@ -29,10 +31,11 @@ final class AppStartupInitializer {
     final preferences = await SharedPreferences.getInstance();
     const secureStorage = FlutterSecureStorage();
     const appSecureStorage = FlutterAppSecureStorage(secureStorage);
+    const secureSessionStorage = SecureAppSessionStorage(appSecureStorage);
     const storageReadiness = StorageReadiness.ready();
     final sessionReadiness =
         await (_sessionManager ??
-                const SessionManager(secureStorage: appSecureStorage))
+                const SessionManager(sessionStorage: secureSessionStorage))
             .restore();
     final startupState = AppStartupState(
       themeMode: AppPreferencesRestorer.restoreThemeMode(preferences),
@@ -72,6 +75,7 @@ final class AppStartupResult {
         appConfigProvider.overrideWithValue(config),
         sharedPreferencesProvider.overrideWithValue(preferences),
         secureStorageProvider.overrideWithValue(secureStorage),
+        initialSessionStateProvider.overrideWithValue(state.sessionReadiness),
         appStartupStateProvider.overrideWithValue(state),
         if (initialLocation != null)
           appInitialLocationProvider.overrideWithValue(initialLocation),
@@ -86,6 +90,7 @@ final class AppStartupResult {
         appConfigProvider.overrideWithValue(config),
         sharedPreferencesProvider.overrideWithValue(preferences),
         secureStorageProvider.overrideWithValue(secureStorage),
+        initialSessionStateProvider.overrideWithValue(state.sessionReadiness),
         appStartupStateProvider.overrideWithValue(state),
         if (initialLocation != null)
           appInitialLocationProvider.overrideWithValue(initialLocation),

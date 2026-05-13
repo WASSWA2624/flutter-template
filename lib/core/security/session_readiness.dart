@@ -1,30 +1,19 @@
-enum SessionStatus {
-  unknown,
-  unauthenticated,
-  authenticated,
-  expired,
-  forbidden,
-}
+import 'package:flutter_template/core/security/session_state.dart';
 
-final class SessionReadiness {
-  const SessionReadiness.ready() : status = SessionStatus.unauthenticated;
+export 'package:flutter_template/core/security/session_state.dart'
+    show SessionState, SessionStatus;
 
-  const SessionReadiness.notReady() : status = SessionStatus.unknown;
+@Deprecated('Use SessionState instead.')
+final class SessionReadiness extends SessionState {
+  const SessionReadiness.ready() : super.ready();
 
-  const SessionReadiness.unauthenticated()
-    : status = SessionStatus.unauthenticated;
+  const SessionReadiness.notReady() : super.notReady();
 
-  const SessionReadiness.authenticated() : status = SessionStatus.authenticated;
+  const SessionReadiness.unauthenticated() : super.unauthenticated();
 
-  const SessionReadiness.expired() : status = SessionStatus.expired;
+  const SessionReadiness.authenticated() : super.authenticated();
 
-  const SessionReadiness.forbidden() : status = SessionStatus.forbidden;
+  const SessionReadiness.expired() : super.expired();
 
-  final SessionStatus status;
-
-  bool get isReady => status != SessionStatus.unknown;
-
-  bool get hasRestoredSession => status == SessionStatus.authenticated;
-
-  bool get isAuthenticated => status == SessionStatus.authenticated;
+  const SessionReadiness.forbidden() : super.forbidden();
 }

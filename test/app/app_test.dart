@@ -5,7 +5,7 @@ import 'package:flutter_template/app/router/app_router.dart';
 import 'package:flutter_template/app/router/route_status_pages.dart';
 import 'package:flutter_template/app/startup/app_startup_state.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
-import 'package:flutter_template/core/security/session_readiness.dart';
+import 'package:flutter_template/core/security/session_state.dart';
 import 'package:flutter_template/core/storage/storage_readiness.dart';
 import 'package:flutter_template/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
@@ -60,7 +60,7 @@ void main() {
               themeMode: ThemeMode.dark,
               locale: englishLocale,
               storageReadiness: StorageReadiness.ready(),
-              sessionReadiness: SessionReadiness.ready(),
+              sessionReadiness: SessionState.ready(),
             ),
           ),
         ],

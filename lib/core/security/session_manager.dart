@@ -1,57 +1,71 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/core/security/session_readiness.dart';
-import 'package:flutter_template/core/storage/secure/app_secure_storage.dart';
-import 'package:flutter_template/core/storage/storage_providers.dart';
+import 'package:flutter_template/core/security/auth_session.dart';
+import 'package:flutter_template/core/security/secure_session_storage.dart';
+import 'package:flutter_template/core/security/session_state.dart';
+import 'package:flutter_template/core/security/session_tokens.dart';
 
 final sessionManagerProvider = Provider<SessionManager>((ref) {
-  return SessionManager(secureStorage: ref.watch(appSecureStorageProvider));
+  return SessionManager(
+    sessionStorage: ref.watch(secureSessionStorageProvider),
+  );
 });
 
 final class SessionManager {
-  const SessionManager({required AppSecureStorage secureStorage})
-    : _secureStorage = secureStorage;
+  const SessionManager({
+    required SecureSessionStorage sessionStorage,
+    DateTimeReader now = DateTime.now,
+  }) : _sessionStorage = sessionStorage,
+       _now = now;
 
-  final AppSecureStorage _secureStorage;
+  final SecureSessionStorage _sessionStorage;
+  final DateTimeReader _now;
 
-  Future<SessionReadiness> restore() async {
-    final accessToken = await readAccessToken();
-    if (accessToken == null) {
-      return const SessionReadiness.unauthenticated();
+  Future<SessionState> restore() async {
+    final tokens = await _sessionStorage.readTokens();
+    if (tokens == null) {
+      return const SessionState.unauthenticated();
     }
 
-    return const SessionReadiness.authenticated();
+    if (tokens.isAccessTokenExpired(_now())) {
+      await clearSession();
+      return const SessionState.expired();
+    }
+
+    return SessionState.authenticated(session: AuthSession(tokens: tokens));
   }
 
   Future<String?> readAccessToken() async {
-    final token = await _secureStorage.read(SecureStorageKeys.accessToken);
-    final normalizedToken = token?.trim();
-
-    if (normalizedToken == null || normalizedToken.isEmpty) {
+    final tokens = await _sessionStorage.readTokens();
+    if (tokens == null) {
       return null;
     }
 
-    return normalizedToken;
+    if (tokens.isAccessTokenExpired(_now())) {
+      await clearSession();
+      return null;
+    }
+
+    return tokens.accessToken;
   }
 
   Future<void> persistAccessToken(String accessToken) async {
-    final normalizedToken = accessToken.trim();
-    if (normalizedToken.isEmpty) {
-      throw ArgumentError.value(
-        accessToken,
-        'accessToken',
-        'Access token is required.',
-      );
-    }
+    await persistTokens(SessionTokens(accessToken: accessToken));
+  }
 
-    await _secureStorage.write(
-      key: SecureStorageKeys.accessToken,
-      value: normalizedToken,
-    );
+  Future<void> persistTokens(SessionTokens tokens) {
+    return _sessionStorage.writeTokens(tokens);
+  }
+
+  Future<void> persistSession(AuthSession session) {
+    return persistTokens(session.tokens);
   }
 
   Future<void> clearSession() async {
-    await _secureStorage.delete(SecureStorageKeys.accessToken);
-    await _secureStorage.delete(SecureStorageKeys.refreshToken);
+    await _sessionStorage.clear();
+  }
+
+  Future<void> logout() {
+    return clearSession();
   }
 
   Future<void> handleUnauthorizedResponse() {

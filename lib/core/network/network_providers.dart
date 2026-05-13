@@ -5,6 +5,7 @@ import 'package:flutter_template/core/config/app_config_provider.dart';
 import 'package:flutter_template/core/network/api_client.dart';
 import 'package:flutter_template/core/network/api_interceptors.dart';
 import 'package:flutter_template/core/network/network_failure_mapper.dart';
+import 'package:flutter_template/core/security/session_controller.dart';
 import 'package:flutter_template/core/security/session_manager.dart';
 
 final networkFailureMapperProvider = Provider<NetworkFailureMapper>((ref) {
@@ -25,7 +26,11 @@ final dioProvider = Provider<Dio>((ref) {
   dio.interceptors.addAll(<Interceptor>[
     AuthInterceptor(
       readAccessToken: sessionManager.readAccessToken,
-      onUnauthorizedResponse: sessionManager.handleUnauthorizedResponse,
+      onUnauthorizedResponse: () async {
+        await ref
+            .read(sessionStateProvider.notifier)
+            .handleUnauthorizedResponse();
+      },
     ),
     SafeDiagnosticsInterceptor(
       enabled: !config.isProduction && config.logLevel == AppLogLevel.debug,

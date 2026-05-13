@@ -4,8 +4,8 @@ import 'package:flutter_template/app/router/app_routes.dart';
 import 'package:flutter_template/app/router/route_guards.dart';
 import 'package:flutter_template/app/router/route_refresh_listenable.dart';
 import 'package:flutter_template/app/router/route_status_pages.dart';
-import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/core/permissions/permission_providers.dart';
+import 'package:flutter_template/core/security/session_controller.dart';
 import 'package:flutter_template/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
@@ -28,7 +28,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     refreshListenable: refreshListenable,
     redirect: (_, GoRouterState state) {
       final AppRouteGuards guards = AppRouteGuards(
-        sessionReadiness: ref.read(sessionReadinessProvider),
+        sessionState: ref.read(sessionStateProvider),
       );
 
       return guards.redirect(

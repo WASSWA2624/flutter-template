@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/startup/app_startup_state.dart';
-import 'package:flutter_template/core/security/session_readiness.dart';
+import 'package:flutter_template/core/security/session_controller.dart';
+import 'package:flutter_template/core/security/session_state.dart';
 import 'package:flutter_template/core/storage/storage_readiness.dart';
 
 final appStartupStateProvider = Provider<AppStartupState>((ref) {
@@ -18,8 +19,6 @@ final storageReadinessProvider = Provider<StorageReadiness>((ref) {
   );
 });
 
-final sessionReadinessProvider = Provider<SessionReadiness>((ref) {
-  return ref.watch(
-    appStartupStateProvider.select((state) => state.sessionReadiness),
-  );
+final sessionReadinessProvider = Provider<SessionState>((ref) {
+  return ref.watch(sessionStateProvider);
 });

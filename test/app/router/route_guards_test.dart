@@ -1,7 +1,7 @@
 import 'package:flutter_template/app/router/app_routes.dart';
 import 'package:flutter_template/app/router/route_guards.dart';
 import 'package:flutter_template/core/permissions/app_permission.dart';
-import 'package:flutter_template/core/security/session_readiness.dart';
+import 'package:flutter_template/core/security/session_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -24,7 +24,7 @@ void main() {
   group('AppRouteGuards', () {
     test('allows public and unknown routes', () {
       const AppRouteGuards guards = AppRouteGuards(
-        sessionReadiness: SessionReadiness.ready(),
+        sessionState: SessionState.ready(),
         routes: <AppRouteData>[publicRoute],
       );
 
@@ -43,7 +43,7 @@ void main() {
     test('redirects protected routes while the session is restoring', () {
       final Uri targetLocation = Uri(path: protectedRoute.path);
       const AppRouteGuards guards = AppRouteGuards(
-        sessionReadiness: SessionReadiness.notReady(),
+        sessionState: SessionState.notReady(),
         routes: <AppRouteData>[protectedRoute],
       );
 
@@ -56,7 +56,7 @@ void main() {
     test('redirects protected routes without an authenticated session', () {
       final Uri targetLocation = Uri(path: protectedRoute.path);
       const AppRouteGuards guards = AppRouteGuards(
-        sessionReadiness: SessionReadiness.ready(),
+        sessionState: SessionState.ready(),
         routes: <AppRouteData>[protectedRoute],
       );
 
@@ -68,7 +68,7 @@ void main() {
 
     test('allows protected routes with an authenticated session', () {
       const AppRouteGuards guards = AppRouteGuards(
-        sessionReadiness: SessionReadiness.authenticated(),
+        sessionState: SessionState.authenticated(),
         routes: <AppRouteData>[protectedRoute],
       );
 
@@ -83,7 +83,7 @@ void main() {
     test('redirects authenticated users without required permissions', () {
       final Uri targetLocation = Uri(path: permissionRoute.path);
       final AppRouteGuards guards = AppRouteGuards(
-        sessionReadiness: const SessionReadiness.authenticated(),
+        sessionState: const SessionState.authenticated(),
         routes: <AppRouteData>[permissionRoute],
       );
 
@@ -95,7 +95,7 @@ void main() {
 
     test('allows authenticated users with required permissions', () {
       final AppRouteGuards guards = AppRouteGuards(
-        sessionReadiness: const SessionReadiness.authenticated(),
+        sessionState: const SessionState.authenticated(),
         routes: <AppRouteData>[permissionRoute],
       );
 
@@ -103,7 +103,9 @@ void main() {
         guards.redirect(
           AppRouteGuardRequest(
             location: Uri(path: permissionRoute.path),
-            grantedPermissions: <AppPermission>{reportsReadPermission},
+            grantedPermissions: AppPermissionGrant(<AppPermission>{
+              reportsReadPermission,
+            }),
           ),
         ),
         isNull,

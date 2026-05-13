@@ -1,24 +1,24 @@
 import 'package:flutter_template/app/router/app_routes.dart';
 import 'package:flutter_template/core/permissions/app_permission.dart';
-import 'package:flutter_template/core/security/session_readiness.dart';
+import 'package:flutter_template/core/security/session_state.dart';
 
 final class AppRouteGuardRequest {
   const AppRouteGuardRequest({
     required this.location,
-    this.grantedPermissions = const <AppPermission>{},
+    this.grantedPermissions = const AppPermissionGrant.empty(),
   });
 
   final Uri location;
-  final Set<AppPermission> grantedPermissions;
+  final AppPermissionGrant grantedPermissions;
 }
 
 final class AppRouteGuards {
   const AppRouteGuards({
-    required this.sessionReadiness,
+    required this.sessionState,
     this.routes = AppRoutes.all,
   });
 
-  final SessionReadiness sessionReadiness;
+  final SessionState sessionState;
   final List<AppRouteData> routes;
 
   String? redirect(AppRouteGuardRequest request) {
@@ -27,12 +27,12 @@ final class AppRouteGuards {
       return null;
     }
 
-    if (!sessionReadiness.isReady) {
+    if (!sessionState.isReady) {
       return AppRoutes.sessionRestoring.locationWithFrom(request.location);
     }
 
-    if (!sessionReadiness.isAuthenticated) {
-      return switch (sessionReadiness.status) {
+    if (!sessionState.isAuthenticated) {
+      return switch (sessionState.status) {
         SessionStatus.forbidden => AppRoutes.forbidden.locationWithFrom(
           request.location,
         ),
@@ -64,8 +64,8 @@ final class AppRouteGuards {
 
   bool _hasRequiredPermissions(
     AppRouteData route,
-    Set<AppPermission> grantedPermissions,
+    AppPermissionGrant grantedPermissions,
   ) {
-    return grantedPermissions.containsAll(route.requiredPermissions);
+    return grantedPermissions.grantsAll(route.requiredPermissions);
   }
 }

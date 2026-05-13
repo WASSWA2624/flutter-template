@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/core/permissions/permission_providers.dart';
+import 'package:flutter_template/core/security/session_controller.dart';
 
 final routeRefreshListenableProvider = Provider<RouteRefreshListenable>((ref) {
   final RouteRefreshListenable listenable = RouteRefreshListenable();
 
   ref
-    ..listen(sessionReadinessProvider, (_, _) {
+    ..listen(sessionStateProvider, (_, _) {
       listenable.refresh();
     })
     ..listen(grantedAppPermissionsProvider, (_, _) {

@@ -4,6 +4,7 @@ import 'package:flutter_template/app/startup/app_preferences_restorer.dart';
 import 'package:flutter_template/app/startup/app_startup_initializer.dart';
 import 'package:flutter_template/app/startup/startup_providers.dart';
 import 'package:flutter_template/core/config/app_config.dart';
+import 'package:flutter_template/core/security/session_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,6 +36,10 @@ void main() {
       addTearDown(container.dispose);
 
       expect(container.read(appStartupStateProvider), same(result.state));
+      expect(
+        container.read(sessionStateProvider),
+        result.state.sessionReadiness,
+      );
     });
   });
 }

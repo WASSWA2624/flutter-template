@@ -13,6 +13,7 @@ abstract interface class AppSecureStorage {
 abstract final class SecureStorageKeys {
   static const String accessToken = 'session.access_token';
   static const String refreshToken = 'session.refresh_token';
+  static const String accessTokenExpiresAt = 'session.access_token_expires_at';
 }
 
 final class FlutterAppSecureStorage implements AppSecureStorage {
