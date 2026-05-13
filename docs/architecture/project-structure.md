@@ -26,6 +26,7 @@ The template follows `app-rules/project_structure.md`.
 |-- ios/
 |-- web/
 |-- windows/
+|-- macos/
 `-- linux/
 ```
 

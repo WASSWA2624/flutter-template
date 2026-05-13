@@ -10,6 +10,7 @@ abstract final class AppStrings {
     'iOS',
     'Web',
     'Windows desktop',
+    'macOS desktop',
     'Linux desktop',
   ];
 }

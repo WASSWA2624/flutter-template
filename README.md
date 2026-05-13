@@ -9,11 +9,12 @@ project structure, minimal starter UI, and backend-agnostic setup.
 - iOS
 - Web
 - Windows desktop
+- macOS desktop
 - Linux desktop
 
-iOS builds require macOS with Xcode. Linux desktop builds require a Linux host
-with the Flutter desktop toolchain installed. Windows desktop builds require a
-Windows host with the Visual Studio C++ desktop workload.
+iOS and macOS builds require macOS with Xcode. Linux desktop builds require a
+Linux host with the Flutter desktop toolchain installed. Windows desktop builds
+require a Windows host with the Visual Studio C++ desktop workload.
 
 ## Setup
 
@@ -29,6 +30,7 @@ Useful platform commands:
 flutter run -d android
 flutter run -d ios
 flutter run -d windows
+flutter run -d macos
 flutter run -d linux
 flutter build web
 ```
@@ -57,6 +59,7 @@ android/
 ios/
 web/
 windows/
+macos/
 linux/
 ```
 
