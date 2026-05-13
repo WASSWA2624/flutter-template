@@ -5,6 +5,7 @@
 - Flutter 3.41 or newer on the stable channel.
 - Android SDK for Android development.
 - Xcode on macOS for iOS development.
+- Visual Studio with the C++ desktop workload for Windows desktop development.
 - Linux desktop build dependencies on Linux for Linux desktop development.
 
 ## First run
@@ -17,8 +18,11 @@ flutter run -d chrome
 
 ## Platform notes
 
-- Android, Web, and Linux project files are generated in this repository.
+- Android, Web, Windows, and Linux project files are generated in this
+  repository.
 - iOS project files are generated, but builds must run on macOS with Xcode.
+- Windows desktop builds must run on Windows with the Visual Studio C++ desktop
+  workload.
 - Linux desktop builds must run on Linux with the required GTK and CMake tools.
 
 ## Line endings

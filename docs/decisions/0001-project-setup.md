@@ -7,7 +7,8 @@ Accepted
 ## Context
 
 The template needs a Flutter project root that can run immediately while staying
-backend-agnostic and ready for Android, iOS, Web, and Linux desktop development.
+backend-agnostic and ready for Android, iOS, Web, Windows desktop, and Linux
+desktop development.
 
 ## Decision
 

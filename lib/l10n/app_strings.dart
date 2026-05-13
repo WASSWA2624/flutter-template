@@ -9,6 +9,7 @@ abstract final class AppStrings {
     'Android',
     'iOS',
     'Web',
+    'Windows desktop',
     'Linux desktop',
   ];
 }
