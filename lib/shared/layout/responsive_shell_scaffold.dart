@@ -16,6 +16,26 @@ final class ResponsiveShellDestination {
   final IconData selectedIcon;
 }
 
+class ResponsiveAppShell extends ResponsiveShellScaffold {
+  const ResponsiveAppShell({
+    required super.title,
+    required super.destinations,
+    required super.selectedIndex,
+    required super.onDestinationSelected,
+    required super.child,
+    super.connectivityStatus,
+    super.showUserAvatar,
+    super.compactTitle,
+    super.onlineLabel,
+    super.offlineLabel,
+    super.openMenuTooltip,
+    super.closeDrawerTooltip,
+    super.toggleSidebarTooltip,
+    super.accountTooltip,
+    super.key,
+  });
+}
+
 class ResponsiveShellScaffold extends StatefulWidget {
   const ResponsiveShellScaffold({
     required this.title,
@@ -88,7 +108,7 @@ class _ResponsiveShellScaffoldState extends State<ResponsiveShellScaffold> {
             bottom: false,
             child: Column(
               children: <Widget>[
-                _AppHeader(
+                AppMenuBar(
                   title: widget.title,
                   compactTitle: widget.compactTitle,
                   breakpoint: breakpoint,
@@ -109,7 +129,7 @@ class _ResponsiveShellScaffoldState extends State<ResponsiveShellScaffold> {
                       ? widget.child
                       : Row(
                           children: <Widget>[
-                            _DesktopShellSidebar(
+                            SideNavigation(
                               destinations: widget.destinations,
                               selectedIndex: effectiveSelectedIndex,
                               collapsed: _sidebarCollapsed,
@@ -161,8 +181,8 @@ class _ResponsiveShellScaffoldState extends State<ResponsiveShellScaffold> {
   }
 }
 
-class _AppHeader extends StatelessWidget {
-  const _AppHeader({
+class AppMenuBar extends StatelessWidget {
+  const AppMenuBar({
     required this.title,
     required this.breakpoint,
     required this.connectivityStatus,
@@ -173,6 +193,7 @@ class _AppHeader extends StatelessWidget {
     required this.toggleTooltip,
     required this.onToggleNavigation,
     this.compactTitle,
+    super.key,
   });
 
   final String title;
@@ -456,13 +477,14 @@ class _MobileShellDrawer extends StatelessWidget {
   }
 }
 
-class _DesktopShellSidebar extends StatelessWidget {
-  const _DesktopShellSidebar({
+class SideNavigation extends StatelessWidget {
+  const SideNavigation({
     required this.destinations,
     required this.selectedIndex,
     required this.collapsed,
     required this.width,
     required this.onDestinationSelected,
+    super.key,
   });
 
   final List<ResponsiveShellDestination> destinations;
@@ -654,7 +676,7 @@ const double _drawerLogoSize = 24;
 const double _defaultSidebarWidth = 208;
 const double _minSidebarWidth = 160;
 const double _maxSidebarWidth = 272;
-const double _collapsedSidebarWidth = 52;
+const double _collapsedSidebarWidth = 72;
 const double _resizeHandleWidth = 6;
 const double _dividerWidth = 1;
 const double _statusDotSize = 7;

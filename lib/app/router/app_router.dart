@@ -136,7 +136,7 @@ class _AppShell extends ConsumerWidget {
           loading: () => AppConnectivityStatus.online,
         );
 
-    return ResponsiveShellScaffold(
+    return ResponsiveAppShell(
       title: l10n.appTitle,
       compactTitle: l10n.appShortTitle,
       connectivityStatus: connectivityStatus,

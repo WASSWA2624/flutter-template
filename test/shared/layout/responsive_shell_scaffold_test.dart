@@ -27,7 +27,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: ResponsiveShellScaffold(
+        home: ResponsiveAppShell(
           title: 'Template',
           compactTitle: 'App',
           destinations: destinations,
@@ -46,6 +46,8 @@ void main() {
       final Scaffold scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
 
       expect(scaffold.drawer, isNotNull);
+      expect(find.byType(AppMenuBar), findsOneWidget);
+      expect(find.byType(SideNavigation), findsNothing);
       expect(find.byType(NavigationBar), findsNothing);
       expect(find.byType(NavigationRail), findsNothing);
       expect(find.text('Online'), findsNothing);
@@ -93,6 +95,8 @@ void main() {
     ) async {
       await pumpShellAtSize(tester, const Size(600, 800));
 
+      expect(find.byType(AppMenuBar), findsOneWidget);
+      expect(find.byType(SideNavigation), findsOneWidget);
       expect(find.byType(NavigationBar), findsNothing);
       expect(find.byType(NavigationRail), findsNothing);
       expect(find.text('Home'), findsOneWidget);
@@ -105,6 +109,8 @@ void main() {
     ) async {
       await pumpShellAtSize(tester, const Size(1200, 900));
 
+      expect(find.byType(AppMenuBar), findsOneWidget);
+      expect(find.byType(SideNavigation), findsOneWidget);
       expect(find.byType(NavigationBar), findsNothing);
       expect(find.byType(NavigationRail), findsNothing);
       expect(find.text('Template'), findsOneWidget);
@@ -120,6 +126,12 @@ void main() {
       await tester.tap(find.byTooltip('Toggle sidebar'));
       await tester.pumpAndSettle();
 
+      final sideNavigation = tester.widget<SideNavigation>(
+        find.byType(SideNavigation),
+      );
+
+      expect(sideNavigation.collapsed, isTrue);
+      expect(sideNavigation.width, 72);
       expect(find.text('Settings'), findsNothing);
       expect(find.byIcon(Icons.settings_outlined), findsOneWidget);
       expect(tester.takeException(), isNull);
