@@ -11,6 +11,7 @@ enum AppStateViewVariant { loading, empty, error, success, info }
 
 typedef AsyncStateDataBuilder<T> =
     Widget Function(BuildContext context, T data);
+typedef AsyncStateEmptyPredicate<T> = bool Function(T data);
 typedef AsyncStateFailureMapper =
     AppFailure Function(Object error, StackTrace stackTrace);
 
@@ -224,13 +225,21 @@ class AsyncStateScaffold<T> extends StatelessWidget {
     required this.loadingBody,
     this.appBarTitle,
     this.onRetry,
+    this.emptyPredicate,
+    this.emptyTitle,
+    this.emptyBody,
+    this.emptySemanticLabel,
+    this.emptyAction,
     this.failureMapper = _defaultFailureMapper,
     this.maxWidth = PageMaxWidth.authForm,
     this.centerVertically = true,
     this.scrollable = true,
     this.safeArea = true,
     super.key,
-  });
+  }) : assert(
+         emptyPredicate == null || (emptyTitle != null && emptyBody != null),
+         'Provide localized emptyTitle and emptyBody with emptyPredicate.',
+       );
 
   final AsyncValue<Result<T>> value;
   final AsyncStateDataBuilder<T> dataBuilder;
@@ -238,6 +247,11 @@ class AsyncStateScaffold<T> extends StatelessWidget {
   final String loadingTitle;
   final String loadingBody;
   final VoidCallback? onRetry;
+  final AsyncStateEmptyPredicate<T>? emptyPredicate;
+  final String? emptyTitle;
+  final String? emptyBody;
+  final String? emptySemanticLabel;
+  final Widget? emptyAction;
   final AsyncStateFailureMapper failureMapper;
   final PageMaxWidth maxWidth;
   final bool centerVertically;
@@ -249,7 +263,24 @@ class AsyncStateScaffold<T> extends StatelessWidget {
     return value.when(
       data: (result) {
         return result.when(
-          success: (data) => dataBuilder(context, data),
+          success: (data) {
+            if (emptyPredicate?.call(data) ?? false) {
+              return AppStateScaffold(
+                appBarTitle: appBarTitle,
+                variant: AppStateViewVariant.empty,
+                title: emptyTitle!,
+                body: emptyBody!,
+                action: emptyAction,
+                semanticLabel: emptySemanticLabel,
+                maxWidth: maxWidth,
+                centerVertically: centerVertically,
+                scrollable: scrollable,
+                safeArea: safeArea,
+              );
+            }
+
+            return dataBuilder(context, data);
+          },
           failure: (failure) => AppFailureStateScaffold(
             appBarTitle: appBarTitle,
             failure: failure,

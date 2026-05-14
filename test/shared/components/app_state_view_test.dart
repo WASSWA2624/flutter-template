@@ -104,4 +104,28 @@ void main() {
     expect(find.text('Try again'), findsOneWidget);
     expect(find.text('Loading'), findsNothing);
   });
+
+  testWidgets('AsyncStateScaffold renders typed empty data consistently', (
+    WidgetTester tester,
+  ) async {
+    await pumpComponent(
+      tester,
+      AsyncStateScaffold<List<String>>(
+        value: const AsyncData<Result<List<String>>>(
+          Result<List<String>>.success(<String>[]),
+        ),
+        loadingTitle: 'Loading',
+        loadingBody: 'Preparing content.',
+        emptyPredicate: (List<String> items) => items.isEmpty,
+        emptyTitle: 'No results',
+        emptyBody: 'Adjust filters and try again.',
+        dataBuilder: (_, items) => Text('Loaded ${items.length}'),
+      ),
+    );
+
+    expect(find.text('No results'), findsOneWidget);
+    expect(find.text('Adjust filters and try again.'), findsOneWidget);
+    expect(find.byIcon(Icons.inbox_outlined), findsOneWidget);
+    expect(find.text('Loaded 0'), findsNothing);
+  });
 }
