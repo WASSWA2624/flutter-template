@@ -134,20 +134,25 @@ the normal analysis workflow.
 
 ## Dependency stack
 
-The starter dependency set follows `app-rules/dependencies.md`.
+The dependency set follows `app-rules/dependencies.md`: required starter
+packages are present, and optional packages are included only where the template
+already implements the matching capability.
 
 | Purpose | Packages |
 |---|---|
-| State and DI | `flutter_riverpod`, `riverpod_annotation` |
+| State and DI | `flutter_riverpod` |
 | Navigation | `go_router` |
 | Networking | `dio` |
-| Models and JSON | `freezed_annotation`, `json_annotation` |
 | Local data | `drift`, `drift_flutter` |
 | Device storage | `shared_preferences`, `flutter_secure_storage` |
-| Platform services | `connectivity_plus`, `path_provider`, `url_launcher`, `app_links` |
+| Platform services | `connectivity_plus` |
 | Localization | `flutter_localizations`, `intl` |
-| Generation | `build_runner`, `riverpod_generator`, `freezed`, `json_serializable`, `drift_dev` |
+| Generation | `build_runner`, `drift_dev` |
 | Linting and tests | `flutter_lints`, `riverpod_lint`, `custom_lint`, `flutter_test`, `integration_test`, `mocktail` |
+
+Riverpod, Freezed, and JSON generators are intentionally omitted until the
+corresponding generated providers, immutable models, or JSON DTO serialization
+patterns are adopted.
 
 ## Project structure
 
