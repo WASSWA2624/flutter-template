@@ -11,10 +11,10 @@ product API, authentication flow, or conflict policy.
 
 Rule sources:
 
-- `app-rules/data_modeling.md`
-- `app-rules/database_strategy.md`
-- `app-rules/storage_strategy.md`
-- `app-rules/offline_sync.md`
+- [`app-rules/data_modeling.md`](../../app-planner/app-rules/data_modeling.md)
+- [`app-rules/database_strategy.md`](../../app-planner/app-rules/database_strategy.md)
+- [`app-rules/storage_strategy.md`](../../app-planner/app-rules/storage_strategy.md)
+- [`app-rules/offline_sync.md`](../../app-planner/app-rules/offline_sync.md)
 
 ## Decision
 

@@ -95,6 +95,7 @@ Run the local quality gate before opening a pull request:
 ```sh
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
+git diff --exit-code -- .
 dart format --set-exit-if-changed .
 flutter analyze
 flutter test
@@ -118,9 +119,9 @@ Build Web locally:
 flutter build web --release --dart-define-from-file=env/production.json.example
 ```
 
-Platform release commands for Android, iOS, Linux, and CI are documented in
-`docs/release/build-ci-release.md`. Do not commit signing files, credentials,
-API keys, tokens, or private certificates.
+Platform release commands for Web, Android, iOS, Windows, macOS, Linux, and CI
+are documented in `docs/release/build-ci-release.md`. Do not commit signing
+files, credentials, API keys, tokens, or private certificates.
 
 ## Tooling
 
@@ -136,9 +137,10 @@ the normal analysis workflow.
 
 ## Dependency stack
 
-The dependency set follows `app-rules/dependencies.md`: required starter
-packages are present, and optional packages are included only where the template
-already implements the matching capability.
+The dependency set follows
+[`app-rules/dependencies.md`](app-planner/app-rules/dependencies.md): required
+starter packages are present, and optional packages are included only where the
+template already implements the matching capability.
 
 | Purpose | Packages |
 |---|---|
@@ -249,10 +251,13 @@ generation, and the starter feature skeleton are documented in
 ## Feature workflow
 
 New features must follow `docs/workflows/feature-workflow.md` and the rule
-sources in `app-rules/feature_workflow.md`, `app-rules/checklists.md`, and
-`app-rules/coding_conventions.md`. Start by identifying route, state, data,
-validation, localization, responsive behavior, and tests. Use shared components
-before adding feature-specific widgets.
+sources in
+[`app-rules/feature_workflow.md`](app-planner/app-rules/feature_workflow.md),
+[`app-rules/checklists.md`](app-planner/app-rules/checklists.md), and
+[`app-rules/coding_conventions.md`](app-planner/app-rules/coding_conventions.md).
+Start by identifying route, state, data, validation, localization, responsive
+behavior, and tests. Use shared components before adding feature-specific
+widgets.
 
 ## Documentation map
 
@@ -269,6 +274,6 @@ before adding feature-specific widgets.
 
 ## Current scope
 
-This setup step creates a minimal runnable app and the canonical folders from
-`app-rules/project_structure.md`. It intentionally does not add product-specific
-backend behavior.
+This template provides a minimal runnable app and the canonical folders from
+[`app-rules/project_structure.md`](app-planner/app-rules/project_structure.md).
+It intentionally avoids product-specific backend behavior.

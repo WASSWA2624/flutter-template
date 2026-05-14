@@ -13,7 +13,8 @@ desktop, and Linux desktop development.
 ## Decision
 
 Use the standard Flutter scaffold, keep dependencies minimal, and normalize the
-source tree to the canonical structure in `app-rules/project_structure.md`.
+source tree to the canonical structure in
+[`app-rules/project_structure.md`](../../app-planner/app-rules/project_structure.md).
 The starter UI is a neutral home page with centralized strings and a shared
 Material theme.
 

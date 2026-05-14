@@ -2,14 +2,14 @@
 
 Rule sources:
 
-- `app-rules/feature_workflow.md`
-- `app-rules/checklists.md`
-- `app-rules/coding_conventions.md`
-- `app-rules/architecture.md`
-- `app-rules/project_structure.md`
-- `app-rules/reusable_components.md`
-- `app-rules/localization_i18n.md`
-- `app-rules/testing.md`
+- [`app-rules/feature_workflow.md`](../../app-planner/app-rules/feature_workflow.md)
+- [`app-rules/checklists.md`](../../app-planner/app-rules/checklists.md)
+- [`app-rules/coding_conventions.md`](../../app-planner/app-rules/coding_conventions.md)
+- [`app-rules/architecture.md`](../../app-planner/app-rules/architecture.md)
+- [`app-rules/project_structure.md`](../../app-planner/app-rules/project_structure.md)
+- [`app-rules/reusable_components.md`](../../app-planner/app-rules/reusable_components.md)
+- [`app-rules/localization_i18n.md`](../../app-planner/app-rules/localization_i18n.md)
+- [`app-rules/testing.md`](../../app-planner/app-rules/testing.md)
 
 Use this workflow for every new feature added to the template or to an app
 built from it. Keep changes small enough that each file has one clear

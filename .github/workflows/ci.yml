@@ -149,6 +149,66 @@ jobs:
           flutter build linux --release
           --dart-define-from-file=env/production.json.example
 
+  windows_release_smoke:
+    name: Windows release smoke
+    runs-on: windows-latest
+    needs: quality
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Enable Windows desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build Windows release
+        run: >
+          flutter build windows --release
+          --dart-define-from-file=env/production.json.example
+
+  macos_release_smoke:
+    name: macOS release smoke
+    runs-on: macos-latest
+    needs: quality
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Enable macOS desktop
+        run: flutter config --enable-macos-desktop
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build macOS release
+        run: >
+          flutter build macos --release
+          --dart-define-from-file=env/production.json.example
+
   ios_release_smoke:
     name: iOS release smoke
     runs-on: macos-latest

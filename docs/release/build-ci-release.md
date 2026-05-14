@@ -2,11 +2,11 @@
 
 Rule sources:
 
-- `app-rules/ci_cd_quality_gates.md`
-- `app-rules/platform_guidelines.md`
-- `app-rules/security.md`
-- `app-rules/dependencies.md`
-- `app-rules/testing.md`
+- [`app-rules/ci_cd_quality_gates.md`](../../app-planner/app-rules/ci_cd_quality_gates.md)
+- [`app-rules/platform_guidelines.md`](../../app-planner/app-rules/platform_guidelines.md)
+- [`app-rules/security.md`](../../app-planner/app-rules/security.md)
+- [`app-rules/dependencies.md`](../../app-planner/app-rules/dependencies.md)
+- [`app-rules/testing.md`](../../app-planner/app-rules/testing.md)
 
 This template keeps build inputs public and non-secret. Pass runtime values with
 Flutter define files through `--dart-define-from-file`; do not commit API keys,
@@ -36,8 +36,8 @@ Linux under `xvfb` for deterministic desktop coverage. Use
 ## CI Workflow
 
 The workflow at `.github/workflows/ci.yml` runs the same quality gates on pull
-requests, pushes to `main`, and manual dispatches. It also runs unsigned release
-smoke builds for Web, Android APK, Linux, and iOS.
+requests, pushes to `main`, and manual dispatches. It also runs release smoke
+builds for Web, Android APK, Linux, Windows, macOS, and unsigned iOS.
 
 CI uses the production-safe placeholder values in `env/production.json.example`:
 
@@ -99,6 +99,19 @@ Artifact path: `build/windows/x64/runner/Release/`.
 Windows builds require Developer Mode for plugin symlink support and Visual
 Studio with the Desktop development with C++ workload.
 
+### macOS
+
+```sh
+flutter config --enable-macos-desktop
+flutter build macos --release \
+  --dart-define-from-file=env/production.json.example
+```
+
+Artifact path: `build/macos/Build/Products/Release/`.
+
+macOS builds require a macOS host with Xcode. Configure signing, entitlements,
+notarization, and packaging outside source control before distribution.
+
 ### Linux
 
 ```sh
@@ -141,7 +154,8 @@ workflow files, and docs must not contain real secrets.
 - Dependencies are reviewed and `pubspec.lock` is committed.
 - Code generation is current and produces no diff.
 - Formatting, analyzer, unit/widget tests, and integration smoke tests pass.
-- Web, Android, iOS, and Linux release builds complete on supported hosts.
+- Web, Android, iOS, Windows, macOS, and Linux release builds complete on
+  supported hosts.
 - Production `API_BASE_URL` uses HTTPS and contains no credentials.
 - Production `LOG_LEVEL` is `info`, `warn`, or `error`.
 - `FEATURE_DEVELOPER_TOOLS_ENABLED` is false for production.

@@ -4,14 +4,14 @@ This template follows feature-first clean architecture.
 
 Rule sources:
 
-- `app-rules/architecture.md`
-- `app-rules/project_structure.md`
-- `app-rules/state_management.md`
-- `app-rules/data_modeling.md`
-- `app-rules/navigation.md`
-- `app-rules/localization_i18n.md`
-- `app-rules/testing.md`
-- `app-rules/code_generation.md`
+- [`app-rules/architecture.md`](../../app-planner/app-rules/architecture.md)
+- [`app-rules/project_structure.md`](../../app-planner/app-rules/project_structure.md)
+- [`app-rules/state_management.md`](../../app-planner/app-rules/state_management.md)
+- [`app-rules/data_modeling.md`](../../app-planner/app-rules/data_modeling.md)
+- [`app-rules/navigation.md`](../../app-planner/app-rules/navigation.md)
+- [`app-rules/localization_i18n.md`](../../app-planner/app-rules/localization_i18n.md)
+- [`app-rules/testing.md`](../../app-planner/app-rules/testing.md)
+- [`app-rules/code_generation.md`](../../app-planner/app-rules/code_generation.md)
 
 ## Dependency Direction
 

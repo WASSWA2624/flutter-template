@@ -1,6 +1,7 @@
 # Project Structure
 
-The template follows `app-rules/project_structure.md`.
+The template follows
+[`app-rules/project_structure.md`](../../app-planner/app-rules/project_structure.md).
 
 ```txt
 .
