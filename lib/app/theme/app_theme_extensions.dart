@@ -17,11 +17,11 @@ final class AppSpacingTokens extends ThemeExtension<AppSpacingTokens> {
   static const AppSpacingTokens standard = AppSpacingTokens(
     none: 0,
     xs: 4,
-    sm: 5,
-    md: 8,
-    lg: 12,
-    xl: 18,
-    xxl: 24,
+    sm: 8,
+    md: 12,
+    lg: 16,
+    xl: 24,
+    xxl: 32,
   );
 
   final double none;
@@ -75,6 +75,7 @@ final class AppSpacingTokens extends ThemeExtension<AppSpacingTokens> {
 final class AppRadiusTokens extends ThemeExtension<AppRadiusTokens> {
   const AppRadiusTokens({
     required this.none,
+    required this.xs,
     required this.sm,
     required this.md,
     required this.lg,
@@ -83,13 +84,15 @@ final class AppRadiusTokens extends ThemeExtension<AppRadiusTokens> {
 
   static const AppRadiusTokens standard = AppRadiusTokens(
     none: 0,
-    sm: 0,
-    md: 0,
-    lg: 0,
-    xl: 0,
+    xs: 4,
+    sm: 8,
+    md: 10,
+    lg: 12,
+    xl: 16,
   );
 
   final double none;
+  final double xs;
   final double sm;
   final double md;
   final double lg;
@@ -98,6 +101,7 @@ final class AppRadiusTokens extends ThemeExtension<AppRadiusTokens> {
   @override
   AppRadiusTokens copyWith({
     double? none,
+    double? xs,
     double? sm,
     double? md,
     double? lg,
@@ -105,6 +109,7 @@ final class AppRadiusTokens extends ThemeExtension<AppRadiusTokens> {
   }) {
     return AppRadiusTokens(
       none: none ?? this.none,
+      xs: xs ?? this.xs,
       sm: sm ?? this.sm,
       md: md ?? this.md,
       lg: lg ?? this.lg,
@@ -120,6 +125,7 @@ final class AppRadiusTokens extends ThemeExtension<AppRadiusTokens> {
 
     return AppRadiusTokens(
       none: _lerpDouble(none, other.none, t),
+      xs: _lerpDouble(xs, other.xs, t),
       sm: _lerpDouble(sm, other.sm, t),
       md: _lerpDouble(md, other.md, t),
       lg: _lerpDouble(lg, other.lg, t),
@@ -294,15 +300,15 @@ final class AppDesignTokens extends ThemeExtension<AppDesignTokens> {
   });
 
   static const AppDesignTokens standard = AppDesignTokens(
-    pagePaddingMobile: 10,
-    pagePaddingTablet: 14,
-    pagePaddingDesktop: 20,
-    formGapCompact: 6,
-    formGapRegular: 10,
-    formGapSpacious: 14,
-    minInteractiveDimension: 38,
-    listIconSize: 17,
-    statusIconSize: 30,
+    pagePaddingMobile: 16,
+    pagePaddingTablet: 24,
+    pagePaddingDesktop: 32,
+    formGapCompact: 8,
+    formGapRegular: 12,
+    formGapSpacious: 16,
+    minInteractiveDimension: 40,
+    listIconSize: 20,
+    statusIconSize: 32,
     dividerThickness: 1,
   );
 

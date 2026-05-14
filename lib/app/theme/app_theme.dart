@@ -8,13 +8,13 @@ abstract final class AppTheme {
 
   static ThemeData _buildTheme(Brightness brightness) {
     final ColorScheme colorScheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xFF0F766E),
+      seedColor: _seedColorFor(brightness),
       brightness: brightness,
     );
     const RoundedRectangleBorder rectangularShape = RoundedRectangleBorder();
     const AppSpacingTokens spacing = AppSpacingTokens.standard;
     const AppDesignTokens appTokens = AppDesignTokens.standard;
-    const Size minimumControlSize = Size(36, 36);
+    const Size minimumControlSize = Size(40, 40);
     final EdgeInsets buttonPadding = EdgeInsets.symmetric(
       horizontal: spacing.lg,
       vertical: spacing.sm,
@@ -106,7 +106,7 @@ abstract final class AppTheme {
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
-          minimumSize: const Size.square(34),
+          minimumSize: const Size.square(40),
           padding: EdgeInsets.all(spacing.xs),
           shape: rectangularShape,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -181,5 +181,12 @@ abstract final class AppTheme {
       ),
       dialogTheme: const DialogThemeData(shape: rectangularShape),
     );
+  }
+
+  static Color _seedColorFor(Brightness brightness) {
+    return switch (brightness) {
+      Brightness.light => const Color(0xFF1565C0),
+      Brightness.dark => const Color(0xFF90CAF9),
+    };
   }
 }
