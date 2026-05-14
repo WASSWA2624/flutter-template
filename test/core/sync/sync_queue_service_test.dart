@@ -63,5 +63,48 @@ void main() {
         expect(batch, isEmpty);
       },
     );
+
+    test('marks conflicts as explicit non-retryable queue states', () async {
+      await service.enqueue(
+        SyncQueueEnqueueRequest(
+          localId: 'local-1',
+          operation: SyncQueueOperation.update,
+          payload: SyncQueuePayload.fromMap(<String, Object?>{'id': 'local-1'}),
+        ),
+      );
+      now = DateTime.utc(2026, 5, 13, 11);
+
+      await service.markConflict('local-1', failureCode: 'sync.conflict');
+
+      final rows = await database.select(database.syncQueueEntries).get();
+      final row = rows.single;
+
+      expect(row.status, SyncQueueStatus.conflict);
+      expect(row.failureCode, 'sync.conflict');
+      expect(row.lastAttemptAt?.toUtc(), DateTime.utc(2026, 5, 13, 11));
+      expect(row.retryCount, 0);
+      expect(await service.nextBatch(), isEmpty);
+    });
+
+    test('bounds sync batches to the supported retry window', () async {
+      for (var index = 0; index < 105; index++) {
+        now = DateTime.utc(2026, 5, 13, 10, index);
+        await service.enqueue(
+          SyncQueueEnqueueRequest(
+            localId: 'local-$index',
+            operation: SyncQueueOperation.update,
+            payload: SyncQueuePayload.fromMap(<String, Object?>{
+              'id': 'local-$index',
+            }),
+          ),
+        );
+      }
+
+      final batch = await service.nextBatch(limit: 500);
+
+      expect(batch, hasLength(100));
+      expect(batch.first.localId, 'local-0');
+      expect(batch.last.localId, 'local-99');
+    });
   });
 }

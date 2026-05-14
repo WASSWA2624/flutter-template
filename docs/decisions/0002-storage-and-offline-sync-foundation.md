@@ -36,6 +36,18 @@ The starter conflict boundary is explicit: the core queue can mark entries as
 `conflict`, but product features must define the merge, overwrite, retry, or
 manual resolution behavior before release.
 
+Retry behavior is intentionally conservative in the starter. `pending` and
+`failed` entries are eligible for the next batch in created/updated order,
+`syncing`, `synced`, and `conflict` entries are excluded from automatic retry,
+and every failure increments `retryCount` while storing a safe `failureCode`.
+Product sync workers should add endpoint-specific backoff, maximum retry, and
+idempotency-key rules before enabling automatic background sync.
+
+Cache retention is feature-owned. The starter database demonstrates cache rows
+and indexes, but it does not delete cached domain data automatically. Features
+that cache remote data must define freshness, eviction, and logout-clearing
+rules based on the sensitivity and offline requirements of that feature.
+
 ## Consequences
 
 - Widgets and controllers do not import Drift tables or generated database row
@@ -46,3 +58,5 @@ manual resolution behavior before release.
   must add explicit upgrade paths before incrementing the version.
 - Offline-capable features can add local data sources and enqueue pending writes
   without changing app-wide storage choices.
+- Failed queue entries are recoverable until a feature-specific policy marks
+  them `synced`, `conflict`, or removes them through an explicit retention rule.
