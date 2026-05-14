@@ -45,7 +45,8 @@ void main() {
 
       final ApiClient apiClient = container.read(apiClientProvider);
 
-      expect(apiClient.dio, same(dio));
+      expect(apiClient, isA<DioApiClient>());
+      expect((apiClient as DioApiClient).dio, same(dio));
       expect(apiClient.baseUri, Uri.parse('https://api.test.local'));
     });
   });

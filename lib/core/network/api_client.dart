@@ -4,8 +4,69 @@ import 'package:flutter_template/core/network/network_failure_mapper.dart';
 
 typedef ApiResponseDecoder<T> = T Function(Object? data);
 
-final class ApiClient {
-  const ApiClient({
+abstract interface class ApiClient {
+  factory ApiClient({required Dio dio, NetworkFailureMapper failureMapper}) =
+      DioApiClient;
+
+  Uri get baseUri;
+
+  Future<ApiResult<T>> get<T>(
+    Uri endpoint, {
+    required ApiResponseDecoder<T> decoder,
+    Map<String, Object?>? queryParameters,
+    CancelToken? cancelToken,
+    Options? options,
+  });
+
+  Future<ApiResult<T>> post<T>(
+    Uri endpoint, {
+    required ApiResponseDecoder<T> decoder,
+    Object? data,
+    Map<String, Object?>? queryParameters,
+    CancelToken? cancelToken,
+    Options? options,
+  });
+
+  Future<ApiResult<T>> put<T>(
+    Uri endpoint, {
+    required ApiResponseDecoder<T> decoder,
+    Object? data,
+    Map<String, Object?>? queryParameters,
+    CancelToken? cancelToken,
+    Options? options,
+  });
+
+  Future<ApiResult<T>> patch<T>(
+    Uri endpoint, {
+    required ApiResponseDecoder<T> decoder,
+    Object? data,
+    Map<String, Object?>? queryParameters,
+    CancelToken? cancelToken,
+    Options? options,
+  });
+
+  Future<ApiResult<T>> delete<T>(
+    Uri endpoint, {
+    required ApiResponseDecoder<T> decoder,
+    Object? data,
+    Map<String, Object?>? queryParameters,
+    CancelToken? cancelToken,
+    Options? options,
+  });
+
+  Future<ApiResult<T>> request<T>({
+    required String method,
+    required Uri endpoint,
+    required ApiResponseDecoder<T> decoder,
+    Object? data,
+    Map<String, Object?>? queryParameters,
+    CancelToken? cancelToken,
+    Options? options,
+  });
+}
+
+final class DioApiClient implements ApiClient {
+  const DioApiClient({
     required Dio dio,
     NetworkFailureMapper failureMapper = const NetworkFailureMapper(),
   }) : _dio = dio,
@@ -16,8 +77,10 @@ final class ApiClient {
 
   Dio get dio => _dio;
 
+  @override
   Uri get baseUri => Uri.parse(_dio.options.baseUrl);
 
+  @override
   Future<ApiResult<T>> get<T>(
     Uri endpoint, {
     required ApiResponseDecoder<T> decoder,
@@ -35,6 +98,7 @@ final class ApiClient {
     );
   }
 
+  @override
   Future<ApiResult<T>> post<T>(
     Uri endpoint, {
     required ApiResponseDecoder<T> decoder,
@@ -54,6 +118,7 @@ final class ApiClient {
     );
   }
 
+  @override
   Future<ApiResult<T>> put<T>(
     Uri endpoint, {
     required ApiResponseDecoder<T> decoder,
@@ -73,6 +138,7 @@ final class ApiClient {
     );
   }
 
+  @override
   Future<ApiResult<T>> patch<T>(
     Uri endpoint, {
     required ApiResponseDecoder<T> decoder,
@@ -92,6 +158,7 @@ final class ApiClient {
     );
   }
 
+  @override
   Future<ApiResult<T>> delete<T>(
     Uri endpoint, {
     required ApiResponseDecoder<T> decoder,
@@ -111,6 +178,7 @@ final class ApiClient {
     );
   }
 
+  @override
   Future<ApiResult<T>> request<T>({
     required String method,
     required Uri endpoint,

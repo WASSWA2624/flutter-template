@@ -45,7 +45,7 @@ final dioProvider = Provider<Dio>((ref) {
 });
 
 final apiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient(
+  return DioApiClient(
     dio: ref.watch(dioProvider),
     failureMapper: ref.watch(networkFailureMapperProvider),
   );

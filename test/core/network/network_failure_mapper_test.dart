@@ -39,6 +39,61 @@ void main() {
       expect(failure.isRetryable, isFalse);
     });
 
+    test('maps forbidden and missing responses to typed failures', () {
+      final forbiddenRequest = RequestOptions(path: '/admin');
+      final notFoundRequest = RequestOptions(path: '/missing');
+
+      final forbiddenFailure = mapper.map(
+        DioException(
+          requestOptions: forbiddenRequest,
+          response: Response<Object?>(
+            requestOptions: forbiddenRequest,
+            statusCode: 403,
+          ),
+          type: DioExceptionType.badResponse,
+        ),
+        StackTrace.empty,
+      );
+      final notFoundFailure = mapper.map(
+        DioException(
+          requestOptions: notFoundRequest,
+          response: Response<Object?>(
+            requestOptions: notFoundRequest,
+            statusCode: 404,
+          ),
+          type: DioExceptionType.badResponse,
+        ),
+        StackTrace.empty,
+      );
+
+      expect(forbiddenFailure.category, AppFailureCategory.forbidden);
+      expect(notFoundFailure.category, AppFailureCategory.notFound);
+    });
+
+    test('maps connection and cancellation errors to typed failures', () {
+      final requestOptions = RequestOptions(path: '/readiness');
+
+      final offlineFailure = mapper.map(
+        DioException(
+          requestOptions: requestOptions,
+          type: DioExceptionType.connectionError,
+        ),
+        StackTrace.empty,
+      );
+      final cancelledFailure = mapper.map(
+        DioException(
+          requestOptions: requestOptions,
+          type: DioExceptionType.cancel,
+        ),
+        StackTrace.empty,
+      );
+
+      expect(offlineFailure.category, AppFailureCategory.offline);
+      expect(offlineFailure.isRetryable, isTrue);
+      expect(cancelledFailure.category, AppFailureCategory.cancelled);
+      expect(cancelledFailure.isRetryable, isFalse);
+    });
+
     test('maps validation responses without exposing server messages', () {
       final requestOptions = RequestOptions(path: '/example-resources');
       final failure = mapper.map(
