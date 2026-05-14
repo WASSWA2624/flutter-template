@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/core/network/app_connectivity_status.dart';
 import 'package:flutter_template/core/responsive/app_breakpoints.dart';
@@ -232,9 +233,10 @@ class AppMenuBar extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: theme.spacing.sm),
           child: Row(
             children: <Widget>[
-              IconButton(
+              AppIconButton(
+                semanticLabel: toggleTooltip,
                 tooltip: toggleTooltip,
-                icon: const Icon(Icons.menu),
+                icon: Icons.menu,
                 onPressed: onToggleNavigation,
               ),
               SizedBox(width: theme.spacing.xs),
@@ -442,9 +444,10 @@ class _MobileShellDrawer extends StatelessWidget {
                         ),
                       ),
                     ),
-                    IconButton(
+                    AppIconButton(
+                      semanticLabel: closeTooltip,
                       tooltip: closeTooltip,
-                      icon: const Icon(Icons.close),
+                      icon: Icons.close,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -541,7 +544,14 @@ class _ShellMenuItem extends StatefulWidget {
 }
 
 class _ShellMenuItemState extends State<_ShellMenuItem> {
+  static const Map<ShortcutActivator, Intent> _shortcuts =
+      <ShortcutActivator, Intent>{
+        SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
+        SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
+      };
+
   bool _hovered = false;
+  bool _focused = false;
 
   @override
   Widget build(BuildContext context) {
@@ -549,6 +559,7 @@ class _ShellMenuItemState extends State<_ShellMenuItem> {
     final ColorScheme colorScheme = theme.colorScheme;
     final Color selectedColor = colorScheme.secondaryContainer;
     final Color hoverColor = colorScheme.surfaceContainerHighest;
+    final Color focusColor = colorScheme.primary;
     final Color foregroundColor = widget.selected
         ? colorScheme.onSecondaryContainer
         : colorScheme.onSurfaceVariant;
@@ -565,14 +576,25 @@ class _ShellMenuItemState extends State<_ShellMenuItem> {
       decoration: BoxDecoration(
         color: widget.selected
             ? selectedColor
-            : _hovered
+            : _hovered || _focused
             ? hoverColor
             : Colors.transparent,
         border: Border(
           left: BorderSide(
-            color: widget.selected ? colorScheme.primary : Colors.transparent,
+            color: widget.selected || _focused
+                ? colorScheme.primary
+                : Colors.transparent,
             width: _selectedIndicatorWidth,
           ),
+          top: _focused
+              ? BorderSide(color: focusColor, width: _focusIndicatorWidth)
+              : BorderSide.none,
+          right: _focused
+              ? BorderSide(color: focusColor, width: _focusIndicatorWidth)
+              : BorderSide.none,
+          bottom: _focused
+              ? BorderSide(color: focusColor, width: _focusIndicatorWidth)
+              : BorderSide.none,
         ),
       ),
       child: Row(
@@ -604,31 +626,55 @@ class _ShellMenuItemState extends State<_ShellMenuItem> {
       ),
     );
 
-    return Tooltip(
-      message: widget.showLabel ? '' : widget.destination.label,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (_) {
-          setState(() {
-            _hovered = true;
-          });
+    return Shortcuts(
+      shortcuts: _shortcuts,
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          ActivateIntent: CallbackAction<ActivateIntent>(
+            onInvoke: (_) {
+              widget.onTap();
+              return null;
+            },
+          ),
         },
-        onExit: (_) {
-          setState(() {
-            _hovered = false;
-          });
-        },
-        child: Semantics(
-          button: true,
-          selected: widget.selected,
-          label: widget.destination.label,
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: widget.onTap,
-              hoverColor: Colors.transparent,
-              splashColor: colorScheme.primary.withValues(alpha: 0.08),
-              child: content,
+        child: Focus(
+          onFocusChange: (bool focused) {
+            setState(() {
+              _focused = focused;
+            });
+          },
+          child: Tooltip(
+            message: widget.showLabel ? '' : widget.destination.label,
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              onEnter: (_) {
+                setState(() {
+                  _hovered = true;
+                });
+              },
+              onExit: (_) {
+                setState(() {
+                  _hovered = false;
+                });
+              },
+              child: Semantics(
+                button: true,
+                selected: widget.selected,
+                enabled: true,
+                label: widget.destination.label,
+                onTap: widget.onTap,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    canRequestFocus: false,
+                    onTap: widget.onTap,
+                    hoverColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    splashColor: colorScheme.primary.withValues(alpha: 0.08),
+                    child: content,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -684,6 +730,7 @@ const double _avatarRadius = 13;
 const double _avatarIconSize = 17;
 const double _avatarStatusDotSize = 7;
 const double _selectedIndicatorWidth = 2;
+const double _focusIndicatorWidth = 2;
 const double _menuItemHeight = 36;
 const Duration _menuAnimationDuration = Duration(milliseconds: 120);
 const Duration _sidebarAnimationDuration = Duration(milliseconds: 180);

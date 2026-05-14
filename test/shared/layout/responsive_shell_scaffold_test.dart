@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_template/shared/layout/responsive_shell_scaffold.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -6,6 +7,7 @@ void main() {
   Future<void> pumpShellAtSize(
     WidgetTester tester,
     Size size, {
+    ValueChanged<int>? onDestinationSelected,
     List<ResponsiveShellDestination> destinations =
         const <ResponsiveShellDestination>[
           ResponsiveShellDestination(
@@ -32,7 +34,7 @@ void main() {
           compactTitle: 'App',
           destinations: destinations,
           selectedIndex: 0,
-          onDestinationSelected: (_) {},
+          onDestinationSelected: onDestinationSelected ?? (_) {},
           child: const Text('Body'),
         ),
       ),
@@ -151,6 +153,31 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Settings'), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('selects desktop side navigation from the keyboard', (
+      WidgetTester tester,
+    ) async {
+      int? selectedIndex;
+      await pumpShellAtSize(
+        tester,
+        const Size(1200, 900),
+        onDestinationSelected: (int index) {
+          selectedIndex = index;
+        },
+      );
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+
+      expect(selectedIndex, 1);
       expect(tester.takeException(), isNull);
     });
   });

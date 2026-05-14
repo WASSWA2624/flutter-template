@@ -2,10 +2,10 @@
 
 This template follows the shared platform rules in:
 
-- [`app-rules/platform_guidelines.md`](../../app-rules/platform_guidelines.md)
-- [`app-rules/multi_platform_input.md`](../../app-rules/multi_platform_input.md)
-- [`app-rules/accessibility.md`](../../app-rules/accessibility.md)
-- [`app-rules/permissions.md`](../../app-rules/permissions.md)
+- [`app-rules/platform_guidelines.md`](../../app-planner/app-rules/platform_guidelines.md)
+- [`app-rules/multi_platform_input.md`](../../app-planner/app-rules/multi_platform_input.md)
+- [`app-rules/accessibility.md`](../../app-planner/app-rules/accessibility.md)
+- [`app-rules/permissions.md`](../../app-planner/app-rules/permissions.md)
 
 ## Supported targets
 
@@ -33,9 +33,10 @@ requires a semantic label and tooltip. Selectable mobile list rows are keyboard
 activatable with Enter or Space, and desktop table rows remain selectable with
 pointer and keyboard semantics from `DataTable`.
 
-Dialogs should be opened through `showAppDialog`. The helper requests dialog
-focus, keeps traversal inside the dialog route, and restores focus to the
-previous control after the dialog closes.
+Desktop side navigation rows expose pointer hover, visible keyboard focus, and
+Enter/Space activation. Dialogs should be opened through `showAppDialog`. The
+helper requests dialog focus, keeps traversal inside the dialog route, and
+restores focus to the previous control after the dialog closes.
 
 ## Accessibility baseline
 
