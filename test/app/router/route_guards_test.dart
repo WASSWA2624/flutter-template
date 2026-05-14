@@ -66,6 +66,32 @@ void main() {
       );
     });
 
+    test('redirects expired sessions to the auth-required route', () {
+      final Uri targetLocation = Uri(path: protectedRoute.path);
+      const AppRouteGuards guards = AppRouteGuards(
+        sessionState: SessionState.expired(),
+        routes: <AppRouteData>[protectedRoute],
+      );
+
+      expect(
+        guards.redirect(AppRouteGuardRequest(location: targetLocation)),
+        AppRoutes.authRequired.locationWithFrom(targetLocation),
+      );
+    });
+
+    test('redirects forbidden session state to the forbidden route', () {
+      final Uri targetLocation = Uri(path: protectedRoute.path);
+      const AppRouteGuards guards = AppRouteGuards(
+        sessionState: SessionState.forbidden(),
+        routes: <AppRouteData>[protectedRoute],
+      );
+
+      expect(
+        guards.redirect(AppRouteGuardRequest(location: targetLocation)),
+        AppRoutes.forbidden.locationWithFrom(targetLocation),
+      );
+    });
+
     test('allows protected routes with an authenticated session', () {
       const AppRouteGuards guards = AppRouteGuards(
         sessionState: SessionState.authenticated(),
