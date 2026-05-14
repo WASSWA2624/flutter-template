@@ -16,6 +16,7 @@
 migrate_working_dir/
 
 # Local Flutter compile-time define overrides.
+env/*.json
 env/*.local.json
 
 # IntelliJ related

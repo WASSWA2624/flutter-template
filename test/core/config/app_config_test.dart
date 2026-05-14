@@ -69,6 +69,25 @@ void main() {
       );
     });
 
+    test('rejects local API URLs in production', () {
+      expect(
+        () => AppConfig.fromValues(
+          environmentName: 'production',
+          apiBaseUrl: 'https://localhost:8080',
+        ),
+        throwsA(
+          isA<AppConfigException>().having(
+            (error) => error.messages,
+            'messages',
+            contains(
+              'Production API_BASE_URL must not point to a local '
+              'development host.',
+            ),
+          ),
+        ),
+      );
+    });
+
     test('rejects developer tools in production', () {
       expect(
         () => AppConfig.fromValues(

@@ -9,20 +9,22 @@ Rule sources:
 
 The app reads public, non-secret configuration from Flutter compile-time
 defines. Store environment-specific values in Flutter define files under
-`env/` and pass them with `--dart-define-from-file`. Do not commit secrets,
-tokens, passwords, private certificates, or API keys in source code, docs,
-assets, or local environment files.
+`env/` and pass them with `--dart-define-from-file`. The repository commits
+only `.json.example` define files. Copy an example to an ignored `env/*.json`
+file when local or CI values need to differ. Do not commit secrets, tokens,
+passwords, private certificates, or API keys in source code, docs, assets, or
+local environment files.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| `env/development.json` | Local development values. |
-| `env/staging.json` | Staging placeholder values. |
-| `env/production.json` | Production-safe placeholder values for release smoke builds. |
+| `env/development.json.example` | Local development starter values. |
+| `env/staging.json.example` | Staging placeholder values. |
+| `env/production.json.example` | Production-safe placeholder values for release smoke builds. |
 
-Use `env/*.local.json` for machine-specific overrides. These files are ignored
-by Git.
+Use ignored `env/*.json` or `env/*.local.json` files for machine-specific
+overrides.
 
 ## Values
 
@@ -42,17 +44,17 @@ usernames, passwords, tokens, or other credentials.
 Development can use a local HTTP endpoint:
 
 ```sh
-flutter run -d chrome --dart-define-from-file=env/development.json
+flutter run -d chrome --dart-define-from-file=env/development.json.example
 ```
 
 Staging and production should use public HTTPS endpoints:
 
 ```sh
-flutter run -d chrome --dart-define-from-file=env/staging.json
+flutter run -d chrome --dart-define-from-file=env/staging.json.example
 ```
 
 ```sh
-flutter build web --release --dart-define-from-file=env/production.json
+flutter build web --release --dart-define-from-file=env/production.json.example
 ```
 
 Command-line `--dart-define=KEY=value` entries can still be used for CI or

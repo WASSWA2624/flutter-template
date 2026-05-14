@@ -15,11 +15,13 @@
 ```sh
 flutter pub get
 flutter test
-flutter run -d chrome --dart-define-from-file=env/development.json
-flutter run -d windows --dart-define-from-file=env/development.json
+flutter run -d chrome --dart-define-from-file=env/development.json.example
+flutter run -d windows --dart-define-from-file=env/development.json.example
 ```
 
-See `environment.md` for all supported public configuration keys.
+See `environment.md` for all supported public configuration keys. Copy
+`env/development.json.example` to ignored `env/development.json` only when local
+values need to differ from the starter defaults.
 
 ## Hot reload development workflow
 
@@ -52,10 +54,10 @@ target platform command, then press `r` for hot reload, `R` for hot restart, and
 `q` to quit.
 
 ```sh
-flutter run -d chrome --dart-define-from-file=env/development.json
-flutter run -d android --dart-define-from-file=env/development.json
-flutter run -d ios --dart-define-from-file=env/development.json
-flutter run -d macos --dart-define-from-file=env/development.json
+flutter run -d chrome --dart-define-from-file=env/development.json.example
+flutter run -d android --dart-define-from-file=env/development.json.example
+flutter run -d ios --dart-define-from-file=env/development.json.example
+flutter run -d macos --dart-define-from-file=env/development.json.example
 ```
 
 Use `flutter devices` to find exact device IDs when more than one simulator,
@@ -63,7 +65,7 @@ emulator, browser, or physical device is available:
 
 ```sh
 flutter devices
-flutter run -d <deviceId> --dart-define-from-file=env/development.json
+flutter run -d <deviceId> --dart-define-from-file=env/development.json.example
 ```
 
 Platform requirements still apply: iOS and macOS require macOS with Xcode,
@@ -88,7 +90,7 @@ After those prerequisites are installed, verify the host and run the app:
 
 ```powershell
 flutter doctor -v
-flutter run -d windows --dart-define-from-file=env/development.json
+flutter run -d windows --dart-define-from-file=env/development.json.example
 ```
 
 ## Test commands

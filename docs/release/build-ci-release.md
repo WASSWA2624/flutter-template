@@ -39,15 +39,15 @@ The workflow at `.github/workflows/ci.yml` runs the same quality gates on pull
 requests, pushes to `main`, and manual dispatches. It also runs unsigned release
 smoke builds for Web, Android APK, Linux, and iOS.
 
-CI uses the production-safe placeholder values in `env/production.json`:
+CI uses the production-safe placeholder values in `env/production.json.example`:
 
 ```sh
-flutter build web --release --dart-define-from-file=env/production.json
+flutter build web --release --dart-define-from-file=env/production.json.example
 ```
 
-Replace the placeholder URL by committing a public, non-secret product endpoint
-or by adding CI-only `--dart-define=API_BASE_URL=...` overrides. Keep
-credentials and signing material out of the repository and out of logs.
+Replace the placeholder URL by providing a secure CI define file or CI-only
+`--dart-define=API_BASE_URL=...` overrides. Keep credentials and signing
+material out of the repository and out of logs.
 
 ## Platform Build Commands
 
@@ -56,7 +56,7 @@ Run platform builds only on hosts with the required SDKs installed.
 ### Web
 
 ```sh
-flutter build web --release --dart-define-from-file=env/production.json
+flutter build web --release --dart-define-from-file=env/production.json.example
 ```
 
 Artifact path: `build/web/`.
@@ -64,11 +64,11 @@ Artifact path: `build/web/`.
 ### Android
 
 ```sh
-flutter build apk --release --dart-define-from-file=env/production.json
+flutter build apk --release --dart-define-from-file=env/production.json.example
 ```
 
 ```sh
-flutter build appbundle --release --dart-define-from-file=env/production.json
+flutter build appbundle --release --dart-define-from-file=env/production.json.example
 ```
 
 Artifact paths: `build/app/outputs/flutter-apk/` and
@@ -82,7 +82,7 @@ for local release smoke builds only.
 
 ```sh
 flutter build ios --release --no-codesign \
-  --dart-define-from-file=env/production.json
+  --dart-define-from-file=env/production.json.example
 ```
 
 Use `flutter build ipa --release` with app-specific signing and export options
@@ -91,7 +91,7 @@ when distribution credentials are available on a secure macOS build host.
 ### Windows
 
 ```sh
-flutter build windows --release --dart-define-from-file=env/production.json
+flutter build windows --release --dart-define-from-file=env/production.json.example
 ```
 
 Artifact path: `build/windows/x64/runner/Release/`.
@@ -104,7 +104,7 @@ Studio with the Desktop development with C++ workload.
 ```sh
 flutter config --enable-linux-desktop
 flutter build linux --release \
-  --dart-define-from-file=env/production.json
+  --dart-define-from-file=env/production.json.example
 ```
 
 Install Flutter Linux desktop dependencies first, including GTK, CMake, Ninja,

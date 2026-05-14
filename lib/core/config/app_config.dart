@@ -111,6 +111,12 @@ final class AppConfig {
       errors.add('Production API_BASE_URL must use https.');
     }
 
+    if (isProduction && _isLocalDevelopmentHost(apiBaseUrl.host)) {
+      errors.add(
+        'Production API_BASE_URL must not point to a local development host.',
+      );
+    }
+
     if (apiTimeout <= Duration.zero) {
       errors.add('API_TIMEOUT_SECONDS must be greater than zero.');
     }
@@ -208,6 +214,16 @@ final class AppConfig {
     }
 
     return logLevel;
+  }
+
+  static bool _isLocalDevelopmentHost(String host) {
+    final normalizedHost = host.trim().toLowerCase();
+
+    return normalizedHost == 'localhost' ||
+        normalizedHost == '127.0.0.1' ||
+        normalizedHost == '0.0.0.0' ||
+        normalizedHost == '::1' ||
+        normalizedHost == '[::1]';
   }
 }
 

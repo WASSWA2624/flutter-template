@@ -9,7 +9,7 @@
       "deviceId": "chrome",
       "flutterMode": "debug",
       "toolArgs": [
-        "--dart-define-from-file=env/development.json"
+        "--dart-define-from-file=env/development.json.example"
       ]
     },
     {
@@ -20,7 +20,7 @@
       "deviceId": "android",
       "flutterMode": "debug",
       "toolArgs": [
-        "--dart-define-from-file=env/development.json"
+        "--dart-define-from-file=env/development.json.example"
       ]
     },
     {
@@ -31,7 +31,7 @@
       "deviceId": "ios",
       "flutterMode": "debug",
       "toolArgs": [
-        "--dart-define-from-file=env/development.json"
+        "--dart-define-from-file=env/development.json.example"
       ]
     },
     {
@@ -42,7 +42,7 @@
       "deviceId": "macos",
       "flutterMode": "debug",
       "toolArgs": [
-        "--dart-define-from-file=env/development.json"
+        "--dart-define-from-file=env/development.json.example"
       ]
     },
     {
@@ -53,7 +53,7 @@
       "deviceId": "windows",
       "flutterMode": "debug",
       "toolArgs": [
-        "--dart-define-from-file=env/development.json"
+        "--dart-define-from-file=env/development.json.example"
       ]
     },
     {
@@ -64,7 +64,7 @@
       "deviceId": "linux",
       "flutterMode": "debug",
       "toolArgs": [
-        "--dart-define-from-file=env/development.json"
+        "--dart-define-from-file=env/development.json.example"
       ]
     }
   ]

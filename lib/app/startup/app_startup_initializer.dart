@@ -27,6 +27,12 @@ final class AppStartupInitializer {
     appConfig.validate();
 
     AppLogger.initialize(appConfig.logLevel);
+    AppLogger.info(
+      'App configuration loaded.',
+      context: <String, Object?>{
+        'environment': appConfig.environment.configValue,
+      },
+    );
 
     final preferences = await SharedPreferences.getInstance();
     const secureStorage = FlutterSecureStorage();

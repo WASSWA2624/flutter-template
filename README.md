@@ -45,8 +45,10 @@ Run code generation before analysis, tests, or release builds:
 dart run build_runner build --delete-conflicting-outputs
 ```
 
+The committed `env/*.json.example` files are non-secret starter define files.
+Copy them to ignored `env/*.json` files only when local values need to differ.
 See `docs/setup/development.md` for local prerequisite notes and
-`docs/setup/environment.md` for supported public Flutter define files.
+`docs/setup/environment.md` for supported public Flutter define keys.
 
 ## Run
 
@@ -58,22 +60,22 @@ hot reload on save for active debug sessions.
 Run the starter app on Chrome:
 
 ```sh
-flutter run -d chrome --dart-define-from-file=env/development.json
+flutter run -d chrome --dart-define-from-file=env/development.json.example
 ```
 
 Run the starter app on Windows desktop:
 
 ```sh
-flutter run -d windows --dart-define-from-file=env/development.json
+flutter run -d windows --dart-define-from-file=env/development.json.example
 ```
 
 Useful platform run commands:
 
 ```sh
-flutter run -d android --dart-define-from-file=env/development.json
-flutter run -d ios --dart-define-from-file=env/development.json
-flutter run -d macos --dart-define-from-file=env/development.json
-flutter run -d linux --dart-define-from-file=env/development.json
+flutter run -d android --dart-define-from-file=env/development.json.example
+flutter run -d ios --dart-define-from-file=env/development.json.example
+flutter run -d macos --dart-define-from-file=env/development.json.example
+flutter run -d linux --dart-define-from-file=env/development.json.example
 ```
 
 When running from a terminal, press `r` for hot reload, `R` for hot restart, and
@@ -113,7 +115,7 @@ flutter test --coverage
 Build Web locally:
 
 ```sh
-flutter build web --release --dart-define-from-file=env/production.json
+flutter build web --release --dart-define-from-file=env/production.json.example
 ```
 
 Platform release commands for Android, iOS, Linux, and CI are documented in
