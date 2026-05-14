@@ -158,6 +158,11 @@ docs/
   release/
   setup/
   workflows/
+assets/
+  icons/
+  images/
+  illustrations/
+  logos/
 lib/
   main.dart
   bootstrap.dart
