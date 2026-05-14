@@ -49,7 +49,7 @@ class AppRadioGroup<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final bool canChange = enabled && onChanged != null;
+    final bool canChange = enabled;
 
     return FormField<T>(
       key: ValueKey<T?>(value),

@@ -68,7 +68,7 @@ class _AppDateFieldState extends State<AppDateField> {
 
   @override
   Widget build(BuildContext context) {
-    final bool canChange = widget.enabled && widget.onChanged != null;
+    final bool canChange = widget.enabled;
 
     return FormField<DateTime>(
       key: ValueKey<DateTime?>(widget.value),

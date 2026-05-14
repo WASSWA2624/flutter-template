@@ -87,7 +87,7 @@ class AppSelectField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool canSelect = enabled && !isLoading && onChanged != null;
+    final bool canSelect = enabled && !isLoading;
     Widget field = LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final double? width =
