@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
 import 'package:flutter_template/core/network/app_connectivity_status.dart';
+import 'package:flutter_template/core/responsive/app_breakpoints.dart';
 import 'package:flutter_template/shared/components/components.dart';
-import 'package:flutter_template/shared/layout/app_breakpoints.dart';
 
 final class ResponsiveShellDestination {
   const ResponsiveShellDestination({

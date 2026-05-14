@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_template/app/theme/app_theme_extensions.dart';
+import 'package:flutter_template/core/responsive/app_breakpoints.dart';
 import 'package:flutter_template/features/home/domain/entities/home_readiness_snapshot.dart';
 import 'package:flutter_template/features/home/presentation/controllers/home_controller.dart';
 import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:flutter_template/shared/components/components.dart';
-import 'package:flutter_template/shared/layout/app_breakpoints.dart';
 import 'package:flutter_template/shared/layout/responsive_page.dart';
 
 class HomePage extends ConsumerWidget {

@@ -1,4 +1,4 @@
-import 'package:flutter_template/shared/layout/app_breakpoints.dart';
+import 'package:flutter_template/core/responsive/app_breakpoints.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
