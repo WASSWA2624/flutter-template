@@ -1,4 +1,8 @@
-import 'package:flutter_template/core/errors/result.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_template/core/network/api_result.dart';
+import 'package:flutter_template/features/example/data/datasources/example_resource_remote_data_source.dart';
+import 'package:flutter_template/features/example/data/dtos/example_resource_dto.dart';
+import 'package:flutter_template/features/example/data/repositories/example_resource_repository_impl.dart';
 import 'package:flutter_template/features/home/data/repositories/home_repository_impl.dart';
 import 'package:flutter_template/features/home/domain/entities/home_readiness_snapshot.dart';
 import 'package:flutter_template/features/home/domain/repositories/home_repository.dart';
@@ -38,6 +42,33 @@ void main() {
       );
       expect(repository.callCount, 1);
     });
+
+    test('overrides a data source dependency for repository tests', () async {
+      final remoteDataSource = _FakeExampleResourceRemoteDataSource(
+        const Result<ExampleResourceDto>.success(
+          ExampleResourceDto(id: 'resource-1', title: 'Starter resource'),
+        ),
+      );
+      final container = createTestContainer(
+        overrides: <Object?>[
+          exampleResourceRemoteDataSourceProvider.overrideWithValue(
+            remoteDataSource,
+          ),
+        ],
+      );
+
+      final repository = container.read(exampleResourceRepositoryProvider);
+      final result = await repository.fetchById('resource-1');
+
+      result.when(
+        success: (resource) {
+          expect(resource.id, 'resource-1');
+          expect(resource.title, 'Starter resource');
+        },
+        failure: (_) => fail('Expected overridden data source success.'),
+      );
+      expect(remoteDataSource.requestedIds, <String>['resource-1']);
+    });
   });
 }
 
@@ -50,6 +81,24 @@ final class _FakeHomeRepository implements HomeRepository {
   @override
   Future<Result<HomeReadinessSnapshot>> loadReadiness() async {
     callCount += 1;
+
+    return result;
+  }
+}
+
+final class _FakeExampleResourceRemoteDataSource
+    implements ExampleResourceRemoteDataSource {
+  _FakeExampleResourceRemoteDataSource(this.result);
+
+  final ApiResult<ExampleResourceDto> result;
+  final List<String> requestedIds = <String>[];
+
+  @override
+  Future<ApiResult<ExampleResourceDto>> fetchById(
+    String id, {
+    CancelToken? cancelToken,
+  }) async {
+    requestedIds.add(id);
 
     return result;
   }
