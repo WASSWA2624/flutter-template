@@ -5,10 +5,10 @@ without rewriting app-wide foundations.
 
 Rule sources:
 
-- `app-rules/performance.md`
-- `app-rules/scalability.md`
-- `app-rules/responsive_adaptive_design.md`
-- `app-rules/pagination_data_tables.md`
+- [`app-rules/performance.md`](../../app-planner/app-rules/performance.md)
+- [`app-rules/scalability.md`](../../app-planner/app-rules/scalability.md)
+- [`app-rules/responsive_adaptive_design.md`](../../app-planner/app-rules/responsive_adaptive_design.md)
+- [`app-rules/pagination_data_tables.md`](../../app-planner/app-rules/pagination_data_tables.md)
 
 ## Provider Rebuilds
 
@@ -22,6 +22,8 @@ Rule sources:
 - Place providers close to the layer they create. Feature controllers belong in
   feature presentation code, repositories belong in feature data code, and shared
   infrastructure belongs in `core`.
+- Use `ref.read` inside callbacks such as navigation, refresh, and save actions
+  unless the widget needs to rebuild when that dependency changes.
 
 ## Lists and Tables
 
@@ -69,3 +71,18 @@ Rule sources:
   behavior.
 - Verify images are requested or resized near their display dimensions.
 - Review shared components for product-specific fields before merging.
+
+## Scalability Review Checklist
+
+- New features can be added under `lib/features/<feature_name>` without changing
+  unrelated feature folders.
+- Feature repositories expose contracts that can page, stream, or query data
+  instead of returning unbounded collections.
+- Large result screens keep search, filters, sort, and `AppPageRequest` in
+  explicit controller state.
+- Shared widgets stay domain-neutral and accept builders, labels, callbacks, and
+  typed state rather than product-specific fields.
+- Route and shell changes remain centralized so adding screens does not require
+  copied layouts.
+- Startup work remains limited to app prerequisites; feature data loads after
+  the shell is visible.
